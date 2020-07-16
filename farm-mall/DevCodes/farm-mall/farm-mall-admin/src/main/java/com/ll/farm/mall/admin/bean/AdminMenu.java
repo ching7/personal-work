@@ -1,5 +1,6 @@
 package com.ll.farm.mall.admin.bean;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
@@ -13,6 +14,7 @@ import lombok.Data;
  * @Description: note
  **/
 @Data
+@ApiModel(value="用户菜单",description="用户菜单类")
 public class AdminMenu {
     private String name;
     private String path;

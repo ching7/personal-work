@@ -3,8 +3,13 @@ package com.ll.farm.mall.admin.controller;
 import com.ll.farm.mall.admin.bean.AdminMenu;
 import com.ll.farm.mall.admin.service.AdminMenuService;
 import com.ll.farm.mall.parent.utils.Hello;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RequestMapping("/ums")
 @RestController
+@Api(value = "用户菜单演示", tags = "用户菜单")
 public class AdminMenusController {
 
     @Autowired
@@ -27,9 +33,11 @@ public class AdminMenusController {
     @Autowired
     Hello hello;
 
-    @RequestMapping("/getMenus")
-    public AdminMenu getMenus() {
+    @RequestMapping(value = "/getMenus", method = RequestMethod.POST)
+    @ApiOperation(notes = "需要id", value = "获取用户菜单")
+    public AdminMenu getMenus(@ApiParam(required = true, value = "用户id") @RequestBody Integer userId) {
         hello.getHello();
+        System.out.println("userId :" + userId);
         return adminMenuService.getAdminMenus();
     }
 }
