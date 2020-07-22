@@ -1,5 +1,6 @@
 package com.ll.farm.mall.deploy;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,7 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Version: 1.0
  * @Description: note
  **/
-@SpringBootApplication(scanBasePackages = "com.ll.farm.mall.*")
+@SpringBootApplication(scanBasePackages = "com.ll.*")
+@MapperScan("com.ll.**.dao")
 public class Provider {
     public static void main(String[] args) {
         SpringApplication.run(Provider.class, args);

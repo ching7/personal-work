@@ -22,6 +22,7 @@
         <module>farm-mall-nosql</module>
         <module>farm-mall-deploy</module>
         <module>farm-mall-impl</module>
+        <module>farm-mall-renren-generator</module>
     </modules>
     <properties>
         <lombok.version>1.16.20</lombok.version>
@@ -62,6 +63,9 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
     </dependencies>
 </project>
