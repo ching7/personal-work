@@ -1,15 +1,11 @@
 package com.ll.farm.mall.admin.controller;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ll.farm.mall.admin.entity.SysMenuEntity;
 import com.ll.farm.mall.admin.service.SysMenuService;
@@ -30,6 +26,31 @@ import com.ll.common.utils.R;
 public class SysMenuController {
     @Autowired
     private SysMenuService sysMenuService;
+
+    /**
+     * 列表
+     */
+    @RequestMapping(value = "/listByPermsLike",method = RequestMethod.POST)
+    //@RequiresPermissions("admin:sysmenu:list")
+    public R getMenuByPremLike(@RequestBody String perms){
+        QueryWrapper<SysMenuEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("perms",perms);
+        Collection<SysMenuEntity> sysMenuEntities = sysMenuService.list(queryWrapper);
+        return R.ok().put("sysMenu", sysMenuEntities);
+    }
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/listByIds")
+    //@RequiresPermissions("admin:sysmenu:list")
+    public R getMenuByIds(@RequestBody String menuId,String parentId){
+        Map<String, Object> columnMap = new HashMap<>();
+        columnMap.put("menu_id",menuId);
+        columnMap.put("parent_id",parentId);
+        Collection<SysMenuEntity> sysMenuEntities = sysMenuService.listByMap(columnMap);
+        return R.ok().put("sysMenu", sysMenuEntities);
+    }
 
     /**
      * 列表

@@ -35,6 +35,17 @@ public class SysUserController {
     /**
      * 列表
      */
+    @RequestMapping("/listAll")
+    //@RequiresPermissions("admin:sysuser:list")
+    public R listAll(){
+        List<SysUserEntity> list = sysUserService.list();
+
+        return R.ok().put("list", list);
+    }
+
+    /**
+     * 列表
+     */
     @RequestMapping("/list")
     //@RequiresPermissions("admin:sysuser:list")
     public R list(@RequestParam Map<String, Object> params){
