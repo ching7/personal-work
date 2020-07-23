@@ -6,7 +6,7 @@ import com.ll.farm.mall.parent.utils.Hello;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version: 1.0
  * @Description: note
  **/
-@Log4j2
 @RequestMapping("/ums")
 @RestController
+@Slf4j
 @Api(value = "用户菜单演示", tags = "用户菜单")
 public class AdminMenusController {
 
@@ -35,12 +35,10 @@ public class AdminMenusController {
     @Autowired
     Hello hello;
 
-    @RequestMapping(value = "/getMenus", method = RequestMethod.POST)
+    @RequestMapping(value = "/getMenus")
     @ApiOperation(notes = "需要id", value = "获取用户菜单")
     public AdminMenu getMenus(@ApiParam(required = true, value = "用户id") @RequestBody Integer userId) {
         hello.getHello();
-        log.info("getMenus:{}", userId);
-        System.out.println("userId :" + userId);
         return adminMenuService.getAdminMenus();
     }
 }

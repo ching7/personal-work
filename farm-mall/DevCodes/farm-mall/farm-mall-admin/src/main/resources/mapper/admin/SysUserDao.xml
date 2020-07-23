@@ -16,5 +16,4 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
 
-
 </mapper>

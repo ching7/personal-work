@@ -27,6 +27,9 @@
     <properties>
         <lombok.version>1.16.20</lombok.version>
         <swagger.version>2.7.0</swagger.version>
+        <commons-lang-version>2.6</commons-lang-version>
+        <mybatis-plus-starter-version>3.2.0</mybatis-plus-starter-version>
+        <mysql-connector-version>8.0.17</mysql-connector-version>
     </properties>
     <dependencies>
         <!-- springBoot 的启动器 -->
@@ -63,9 +66,24 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
+        <!--   mybatis-plus启动器     -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus-starter-version}</version>
+        </dependency>
+        <!--数据库连接驱动-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-version}</version>
+        </dependency>
+        <!--   String工具类     -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${commons-lang-version}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
