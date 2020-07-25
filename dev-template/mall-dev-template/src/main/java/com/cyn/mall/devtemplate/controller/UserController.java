@@ -2,11 +2,15 @@ package com.cyn.mall.devtemplate.controller;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cyn.mall.devtemplate.Bean.RT;
+import com.cyn.mall.devtemplate.Bean.RTC;
+import com.cyn.mall.devtemplate.entity.CartEntity;
+import com.cyn.mall.devtemplate.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +31,25 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CartService cartService;
 
+
+    /**
+     * 查询购物车
+     *
+     * @return
+     */
+    @RequestMapping(value = "/cartList", method = RequestMethod.POST)
+    public RTC getCartList() {
+        RTC rtc = new RTC();
+        List<CartEntity> list = cartService.list();
+        rtc.setCount(list.size());
+        rtc.setMsg("suc");
+        rtc.setResult(list);
+        rtc.setStatus("1");
+        return rtc;
+    }
     /**
      * 获取用户信息
      *

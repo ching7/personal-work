@@ -1,15 +1,14 @@
 package com.cyn.mall.devtemplate.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.cyn.mall.devtemplate.Bean.RT;
+import com.cyn.mall.devtemplate.Bean.RTC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cyn.mall.devtemplate.entity.CartEntity;
 import com.cyn.mall.devtemplate.service.CartService;
@@ -17,26 +16,24 @@ import com.cyn.common.utils.PageUtils;
 import com.cyn.common.utils.R;
 
 
-
 /**
- * 
- *
  * @author chenyn
  * @email 775608598@qq.com
  * @date 2020-07-25 14:59:41
  */
 @RestController
-@RequestMapping("devtemplate/cart")
+@RequestMapping("/api/cart")
 public class CartController {
     @Autowired
     private CartService cartService;
+
 
     /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("devtemplate:cart:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = cartService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -48,8 +45,8 @@ public class CartController {
      */
     @RequestMapping("/info/{cartId}")
     //@RequiresPermissions("devtemplate:cart:info")
-    public R info(@PathVariable("cartId") Long cartId){
-		CartEntity cart = cartService.getById(cartId);
+    public R info(@PathVariable("cartId") Long cartId) {
+        CartEntity cart = cartService.getById(cartId);
 
         return R.ok().put("cart", cart);
     }
@@ -59,8 +56,8 @@ public class CartController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("devtemplate:cart:save")
-    public R save(@RequestBody CartEntity cart){
-		cartService.save(cart);
+    public R save(@RequestBody CartEntity cart) {
+        cartService.save(cart);
 
         return R.ok();
     }
@@ -70,8 +67,8 @@ public class CartController {
      */
     @RequestMapping("/update")
     //@RequiresPermissions("devtemplate:cart:update")
-    public R update(@RequestBody CartEntity cart){
-		cartService.updateById(cart);
+    public R update(@RequestBody CartEntity cart) {
+        cartService.updateById(cart);
 
         return R.ok();
     }
@@ -81,8 +78,8 @@ public class CartController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("devtemplate:cart:delete")
-    public R delete(@RequestBody Long[] cartIds){
-		cartService.removeByIds(Arrays.asList(cartIds));
+    public R delete(@RequestBody Long[] cartIds) {
+        cartService.removeByIds(Arrays.asList(cartIds));
 
         return R.ok();
     }

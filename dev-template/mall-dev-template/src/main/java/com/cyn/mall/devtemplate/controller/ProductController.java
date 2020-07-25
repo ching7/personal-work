@@ -3,6 +3,8 @@ package com.cyn.mall.devtemplate.controller;
 import java.util.*;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.cyn.common.utils.Constant;
 import com.cyn.mall.devtemplate.Bean.HomeFloor;
 import com.cyn.mall.devtemplate.Bean.ProductHome;
 import com.cyn.mall.devtemplate.Bean.RT;
@@ -26,6 +28,45 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    //每页商品数
+    private static String pageSize = "20";
+
+    /**
+     * 全部商品
+     * 分页\价格排序
+     */
+    @RequestMapping(value = "/computer/{page}/{sort}/{priceGt}/{priceLte}", method = RequestMethod.GET)
+    public RT getPageProduct(@PathVariable("page") String page,
+                             @PathVariable("sort") int sort,
+                             @PathVariable("priceGt") int priceGt,
+                             @PathVariable("priceLte") int priceLte) {
+        //sort 1 升序 -1 降序
+        //priceGt大于
+        //priceLte小于
+        RT rt = new RT();
+        Map<String, Object> queryPageParams = new HashMap<>();
+        queryPageParams.put(Constant.PAGE, page);
+        queryPageParams.put(Constant.LIMIT, pageSize);
+        queryPageParams.put(Constant.ORDER_FIELD, "product_price");
+        if (sort == 1) {
+            queryPageParams.put(Constant.ORDER, "asc");
+        } else if (sort == -1) {
+            queryPageParams.put(Constant.ORDER, "desc");
+        }
+
+        QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.ge("sale_price", priceGt);
+        queryWrapper.le("sale_price", priceLte);
+        PageUtils queryPage = productService.queryPage(queryPageParams, queryWrapper);
+        rt.setMsg("suc");
+        rt.setStatus("0");
+        Map<String, Object> pageRes = new HashMap<>();
+        pageRes.put("count", queryPage.getTotalCount());
+        pageRes.put("data", queryPage.getList());
+        rt.setResult(pageRes);
+        return rt;
+
+    }
 
     /**
      * 首页商品

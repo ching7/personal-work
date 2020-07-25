@@ -1,0 +1,1 @@
+INSERT INTO `sys_user`(`user_id`, `name`, `avatar`, `user_name`, `user_pwd`, `cart_id`, `address_id`) VALUES (1, '张三', 'http://osc9sqdxe.bkt.clouddn.com/defaultAvatar.jpg', 'admin', 'admin', NULL, NULL);
