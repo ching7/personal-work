@@ -47,16 +47,21 @@ public class ProductController {
         Map<String, Object> queryPageParams = new HashMap<>();
         queryPageParams.put(Constant.PAGE, page);
         queryPageParams.put(Constant.LIMIT, pageSize);
-        queryPageParams.put(Constant.ORDER_FIELD, "product_price");
+        /*queryPageParams.put(Constant.ORDER_FIELD, "sale_price");
         if (sort == 1) {
             queryPageParams.put(Constant.ORDER, "asc");
         } else if (sort == -1) {
             queryPageParams.put(Constant.ORDER, "desc");
-        }
+        }*/
 
         QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.ge("sale_price", priceGt);
         queryWrapper.le("sale_price", priceLte);
+        if (sort == 1) {
+            queryWrapper.orderByAsc("sale_price");
+        } else if (sort == -1) {
+            queryWrapper.orderByDesc("sale_price");
+        }
         PageUtils queryPage = productService.queryPage(queryPageParams, queryWrapper);
         rt.setMsg("suc");
         rt.setStatus("0");
