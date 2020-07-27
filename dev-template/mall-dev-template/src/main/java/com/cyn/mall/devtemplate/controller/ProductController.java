@@ -1,13 +1,18 @@
 package com.cyn.mall.devtemplate.controller;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.cyn.common.utils.Constant;
 import com.cyn.mall.devtemplate.Bean.HomeFloor;
-import com.cyn.mall.devtemplate.Bean.ProductHome;
 import com.cyn.mall.devtemplate.Bean.RT;
+import com.cyn.mall.devtemplate.entity.CartEntity;
+import com.cyn.mall.devtemplate.entity.UserEntity;
+import com.cyn.mall.devtemplate.service.CartService;
+import com.cyn.mall.devtemplate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +20,9 @@ import com.cyn.mall.devtemplate.entity.ProductEntity;
 import com.cyn.mall.devtemplate.service.ProductService;
 import com.cyn.common.utils.PageUtils;
 import com.cyn.common.utils.R;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -28,8 +36,105 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private UserService userService;
     //每页商品数
     private static String pageSize = "20";
+
+    // cookies存储的userId,作为是否登陆的判断
+    private String userIdStr = "userId";
+
+    /**
+     * 新增购物车商品
+     *
+     * @return
+     */
+    @RequestMapping(value = "/addCartBatch", method = RequestMethod.POST, name = "批量新增购物车商品")
+    public RT putCartBatch() {
+        RT rt = new RT();
+        return rt;
+    }
+
+    /**
+     * 新增购物车商品
+     *
+     * @return
+     */
+    @RequestMapping(value = "/addCart", method = RequestMethod.POST, name = "新增购物车商品")
+    public RT putCart(@RequestParam Map<String, Object> params, HttpServletRequest httpRequest) {
+        RT rt = new RT();
+        Integer inputPrdId = Integer.parseInt((String) params.get("productId"));
+        Integer inputPrdNum = Integer.parseInt((String) params.get("productNum"));
+        BigDecimal inputPrdPrice = BigDecimal.valueOf(Long.parseLong((String) params.get("productPrice")));
+        String inputPrdName = (String) params.get("productName");
+        String inputPrdImg = (String) params.get("productImg");
+        Cookie[] cookies = httpRequest.getCookies();
+        for (Cookie cookie : cookies) {
+            if (userIdStr.equals(cookie.getName())) {
+                Integer inputUserId = Integer.parseInt(cookie.getValue());
+                // 查询当前用户是否存在
+                UserEntity byId = userService.getById(inputUserId);
+                if (byId == null) {
+                    rt.setStatus("1");
+                    rt.setMsg("用户不存在");
+                    rt.setResult("");
+                    return rt;
+                }
+                //查询当前用户购物车
+                QueryWrapper<CartEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq(userIdStr, inputUserId);
+                List<CartEntity> list = cartService.list(queryWrapper);
+                // 存在用户购物车
+                if (list.size() > 0) {
+                    //有相同商品加数量
+                    try {
+                        list.forEach(cartEntity -> {
+                            if (cartEntity.getProductId().equals(inputPrdId)) {
+                                CartEntity cartEntitymod = new CartEntity();
+                                cartEntitymod.setProductNum(cartEntity.getProductNum() + inputPrdNum);
+                                UpdateWrapper<CartEntity> cartUpdateWrapper = new UpdateWrapper<>();
+                                cartUpdateWrapper.eq("productId", inputPrdId).eq("userId", inputUserId);
+                                cartService.update(cartUpdateWrapper);
+                            }
+                        });
+                    } catch (Exception e) {
+                        rt.setStatus("1");
+                        rt.setMsg("异常" + e.getMessage());
+                        rt.setResult("");
+                        return rt;
+                    }
+                    rt.setStatus("0");
+                    rt.setMsg("添加成功");
+                    rt.setResult("");
+                    return rt;
+                } else {
+                    CartEntity cartEntityAdd = new CartEntity();
+                    cartEntityAdd.setUserId(inputUserId);
+                    cartEntityAdd.setProductId(inputPrdId);
+                    cartEntityAdd.setProductNum(inputPrdNum);
+                    cartEntityAdd.setProductPrice(inputPrdPrice);
+                    cartEntityAdd.setProductName(inputPrdName);
+                    cartEntityAdd.setProductImg(inputPrdImg);
+                    boolean save = cartService.save(cartEntityAdd);
+                    if (save) {
+                        rt.setStatus("0");
+                        rt.setMsg("添加成功");
+                        rt.setResult("");
+                        return rt;
+                    }
+                }
+            } else {
+                rt.setStatus("1");
+                rt.setMsg("用户未登录");
+                rt.setResult("");
+                return rt;
+            }
+        }
+        return rt;
+    }
 
     /**
      * 全部商品
@@ -47,13 +152,6 @@ public class ProductController {
         Map<String, Object> queryPageParams = new HashMap<>();
         queryPageParams.put(Constant.PAGE, page);
         queryPageParams.put(Constant.LIMIT, pageSize);
-        /*queryPageParams.put(Constant.ORDER_FIELD, "sale_price");
-        if (sort == 1) {
-            queryPageParams.put(Constant.ORDER, "asc");
-        } else if (sort == -1) {
-            queryPageParams.put(Constant.ORDER, "desc");
-        }*/
-
         QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.ge("sale_price", priceGt);
         queryWrapper.le("sale_price", priceLte);

@@ -9,11 +9,11 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 
- * 
+ *
+ *
  * @author chenyn
  * @email 775608598@qq.com
- * @date 2020-07-25 14:59:41
+ * @date 2020-07-27 15:32:31
  */
 @Data
 @TableName("sys_cart")
@@ -25,6 +25,10 @@ public class CartEntity implements Serializable {
 	 */
 	@TableId
 	private Long cartId;
+	/**
+	 * 用户id
+	 */
+	private Integer userId;
 	/**
 	 *  产品id
 	 */
@@ -38,7 +42,7 @@ public class CartEntity implements Serializable {
 	 */
 	private String productName;
 	/**
-	 * 
+	 *
 	 */
 	private String checked;
 	/**
