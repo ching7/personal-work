@@ -7,6 +7,7 @@
     <resultMap type="com.cyn.mall.devtemplate.entity.AddressEntity" id="addressMap">
         <result property="addressId" column="address_id"/>
         <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
         <result property="streetName" column="street_name"/>
         <result property="tel" column="tel"/>
         <result property="isDefault" column="is_default"/>

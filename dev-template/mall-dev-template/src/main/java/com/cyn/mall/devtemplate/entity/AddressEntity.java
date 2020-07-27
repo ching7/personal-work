@@ -29,6 +29,10 @@ public class AddressEntity implements Serializable {
 	 */
 	private String userId;
 	/**
+	 * 登陆账号
+	 */
+	private String userName;
+	/**
 	 * 详细地址
 	 */
 	private String streetName;

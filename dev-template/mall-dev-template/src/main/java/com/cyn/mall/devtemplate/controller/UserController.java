@@ -1,5 +1,6 @@
 package com.cyn.mall.devtemplate.controller;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -7,9 +8,13 @@ import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.cyn.mall.devtemplate.Bean.RT;
 import com.cyn.mall.devtemplate.Bean.RTC;
+import com.cyn.mall.devtemplate.ctrl.UserCtrl;
+import com.cyn.mall.devtemplate.entity.AddressEntity;
 import com.cyn.mall.devtemplate.entity.CartEntity;
+import com.cyn.mall.devtemplate.service.AddressService;
 import com.cyn.mall.devtemplate.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +23,11 @@ import com.cyn.mall.devtemplate.entity.UserEntity;
 import com.cyn.mall.devtemplate.service.UserService;
 import com.cyn.common.utils.PageUtils;
 import com.cyn.common.utils.R;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import static com.cyn.mall.devtemplate.constants.Constants.userIdStr;
 
 
 /**
@@ -34,22 +44,98 @@ public class UserController {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private AddressService addressService;
+
+    @Autowired
+    private UserCtrl userCtrl;
+
+    /**
+     * 修改收获地址
+     *
+     * @param httpServletRequest
+     * @return
+     */
+    @RequestMapping(value = "/addressUpdate", method = RequestMethod.POST, name = "修改收获地址")
+    public RT putAddressList(HttpServletRequest httpServletRequest, @RequestParam Map<String, Object> params) {
+        RT rt = new RT();
+        Integer inputAddressId = Integer.parseInt((String) params.get("addressId"));
+        String inputUserName = (String) params.get("userName");
+        String inputTel = (String) params.get("tel");
+        String inputStreetName = (String) params.get("streetName");
+        String inputIsDefault = (String) params.get("isDefault");
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
+        if (userIdforReqCookies != null && inputAddressId > 0 && !inputUserName.trim().isEmpty() && !inputStreetName.trim().isEmpty()) {
+            UpdateWrapper<AddressEntity> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("user_id", userIdforReqCookies).eq("address_id", inputAddressId);
+            AddressEntity addressEntity = new AddressEntity();
+            addressEntity.setStreetName(inputStreetName);
+            addressEntity.setTel(inputTel);
+            addressEntity.setIsDefault(inputIsDefault);
+            boolean update = addressService.update(addressEntity, updateWrapper);
+            if (update) {
+                rt.setMsg("suc");
+                rt.setStatus("0");
+                rt.setResult("");
+            }
+        } else {
+            rt.setMsg("未登录");
+            rt.setStatus("1");
+        }
+        return rt;
+    }
+
+    /**
+     * 查询收获地址
+     *
+     * @param httpServletRequest
+     * @return
+     */
+    @RequestMapping(value = "/addressList", method = RequestMethod.POST, name = "查询收获地址")
+    public RT getAddressList(HttpServletRequest httpServletRequest) {
+        RT rt = new RT();
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
+        if (userIdforReqCookies != null) {
+            QueryWrapper<AddressEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("user_id", userIdforReqCookies);
+            List<AddressEntity> addressEntityList = addressService.list(queryWrapper);
+            if (addressEntityList.size() > 0) {
+                rt.setMsg("suc");
+                rt.setStatus("0");
+                rt.setResult(addressEntityList);
+            }
+        } else {
+            rt.setMsg("未登录");
+            rt.setStatus("1");
+        }
+        return rt;
+    }
 
     /**
      * 查询购物车
      *
      * @return
      */
-    @RequestMapping(value = "/cartList", method = RequestMethod.POST)
-    public RTC getCartList() {
+    @RequestMapping(value = "/cartList", method = RequestMethod.POST,name = "查询购物车")
+    public RTC getCartList(HttpServletRequest httpServletRequest) {
         RTC rtc = new RTC();
-        List<CartEntity> list = cartService.list();
-        rtc.setCount(list.size());
-        rtc.setMsg("suc");
-        rtc.setResult(list);
-        rtc.setStatus("1");
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
+        if (userIdforReqCookies != null) {
+            QueryWrapper<CartEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("user_id", userIdforReqCookies);
+            List<CartEntity> listCarts = cartService.list(queryWrapper);
+            rtc.setCount(listCarts.size());
+            rtc.setMsg("suc");
+            rtc.setResult(listCarts);
+            rtc.setStatus("1");
+        } else {
+            rtc.setMsg("未登录");
+            rtc.setStatus("1");
+        }
+
         return rtc;
     }
+
     /**
      * 获取用户信息
      *
