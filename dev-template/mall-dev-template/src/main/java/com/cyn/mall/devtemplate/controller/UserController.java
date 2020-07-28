@@ -51,6 +51,75 @@ public class UserController {
     private UserCtrl userCtrl;
 
     /**
+     * 删除收获地址
+     *
+     * @param httpServletRequest
+     * @return
+     */
+    @RequestMapping(value = "/addressDel", method = RequestMethod.POST, name = "删除收获地址删除收获地址")
+    public RT delAddressList(HttpServletRequest httpServletRequest, @RequestParam Map<String, Object> params) {
+        RT rt = new RT();
+        Integer inputAddressId = Integer.parseInt((String) params.get("addressId"));
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
+        if (userIdforReqCookies != null && inputAddressId > 0) {
+            boolean del = addressService.removeById(inputAddressId);
+            if (del) {
+                rt.setMsg("删除成功");
+                rt.setStatus("0");
+                rt.setResult("");
+            } else {
+                rt.setMsg("删除失败");
+                rt.setStatus("1");
+                rt.setResult("");
+            }
+        } else {
+            rt.setMsg("未登录");
+            rt.setStatus("1");
+            rt.setResult("");
+        }
+        return rt;
+    }
+
+    /**
+     * 新增收获地址
+     *
+     * @param httpServletRequest
+     * @return
+     */
+    @RequestMapping(value = "/addressAdd", method = RequestMethod.POST, name = "修改收获地址")
+    public RT postAddressList(HttpServletRequest httpServletRequest, @RequestParam Map<String, Object> params) {
+        RT rt = new RT();
+        String inputUserName = (String) params.get("userName");
+        String inputTel = (String) params.get("tel");
+        String inputStreetName = (String) params.get("streetName");
+        String inputIsDefault = (String) params.get("isDefault");
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
+        if (userIdforReqCookies != null && !inputUserName.trim().isEmpty() && !inputStreetName.trim().isEmpty()) {
+            AddressEntity addressEntity = new AddressEntity();
+            addressEntity.setUserId(Long.toString(userIdforReqCookies));
+            addressEntity.setUserName(inputUserName);
+            addressEntity.setTel(inputTel);
+            addressEntity.setStreetName(inputStreetName);
+            addressEntity.setIsDefault(inputIsDefault);
+            boolean add = addressService.save(addressEntity);
+            if (add) {
+                rt.setMsg("suc");
+                rt.setStatus("0");
+                rt.setResult("");
+            } else {
+                rt.setMsg("新增失败");
+                rt.setStatus("1");
+                rt.setResult("");
+            }
+        } else {
+            rt.setMsg("未登录");
+            rt.setStatus("1");
+            rt.setResult("");
+        }
+        return rt;
+    }
+
+    /**
      * 修改收获地址
      *
      * @param httpServletRequest
@@ -76,6 +145,10 @@ public class UserController {
             if (update) {
                 rt.setMsg("suc");
                 rt.setStatus("0");
+                rt.setResult("");
+            } else {
+                rt.setMsg("更新失败");
+                rt.setStatus("1");
                 rt.setResult("");
             }
         } else {
@@ -103,6 +176,10 @@ public class UserController {
                 rt.setMsg("suc");
                 rt.setStatus("0");
                 rt.setResult(addressEntityList);
+            } else {
+                rt.setMsg("suc");
+                rt.setStatus("0");
+                rt.setResult(addressEntityList);
             }
         } else {
             rt.setMsg("未登录");
@@ -116,7 +193,7 @@ public class UserController {
      *
      * @return
      */
-    @RequestMapping(value = "/cartList", method = RequestMethod.POST,name = "查询购物车")
+    @RequestMapping(value = "/cartList", method = RequestMethod.POST, name = "查询购物车")
     public RTC getCartList(HttpServletRequest httpServletRequest) {
         RTC rtc = new RTC();
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
