@@ -13,6 +13,7 @@ import com.cyn.mall.devtemplate.ctrl.UserCtrl;
 import com.cyn.mall.devtemplate.entity.CartEntity;
 import com.cyn.mall.devtemplate.entity.UserEntity;
 import com.cyn.mall.devtemplate.service.CartService;
+import com.cyn.mall.devtemplate.service.OrderService;
 import com.cyn.mall.devtemplate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +45,25 @@ public class ProductController {
     private CartService cartService;
 
     @Autowired
-    private UserService userService;
-    @Autowired
     private UserCtrl userCtrl;
+
+
+    /**
+     * 商品详情
+     *
+     * @return
+     */
+    @RequestMapping(value = "/productDet", method = RequestMethod.POST, name = "商品详情")
+    public RT getProductDet(@RequestParam Map<String, Object> params, HttpServletRequest httpRequest) {
+        RT rt = new RT();
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
+        Integer inputPrdId = Integer.parseInt((String) params.get("productId"));
+        ProductEntity productEntity = productService.getById(inputPrdId);
+        rt.setMsg("suc");
+        rt.setStatus("0");
+        rt.setResult(productEntity);
+        return rt;
+    }
 
     /**
      * 新增购物车商品

@@ -1,12 +1,14 @@
 package com.cyn.mall.devtemplate.controller;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.cyn.mall.devtemplate.Bean.RT;
@@ -14,8 +16,10 @@ import com.cyn.mall.devtemplate.Bean.RTC;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
 import com.cyn.mall.devtemplate.entity.AddressEntity;
 import com.cyn.mall.devtemplate.entity.CartEntity;
+import com.cyn.mall.devtemplate.entity.OrderEntity;
 import com.cyn.mall.devtemplate.service.AddressService;
 import com.cyn.mall.devtemplate.service.CartService;
+import com.cyn.mall.devtemplate.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +53,92 @@ public class UserController {
 
     @Autowired
     private UserCtrl userCtrl;
+
+
+    @Autowired
+    private OrderService orderService;
+
+    /**
+     * 删除订单
+     *
+     * @return
+     */
+    @RequestMapping(value = "/delOrder", method = RequestMethod.POST, name = "删除订单")
+    public RT delOrder(@RequestParam Map<String, Object> params, HttpServletRequest httpRequest) {
+        RT rt = new RT();
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
+        Long inputOrderId = Long.parseLong((String) params.get("orderId"));
+        QueryWrapper<OrderEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userIdforReqCookies).eq("order_id", inputOrderId);
+        boolean remove = orderService.remove(queryWrapper);
+        if (remove) {
+            rt.setResult("suc");
+            rt.setStatus("0");
+            rt.setMsg("");
+        } else {
+            rt.setResult("err");
+            rt.setStatus("1");
+            rt.setMsg("");
+        }
+        return rt;
+    }
+
+    /**
+     * 订单列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/orderList", method = RequestMethod.POST, name = "订单列表")
+    public RT postPayMent(HttpServletRequest httpRequest) {
+        RT rt = new RT();
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
+        QueryWrapper<OrderEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userIdforReqCookies);
+        List<OrderEntity> orderEntityList = orderService.list(queryWrapper);
+        rt.setResult(orderEntityList);
+        rt.setStatus("0");
+        rt.setMsg("");
+        return rt;
+    }
+
+    /**
+     * 生成订单
+     *
+     * @return
+     */
+    @RequestMapping(value = "/payMent", method = RequestMethod.POST, name = "支付")
+    public RT postPayMent(@RequestParam Map<String, Object> params, HttpServletRequest httpRequest) {
+        RT rt = new RT();
+        Long inputAddressId = Long.parseLong((String) params.get("addressId"));
+        long inputOrderTotal = Long.parseLong((String) params.get("orderTotal"));
+        Integer inputProductId = Integer.parseInt((String) params.get("productId"));
+        Integer inputProductNum = Integer.parseInt((String) params.get("productNum"));
+        //addressId, orderTotal, productId, productNum
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
+        QueryWrapper<AddressEntity> addressEntityQueryWrapper = new QueryWrapper<>();
+        addressEntityQueryWrapper.eq("user_id", userIdforReqCookies);
+        // 当前用户的收货地址
+        List<AddressEntity> addressEntityList = addressService.list(addressEntityQueryWrapper);
+        QueryWrapper<CartEntity> cartEntityQueryWrapper = new QueryWrapper<>();
+        cartEntityQueryWrapper.eq("user_id", userIdforReqCookies);
+        // 当前用户的购物车列表
+        List<CartEntity> cartEntityList = cartService.list(cartEntityQueryWrapper);
+
+        //生成订单
+        addressEntityList.forEach(addressEntity -> {
+            if (addressEntity.getAddressId().equals(inputAddressId)) {
+                OrderEntity orderEntity = new OrderEntity();
+                orderEntity.setUserId(userIdforReqCookies.intValue());
+                orderEntity.setAddressId(inputAddressId.intValue());
+                orderEntity.setOrderGoods(JSONObject.toJSONString(cartEntityList));
+                orderEntity.setOrderTotal(BigDecimal.valueOf(inputOrderTotal));
+                rt.setMsg("");
+                rt.setStatus("0");
+                rt.setResult("");
+            }
+        });
+        return rt;
+    }
 
     /**
      * 删除收获地址
