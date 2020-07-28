@@ -132,7 +132,8 @@ public class UserController {
                 orderEntity.setAddressId(inputAddressId.intValue());
                 orderEntity.setOrderGoods(JSONObject.toJSONString(cartEntityList));
                 orderEntity.setOrderTotal(BigDecimal.valueOf(inputOrderTotal));
-                rt.setMsg("");
+                boolean save = orderService.save(orderEntity);
+                rt.setMsg("suc");
                 rt.setStatus("0");
                 rt.setResult("");
             }
