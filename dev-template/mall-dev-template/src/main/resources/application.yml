@@ -12,7 +12,7 @@ mybatis-plus:
     db-config:
       id-type: auto
 server:
-  port: 8091
+  port: 3333
 
 # 拦截器不拦截配置
 interceptorconfig:
@@ -20,3 +20,7 @@ interceptorconfig:
     #该路径下任何类型请求均不拦截
     include:
       - /api/users/register
+      - /api/goods/productHome
+      - /api/users/userInfo
+      - /api/users/login
+      - /error

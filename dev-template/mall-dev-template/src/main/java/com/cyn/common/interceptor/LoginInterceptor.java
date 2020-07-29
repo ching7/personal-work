@@ -35,13 +35,13 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(request);
         // 配置拦截器例外
         String requestUrl = request.getRequestURI();
         List<String> includeUrl = interceptorFilterConfig.getInclude();
         if (includeUrl.contains(requestUrl)) {
             return true;
         }
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(request);
         if (userIdforReqCookies == null) {
             throw new Exception("未登陆");
         }

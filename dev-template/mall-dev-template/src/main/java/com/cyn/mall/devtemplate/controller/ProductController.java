@@ -211,7 +211,7 @@ public class ProductController {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("home_floors", homeFloors);
         resultMap.put("home_hot", productEntityList);
-        rt.setResult(productEntityList);
+        rt.setResult(resultMap);
         rt.setStatus("0");
         return rt;
     }

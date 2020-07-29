@@ -333,18 +333,24 @@ public class UserController {
     /**
      * 获取用户信息
      *
-     * @param userId
+     * @param httpServletRequest
      * @return
      */
     @RequestMapping(value = "/userInfo", method = RequestMethod.POST)
-    public RT getUserInfo(@RequestParam String userId) {
+    public RT getUserInfo(HttpServletRequest httpServletRequest) {
         RT rt = new RT();
-        UserEntity userEntity = userService.getById(userId);
-        if (userEntity != null) {
-            rt.setMsg("suc");
-            rt.setResult(userEntity);
-            rt.setStatus("0");
-        } else {
+        try {
+            Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
+            UserEntity userEntity = userService.getById(userIdforReqCookies);
+            if (userEntity != null) {
+                rt.setMsg("suc");
+                rt.setResult(userEntity);
+                rt.setStatus("0");
+            } else {
+                rt.setMsg("未登录");
+                rt.setStatus("1");
+            }
+        } catch (Exception e) {
             rt.setMsg("未登录");
             rt.setStatus("1");
         }
@@ -354,13 +360,14 @@ public class UserController {
     /**
      * 登陆
      *
-     * @param userName
-     * @param userPwd
+     * @param params
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public RT login(@RequestParam String userName, String userPwd) {
+    public RT login(@RequestBody  Map<String, Object> params) {
         RT rt = new RT();
+        String userName = (String) params.get("userName");
+        String userPwd = (String) params.get("userPwd");
         QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper
                 .eq("user_name", userName)
