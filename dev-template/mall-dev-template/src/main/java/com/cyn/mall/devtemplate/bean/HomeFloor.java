@@ -1,4 +1,4 @@
-package com.cyn.mall.devtemplate.Bean;
+package com.cyn.mall.devtemplate.bean;
 
 import com.cyn.mall.devtemplate.entity.ProductEntity;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.util.List;
  * 文件描述
  *
  * @ProjectName: mall-dev-template
- * @Package: com.cyn.mall.devtemplate.Bean
+ * @Package: com.cyn.mall.devtemplate.bean
  * @Date 2020/7/25 16:52
  * @Author:
  * @Version: 1.0

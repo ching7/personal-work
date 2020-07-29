@@ -13,3 +13,10 @@ mybatis-plus:
       id-type: auto
 server:
   port: 8091
+
+# 拦截器不拦截配置
+interceptorconfig:
+  path:
+    #该路径下任何类型请求均不拦截
+    include:
+      - /api/users/register

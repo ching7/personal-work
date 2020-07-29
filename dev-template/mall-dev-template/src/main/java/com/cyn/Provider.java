@@ -2,6 +2,7 @@ package com.cyn;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -16,8 +17,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  **/
 @EnableSwagger2
 @SpringBootApplication
+@EnableConfigurationProperties
 public class Provider {
     public static void main(String[] args) {
-        SpringApplication.run(Provider.class,args);
+        SpringApplication.run(Provider.class, args);
     }
 }

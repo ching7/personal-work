@@ -1,18 +1,15 @@
 package com.cyn.mall.devtemplate.controller;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.cyn.mall.devtemplate.Bean.RT;
-import com.cyn.mall.devtemplate.Bean.RTC;
+import com.cyn.common.utils.DateUtils;
+import com.cyn.mall.devtemplate.bean.RT;
+import com.cyn.mall.devtemplate.bean.RTC;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
 import com.cyn.mall.devtemplate.entity.AddressEntity;
 import com.cyn.mall.devtemplate.entity.CartEntity;
@@ -28,10 +25,7 @@ import com.cyn.mall.devtemplate.service.UserService;
 import com.cyn.common.utils.PageUtils;
 import com.cyn.common.utils.R;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
-import static com.cyn.mall.devtemplate.constants.Constants.userIdStr;
 
 
 /**
@@ -54,9 +48,41 @@ public class UserController {
     @Autowired
     private UserCtrl userCtrl;
 
-
     @Autowired
     private OrderService orderService;
+
+    /**
+     * 用户注册
+     *
+     * @return
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST, name = "用户注册")
+    public RT postRegister(@RequestParam Map<String, Object> params) {
+        RT rt = new RT();
+        String inputUserName = (String) params.get("userName");
+        String inputUserPwd = (String) params.get("userPwd");
+        QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_name", inputUserName);
+        List<UserEntity> list = userService.list(queryWrapper);
+        if (list.size() > 0) {
+            rt.setResult("err");
+            rt.setStatus("1");
+            rt.setMsg("账号已存在");
+        } else {
+            UserEntity userEntityAdd = new UserEntity();
+            userEntityAdd.setAvatar("https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png");
+            userEntityAdd.setName("游客" + DateUtils.getCurrDate() + DateUtils.getCurrTime());
+            userEntityAdd.setUserName(inputUserName);
+            userEntityAdd.setUserPwd(inputUserPwd);
+            boolean save = userService.save(userEntityAdd);
+            if (save) {
+                rt.setResult("suc");
+                rt.setStatus("0");
+                rt.setMsg("注册成功");
+            }
+        }
+        return rt;
+    }
 
     /**
      * 删除订单

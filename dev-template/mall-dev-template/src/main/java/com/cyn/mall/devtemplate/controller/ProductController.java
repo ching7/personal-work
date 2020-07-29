@@ -7,14 +7,11 @@ import java.util.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.cyn.common.utils.Constant;
-import com.cyn.mall.devtemplate.Bean.HomeFloor;
-import com.cyn.mall.devtemplate.Bean.RT;
+import com.cyn.mall.devtemplate.bean.HomeFloor;
+import com.cyn.mall.devtemplate.bean.RT;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
 import com.cyn.mall.devtemplate.entity.CartEntity;
-import com.cyn.mall.devtemplate.entity.UserEntity;
 import com.cyn.mall.devtemplate.service.CartService;
-import com.cyn.mall.devtemplate.service.OrderService;
-import com.cyn.mall.devtemplate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +20,6 @@ import com.cyn.mall.devtemplate.service.ProductService;
 import com.cyn.common.utils.PageUtils;
 import com.cyn.common.utils.R;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.cyn.mall.devtemplate.constants.Constants.userIdStr;
