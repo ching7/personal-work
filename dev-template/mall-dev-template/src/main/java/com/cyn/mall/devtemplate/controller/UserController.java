@@ -25,7 +25,9 @@ import com.cyn.mall.devtemplate.service.UserService;
 import com.cyn.common.utils.PageUtils;
 import com.cyn.common.utils.R;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -345,7 +347,8 @@ public class UserController {
             if (userEntity != null) {
                 rt.setMsg("suc");
                 rt.setResult(userEntity);
-                rt.setStatus("0");
+                // todo 前端判断是否登陆存在问题
+                rt.setStatus("1");
             } else {
                 rt.setMsg("未登录");
                 rt.setStatus("1");
@@ -364,7 +367,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public RT login(@RequestBody  Map<String, Object> params) {
+    public RT login(@RequestBody Map<String, Object> params, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         RT rt = new RT();
         String userName = (String) params.get("userName");
         String userPwd = (String) params.get("userPwd");
@@ -374,6 +377,10 @@ public class UserController {
                 .eq("user_pwd", userPwd);
         UserEntity userEntity = userService.getOne(queryWrapper);
         if (userEntity != null) {
+            Cookie cookie = new Cookie("userId", userEntity.getUserId().toString());
+            cookie.setPath("/");
+            cookie.setMaxAge(7200);
+            httpServletResponse.addCookie(cookie);
             rt.setMsg("登陆成功");
             rt.setResult(userEntity);
             rt.setStatus("0");

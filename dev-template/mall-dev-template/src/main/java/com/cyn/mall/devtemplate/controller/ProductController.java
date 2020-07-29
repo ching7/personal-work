@@ -49,12 +49,11 @@ public class ProductController {
      *
      * @return
      */
-    @RequestMapping(value = "/productDet", method = RequestMethod.POST, name = "商品详情")
-    public RT getProductDet(@RequestParam Map<String, Object> params, HttpServletRequest httpRequest) {
+    @RequestMapping(value = "/productDet", method = RequestMethod.GET, name = "商品详情")
+    public RT getProductDet(@RequestParam Map<String, Object> params) {
         RT rt = new RT();
-        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
-        Integer inputPrdId = Integer.parseInt((String) params.get("productId"));
-        ProductEntity productEntity = productService.getById(inputPrdId);
+        Integer productId = Integer.parseInt((String) params.get("productId"));
+        ProductEntity productEntity = productService.getById(productId);
         rt.setMsg("suc");
         rt.setStatus("0");
         rt.setResult(productEntity);
