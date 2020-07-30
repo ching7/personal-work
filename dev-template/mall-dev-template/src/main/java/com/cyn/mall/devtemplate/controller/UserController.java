@@ -53,13 +53,73 @@ public class UserController {
     @Autowired
     private OrderService orderService;
 
+
+    /**
+     * 修改购物车产品数量
+     *
+     * @return
+     */
+    @RequestMapping(value = "/cartEdit", method = RequestMethod.POST, name = "修改购物车产品数量")
+    public RT putCartEdit(@RequestBody Map<String, Object> params, HttpServletRequest httpRequest) {
+        RT rt = new RT();
+        Integer productId = (Integer) params.get("productId");
+        Integer productNum = (Integer) params.get("productNum");
+        String checked = (String) params.get("checked");
+
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
+
+        QueryWrapper<CartEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("product_id", productId)
+                .eq("user_id", userIdforReqCookies);
+        CartEntity cartEntity = new CartEntity();
+        cartEntity.setProductNum(productNum);
+        cartEntity.setChecked(checked);
+        boolean update = cartService.update(cartEntity, queryWrapper);
+        if (update) {
+            rt.setResult("suc");
+            rt.setStatus("0");
+            rt.setMsg("修改成功");
+        } else {
+            rt.setResult("err");
+            rt.setStatus("1");
+            rt.setMsg("修改数量失败");
+        }
+        return rt;
+    }
+
+    /**
+     * 删除购物车
+     *
+     * @return
+     */
+    @RequestMapping(value = "/cartDel", method = RequestMethod.POST, name = "删除购物车")
+    public RT deleteCartDel(@RequestBody Map<String, Object> params, HttpServletRequest httpRequest) {
+        RT rt = new RT();
+        Integer productId = (Integer) params.get("productId");
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
+
+        QueryWrapper<CartEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("product_id", productId).eq("user_id", userIdforReqCookies);
+        boolean remove = cartService.remove(queryWrapper);
+        if (remove) {
+            rt.setResult("suc");
+            rt.setStatus("0");
+            rt.setMsg("删除成功");
+        } else {
+            rt.setResult("err");
+            rt.setStatus("1");
+            rt.setMsg("删除购物车失败");
+        }
+        return rt;
+    }
+
     /**
      * 用户注册
      *
      * @return
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, name = "用户注册")
-    public RT postRegister(@RequestParam Map<String, Object> params) {
+    public RT postRegister(@RequestBody Map<String, Object> params) {
         RT rt = new RT();
         String inputUserName = (String) params.get("userName");
         String inputUserPwd = (String) params.get("userPwd");
@@ -92,7 +152,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/delOrder", method = RequestMethod.POST, name = "删除订单")
-    public RT delOrder(@RequestParam Map<String, Object> params, HttpServletRequest httpRequest) {
+    public RT delOrder(@RequestBody Map<String, Object> params, HttpServletRequest httpRequest) {
         RT rt = new RT();
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
         Long inputOrderId = Long.parseLong((String) params.get("orderId"));
@@ -135,7 +195,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/payMent", method = RequestMethod.POST, name = "支付")
-    public RT postPayMent(@RequestParam Map<String, Object> params, HttpServletRequest httpRequest) {
+    public RT postPayMent(@RequestBody Map<String, Object> params, HttpServletRequest httpRequest) {
         RT rt = new RT();
         Long inputAddressId = Long.parseLong((String) params.get("addressId"));
         long inputOrderTotal = Long.parseLong((String) params.get("orderTotal"));
@@ -176,7 +236,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/addressDel", method = RequestMethod.POST, name = "删除收获地址删除收获地址")
-    public RT delAddressList(HttpServletRequest httpServletRequest, @RequestParam Map<String, Object> params) {
+    public RT delAddressList(HttpServletRequest httpServletRequest, @RequestBody Map<String, Object> params) {
         RT rt = new RT();
         Integer inputAddressId = Integer.parseInt((String) params.get("addressId"));
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
@@ -206,7 +266,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/addressAdd", method = RequestMethod.POST, name = "修改收获地址")
-    public RT postAddressList(HttpServletRequest httpServletRequest, @RequestParam Map<String, Object> params) {
+    public RT postAddressList(HttpServletRequest httpServletRequest, @RequestBody Map<String, Object> params) {
         RT rt = new RT();
         String inputUserName = (String) params.get("userName");
         String inputTel = (String) params.get("tel");
@@ -245,7 +305,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/addressUpdate", method = RequestMethod.POST, name = "修改收获地址")
-    public RT putAddressList(HttpServletRequest httpServletRequest, @RequestParam Map<String, Object> params) {
+    public RT putAddressList(HttpServletRequest httpServletRequest, @RequestBody Map<String, Object> params) {
         RT rt = new RT();
         Integer inputAddressId = Integer.parseInt((String) params.get("addressId"));
         String inputUserName = (String) params.get("userName");
@@ -396,7 +456,7 @@ public class UserController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("devtemplate:user:list")
-    public R list(@RequestParam Map<String, Object> params) {
+    public R list(@RequestBody Map<String, Object> params) {
         PageUtils page = userService.queryPage(params);
 
         return R.ok().put("page", page);

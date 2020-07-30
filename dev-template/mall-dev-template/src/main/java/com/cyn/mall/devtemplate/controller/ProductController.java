@@ -77,13 +77,10 @@ public class ProductController {
      * @return
      */
     @RequestMapping(value = "/addCart", method = RequestMethod.POST, name = "新增购物车商品")
-    public RT putCart(@RequestParam Map<String, Object> params, HttpServletRequest httpRequest) {
+    public RT putCart(@RequestBody Map<String, Object> params, HttpServletRequest httpRequest) {
         RT rt = new RT();
-        Integer inputPrdId = Integer.parseInt((String) params.get("productId"));
-        Integer inputPrdNum = Integer.parseInt((String) params.get("productNum"));
-        BigDecimal inputPrdPrice = BigDecimal.valueOf(Long.parseLong((String) params.get("productPrice")));
-        String inputPrdName = (String) params.get("productName");
-        String inputPrdImg = (String) params.get("productImg");
+        Integer inputPrdId = (Integer) params.get("productId");
+        Integer inputPrdNum = (Integer) params.get("productNum") == null ? 1 : (Integer) params.get("productNum");
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
         if (userIdforReqCookies != null) {
             //查询当前用户购物车
@@ -114,12 +111,13 @@ public class ProductController {
                 queryWrapperExist.eq(userIdStr, userIdforReqCookies).eq("product_id", inputPrdId);
                 List<CartEntity> listExCart = cartService.list(queryWrapperExist);
                 if (listExCart.size() == 0) {
+                    ProductEntity productEntity = productService.getById(inputPrdId);
                     CartEntity cartEntity = new CartEntity();
                     cartEntity.setProductNum(inputPrdNum);
                     cartEntity.setProductId(inputPrdId);
-                    cartEntity.setProductImg(inputPrdImg);
-                    cartEntity.setProductName(inputPrdName);
-                    cartEntity.setProductPrice(inputPrdPrice);
+                    cartEntity.setProductImg(productEntity.getProductImageBig());
+                    cartEntity.setProductName(productEntity.getProductName());
+                    cartEntity.setProductPrice(productEntity.getSalePrice());
                     cartEntity.setUserId(userIdforReqCookies.intValue());
                     cartEntity.setChecked("0");
                     cartService.save(cartEntity);
@@ -130,12 +128,13 @@ public class ProductController {
                 return rt;
             } else {
                 CartEntity cartEntityAdd = new CartEntity();
+                ProductEntity productEntity = productService.getById(inputPrdId);
                 cartEntityAdd.setUserId(userIdforReqCookies.intValue());
                 cartEntityAdd.setProductId(inputPrdId);
                 cartEntityAdd.setProductNum(inputPrdNum);
-                cartEntityAdd.setProductPrice(inputPrdPrice);
-                cartEntityAdd.setProductName(inputPrdName);
-                cartEntityAdd.setProductImg(inputPrdImg);
+                cartEntityAdd.setProductImg(productEntity.getProductImageBig());
+                cartEntityAdd.setProductName(productEntity.getProductName());
+                cartEntityAdd.setProductPrice(productEntity.getSalePrice());
                 cartEntityAdd.setChecked("0");
                 boolean save = cartService.save(cartEntityAdd);
                 if (save) {
@@ -156,24 +155,25 @@ public class ProductController {
      * 全部商品
      * 分页\价格排序
      */
-    @RequestMapping(value = "/computer/{page}/{sort}/{priceGt}/{priceLte}", method = RequestMethod.GET)
-    public RT getPageProduct(@PathVariable("page") String page,
-                             @PathVariable("sort") int sort,
-                             @PathVariable("priceGt") int priceGt,
-                             @PathVariable("priceLte") int priceLte) {
+    @RequestMapping(value = "/computer", method = RequestMethod.GET)
+    public RT getPageProduct(@RequestParam Map<String, Object> params) {
+        Integer page = Integer.parseInt((String) params.get("page"));
+        String sort = (String) params.get("sort");
+        String priceGt = (String) params.get("priceGt");
+        String priceLte = (String) params.get("priceLte");
         //sort 1 升序 -1 降序
         //priceGt大于
         //priceLte小于
         RT rt = new RT();
         Map<String, Object> queryPageParams = new HashMap<>();
-        queryPageParams.put(Constant.PAGE, page);
+        queryPageParams.put(Constant.PAGE, String.valueOf(page));
         queryPageParams.put(Constant.LIMIT, pageSize);
         QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.ge("sale_price", priceGt);
         queryWrapper.le("sale_price", priceLte);
-        if (sort == 1) {
+        if ("1".equals(sort)) {
             queryWrapper.orderByAsc("sale_price");
-        } else if (sort == -1) {
+        } else if ("-1".equals(sort)) {
             queryWrapper.orderByDesc("sale_price");
         }
         PageUtils queryPage = productService.queryPage(queryPageParams, queryWrapper);
@@ -220,7 +220,7 @@ public class ProductController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("devtemplate:product:list")
-    public R list(@RequestParam Map<String, Object> params) {
+    public R list(@RequestBody Map<String, Object> params) {
         PageUtils page = productService.queryPage(params);
 
         return R.ok().put("page", page);

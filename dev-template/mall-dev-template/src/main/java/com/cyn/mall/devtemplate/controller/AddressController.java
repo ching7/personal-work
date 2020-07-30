@@ -36,7 +36,7 @@ public class AddressController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("devtemplate:address:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestBody Map<String, Object> params){
         PageUtils page = addressService.queryPage(params);
 
         return R.ok().put("page", page);

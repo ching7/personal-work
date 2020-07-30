@@ -36,7 +36,7 @@ public class OrderController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("devtemplate:order:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestBody Map<String, Object> params){
         PageUtils page = orderService.queryPage(params);
 
         return R.ok().put("page", page);

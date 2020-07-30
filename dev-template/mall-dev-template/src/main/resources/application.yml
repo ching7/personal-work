@@ -2,8 +2,8 @@ spring:
   datasource:
     username: root
     password: root
-    ## url: jdbc:mysql://127.0.0.1:3306/gulimall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    url: jdbc:mysql://10.211.55.4:3306/mall_template?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:3306/mall_template?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    ##url: jdbc:mysql://10.211.55.4:3306/mall_template?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     ## url: jdbc:mysql://10.211.55.4:3306/gulimall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.jdbc.Driver
 mybatis-plus:
@@ -24,5 +24,6 @@ interceptorconfig:
       - /api/users/login
       - /api/goods/productHome
       - /api/goods/productDet
+      - /api/goods/computer
       - /error
       - /user
