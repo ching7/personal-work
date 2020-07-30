@@ -22,7 +22,7 @@ const whiteList = ['/home', '/goods', '/login', '/goodsDetails']
 router.beforeEach(function (to, from, next) {
   userInfo().then(res => {
     // 没登录
-    if (res.status) {
+    if (res.status === '1') {
       // 白名单
       if (whiteList.indexOf(to.path) !== -1) {
         next()
@@ -30,10 +30,10 @@ router.beforeEach(function (to, from, next) {
         next('/login')
       }
     } else {
-      store.commit('RECORD_USERINFO', {info: res.result})
+      store.commit('RECORD_USERINFO', { info: res.result })
       //  跳转到
       if (to.path === '/login') {
-        next({path: '/'})
+        next({ path: '/' })
       }
       next()
     }

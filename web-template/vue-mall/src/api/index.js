@@ -1,6 +1,6 @@
 import http from './public'
 const baseUrl = '/api'
-// 登陆
+// 登陆##
 export const userLogin = (params) => {
   return http.fetchPost(`${baseUrl}/users/login`, params)
 }
@@ -8,11 +8,11 @@ export const userLogin = (params) => {
 export const loginOut = (params) => {
   return http.fetchPost(`${baseUrl}/users/loginOut`, params)
 }
-// 用户信息
+// 用户信息 ##
 export const userInfo = (params) => {
   return http.fetchPost(`${baseUrl}/users/userInfo`, params)
 }
-// 注册账号
+// 注册账号 #
 export const register = (params) => {
   return http.fetchPost(`${baseUrl}/users/register`, params)
 }
@@ -24,7 +24,7 @@ export const upload = (params) => {
 export const updateheadimage = (params) => {
   return http.fetchPost(`${baseUrl}/users/updateheadimage`, params)
 }
-// 首页接口
+// 首页接口##
 export const productHome = (params) => {
   return http.fetchGet(`${baseUrl}/goods/productHome`, params)
 }
