@@ -6,7 +6,8 @@ import java.util.*;
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.cyn.common.utils.Constant;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cyn.mall.devtemplate.bean.HomeFloor;
 import com.cyn.mall.devtemplate.bean.RT;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
@@ -161,27 +162,31 @@ public class ProductController {
         String sort = (String) params.get("sort");
         String priceGt = (String) params.get("priceGt");
         String priceLte = (String) params.get("priceLte");
+        String descStr = "-1";
+        String ascStr = "1";
+
         //sort 1 升序 -1 降序
         //priceGt大于
         //priceLte小于
         RT rt = new RT();
-        Map<String, Object> queryPageParams = new HashMap<>();
-        queryPageParams.put(Constant.PAGE, String.valueOf(page));
-        queryPageParams.put(Constant.LIMIT, pageSize);
         QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.ge("sale_price", priceGt);
         queryWrapper.le("sale_price", priceLte);
-        if ("1".equals(sort)) {
+        if (ascStr.equals(sort)) {
             queryWrapper.orderByAsc("sale_price");
-        } else if ("-1".equals(sort)) {
+        } else if (descStr.equals(sort)) {
             queryWrapper.orderByDesc("sale_price");
         }
-        PageUtils queryPage = productService.queryPage(queryPageParams, queryWrapper);
+        IPage<ProductEntity> iPage = new Page<ProductEntity>(page.longValue(), Long.parseLong(pageSize));
+        IPage<ProductEntity> productEntityIPage = productService.page(iPage, queryWrapper);
+
         rt.setMsg("suc");
         rt.setStatus("0");
         Map<String, Object> pageRes = new HashMap<>();
-        pageRes.put("count", queryPage.getTotalCount());
-        pageRes.put("data", queryPage.getList());
+
+        pageRes.put("data", productEntityIPage.getRecords());
+        pageRes.put("count", productEntityIPage.getRecords().size());
+
         rt.setResult(pageRes);
         return rt;
 
