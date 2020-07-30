@@ -348,7 +348,7 @@ public class UserController {
                 rt.setMsg("suc");
                 rt.setResult(userEntity);
                 // todo 前端判断是否登陆存在问题
-                rt.setStatus("1");
+                rt.setStatus("0");
             } else {
                 rt.setMsg("未登录");
                 rt.setStatus("1");

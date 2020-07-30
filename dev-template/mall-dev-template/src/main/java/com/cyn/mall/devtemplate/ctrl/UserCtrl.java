@@ -38,10 +38,8 @@ public class UserCtrl {
                 } else {
                     throw new RRException("用户不存在");
                 }
-            } else {
-                throw new RRException("未登录");
             }
         }
-        return null;
+        throw new RRException("未登录");
     }
 }
