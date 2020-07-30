@@ -19,7 +19,7 @@
                </path>
              </svg>
              </span>
-              <p>收货人: {{item.userName}} {{item.isDefault ? '(默认地址)' : ''}}</p>
+              <p>收货人: {{item.userName}} {{item.isDefault==='1' ? '(默认地址)' : ''}}</p>
               <p class="street-name ellipsis">收货地址: {{item.streetName}}</p>
               <p>手机号码: {{item.tel}}</p>
               <div class="operation-section">
@@ -187,6 +187,7 @@
           let data = res.result
           if (data.length) {
             this.addList = data
+            debugger
             this.addressId = data[0].addressId || '1'
           } else {
             this.addList = []

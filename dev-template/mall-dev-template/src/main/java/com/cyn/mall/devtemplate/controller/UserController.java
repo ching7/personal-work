@@ -238,7 +238,7 @@ public class UserController {
     @RequestMapping(value = "/addressDel", method = RequestMethod.POST, name = "删除收获地址删除收获地址")
     public RT delAddressList(HttpServletRequest httpServletRequest, @RequestBody Map<String, Object> params) {
         RT rt = new RT();
-        Integer inputAddressId = Integer.parseInt((String) params.get("addressId"));
+        Integer inputAddressId = (Integer) params.get("addressId");
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
         if (userIdforReqCookies != null && inputAddressId > 0) {
             boolean del = addressService.removeById(inputAddressId);
@@ -271,8 +271,11 @@ public class UserController {
         String inputUserName = (String) params.get("userName");
         String inputTel = (String) params.get("tel");
         String inputStreetName = (String) params.get("streetName");
-        String inputIsDefault = (String) params.get("isDefault");
+        String inputIsDefault = !((boolean) params.get("isDefault")) ? "0" : "1";
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
+        if ((boolean) params.get("isDefault")) {
+            userCtrl.putAddressDefault(userIdforReqCookies.intValue());
+        }
         if (userIdforReqCookies != null && !inputUserName.trim().isEmpty() && !inputStreetName.trim().isEmpty()) {
             AddressEntity addressEntity = new AddressEntity();
             addressEntity.setUserId(Long.toString(userIdforReqCookies));
@@ -284,17 +287,15 @@ public class UserController {
             if (add) {
                 rt.setMsg("suc");
                 rt.setStatus("0");
-                rt.setResult("");
             } else {
                 rt.setMsg("新增失败");
                 rt.setStatus("1");
-                rt.setResult("");
             }
         } else {
             rt.setMsg("未登录");
             rt.setStatus("1");
-            rt.setResult("");
         }
+        rt.setResult("");
         return rt;
     }
 
@@ -307,19 +308,24 @@ public class UserController {
     @RequestMapping(value = "/addressUpdate", method = RequestMethod.POST, name = "修改收获地址")
     public RT putAddressList(HttpServletRequest httpServletRequest, @RequestBody Map<String, Object> params) {
         RT rt = new RT();
-        Integer inputAddressId = Integer.parseInt((String) params.get("addressId"));
+        Integer inputAddressId = (Integer) params.get("addressId");
         String inputUserName = (String) params.get("userName");
         String inputTel = (String) params.get("tel");
         String inputStreetName = (String) params.get("streetName");
-        String inputIsDefault = (String) params.get("isDefault");
+        String inputIsDefault = !((boolean) params.get("isDefault")) ? "0" : "1";
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
+        if ((boolean) params.get("isDefault")) {
+            userCtrl.putAddressDefault(userIdforReqCookies.intValue());
+        }
         if (userIdforReqCookies != null && inputAddressId > 0 && !inputUserName.trim().isEmpty() && !inputStreetName.trim().isEmpty()) {
             UpdateWrapper<AddressEntity> updateWrapper = new UpdateWrapper<>();
             updateWrapper.eq("user_id", userIdforReqCookies).eq("address_id", inputAddressId);
             AddressEntity addressEntity = new AddressEntity();
             addressEntity.setStreetName(inputStreetName);
-            addressEntity.setTel(inputTel);
+            addressEntity.setUserName(inputUserName);
             addressEntity.setIsDefault(inputIsDefault);
+
+            addressEntity.setTel(inputTel);
             boolean update = addressService.update(addressEntity, updateWrapper);
             if (update) {
                 rt.setMsg("suc");

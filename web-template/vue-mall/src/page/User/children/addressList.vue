@@ -11,8 +11,8 @@
             <div class="defalut">
               <a @click="changeDef(item)"
                  href="javascript:;"
-                 v-text="item.isDefault?'( 默认地址 )':'设为默认'"
-                 :class="{'defalut-address':item.isDefault}"></a>
+                 v-text="item.isDefault==='1'?'( 默认地址 )':'设为默认'"
+                 :class="{'defalut-address':item.isDefault==='1'}"></a>
             </div>
             <div class="operation">
               <a href="javascript:;" @click="update(item)">修改</a>
@@ -41,8 +41,8 @@
         <div>
           <input type="text" placeholder="收货地址" v-model="msg.streetName">
         </div>
-        <div>
-          <span><input type="checkbox" v-model="msg.isDefault" style="margin-right: 5px;">设为默认</span>
+                <div>
+          <span><input type="checkbox" v-model="msg.isDefault==='1'" style="margin-right: 5px;">设为默认</span>
         </div>
         <y-button text='保存'
                   class="btn"
@@ -102,7 +102,8 @@
         })
       },
       changeDef (item) {
-        if (!item.isDefault) {
+        debugger
+        if (item.isDefault) {
           item.isDefault = true
           this._addressUpdate(item)
         }
