@@ -271,9 +271,9 @@ public class UserController {
         String inputUserName = (String) params.get("userName");
         String inputTel = (String) params.get("tel");
         String inputStreetName = (String) params.get("streetName");
-        String inputIsDefault = !((boolean) params.get("isDefault")) ? "0" : "1";
+        Integer inputIsDefault = (Integer) params.get("isDefault");
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
-        if ((boolean) params.get("isDefault")) {
+        if (inputIsDefault == 1) {
             userCtrl.putAddressDefault(userIdforReqCookies.intValue());
         }
         if (userIdforReqCookies != null && !inputUserName.trim().isEmpty() && !inputStreetName.trim().isEmpty()) {
@@ -312,9 +312,9 @@ public class UserController {
         String inputUserName = (String) params.get("userName");
         String inputTel = (String) params.get("tel");
         String inputStreetName = (String) params.get("streetName");
-        String inputIsDefault = !((boolean) params.get("isDefault")) ? "0" : "1";
+        Integer inputIsDefault = (Integer) params.get("isDefault");
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
-        if ((boolean) params.get("isDefault")) {
+        if (inputIsDefault == 1) {
             userCtrl.putAddressDefault(userIdforReqCookies.intValue());
         }
         if (userIdforReqCookies != null && inputAddressId > 0 && !inputUserName.trim().isEmpty() && !inputStreetName.trim().isEmpty()) {

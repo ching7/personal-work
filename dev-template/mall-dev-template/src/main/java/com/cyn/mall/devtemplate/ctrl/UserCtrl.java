@@ -60,14 +60,14 @@ public class UserCtrl {
         QueryWrapper<AddressEntity> queryWrapperOff = new QueryWrapper<>();
         queryWrapperOff.eq("user_id", userId);
         AddressEntity addressEntityOff = new AddressEntity();
-        addressEntityOff.setIsDefault("0");
+        addressEntityOff.setIsDefault(0);
         // 先全部变成"0"
         boolean updateOff = addressService.update(queryWrapperOff);
         QueryWrapper<AddressEntity> queryWrapperOn = new QueryWrapper<>();
 
         queryWrapperOn.eq("user_id", userId).eq("product_id", productId);
         AddressEntity addressEntityOn = new AddressEntity();
-        addressEntityOn.setIsDefault("1");
+        addressEntityOn.setIsDefault(1);
         // 指定地址设为默认
         boolean updateOn = addressService.update(addressEntityOn,queryWrapperOff);
         return updateOff && updateOn;
@@ -83,7 +83,7 @@ public class UserCtrl {
         QueryWrapper<AddressEntity> queryWrapperOff = new QueryWrapper<>();
         queryWrapperOff.eq("user_id", userId);
         AddressEntity addressEntityOff = new AddressEntity();
-        addressEntityOff.setIsDefault("0");
+        addressEntityOff.setIsDefault(0);
         // 先全部变成"0"
         boolean updateOff = addressService.update(addressEntityOff,queryWrapperOff);
         QueryWrapper<AddressEntity> queryWrapperOn = new QueryWrapper<>();
