@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 30/07/2020 20:32:55
+ Date: 31/07/2020 09:45:43
 */
 
 SET NAMES utf8mb4;
@@ -27,19 +27,19 @@ CREATE TABLE `sys_address`  (
   `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户编号',
   `street_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '详细地址',
   `tel` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '电话号码',
-  `is_default` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否为默认',
+  `is_default` int(1) NULL DEFAULT NULL COMMENT '是否为默认',
   PRIMARY KEY (`address_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_address
 -- ----------------------------
-INSERT INTO `sys_address` VALUES (1, 'admin', '1', '江南大道3588', '13811111111', '1');
-INSERT INTO `sys_address` VALUES (2, 'admin', '1', '3588恒生电子', '13811111111', '0');
-INSERT INTO `sys_address` VALUES (3, 'test', '2', '南湖春城', '123111111111', '1');
-INSERT INTO `sys_address` VALUES (5, 'test', '2', '江南大8888道3588123123123', '13222222222', '1');
-INSERT INTO `sys_address` VALUES (6, 'test', '2', '济南大学', '13222222222', '1');
-INSERT INTO `sys_address` VALUES (7, 'test', '2', '济南大学', '13222222222', '1');
+INSERT INTO `sys_address` VALUES (1, 'admin', '1', '江南大道3588', '138', 0);
+INSERT INTO `sys_address` VALUES (2, 'admin', '1', '3588恒生电子', '13812222', 0);
+INSERT INTO `sys_address` VALUES (3, 'test', '2', '南湖春城', '123111111111', 1);
+INSERT INTO `sys_address` VALUES (5, 'test', '2', '江南大8888道3588123123123', '13222222222', 1);
+INSERT INTO `sys_address` VALUES (6, 'test', '2', '济南大学', '13222222222', 1);
+INSERT INTO `sys_address` VALUES (7, 'test', '2', '济南大学', '13222222222', 1);
 
 -- ----------------------------
 -- Table structure for sys_cart
@@ -55,7 +55,7 @@ CREATE TABLE `sys_cart`  (
   `product_num` int(11) NULL DEFAULT NULL COMMENT '产品数量',
   `product_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '产品价格',
   PRIMARY KEY (`cart_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_cart
@@ -98,7 +98,7 @@ CREATE TABLE `sys_product`  (
   `limit_num` int(11) NULL DEFAULT NULL COMMENT '限制购买数量',
   PRIMARY KEY (`product_id`) USING BTREE,
   UNIQUE INDEX `uk_product`(`product_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_product
@@ -120,7 +120,7 @@ CREATE TABLE `sys_user`  (
   `address_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '收获地址',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `uk_user`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
