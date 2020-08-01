@@ -1,6 +1,8 @@
 package com.cyn.mall.devtemplate.controller;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.*;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -8,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.cyn.common.utils.DateUtils;
+import com.cyn.common.utils.SerialUtils;
 import com.cyn.mall.devtemplate.bean.RT;
 import com.cyn.mall.devtemplate.bean.RTC;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
@@ -53,6 +56,33 @@ public class UserController {
     @Autowired
     private OrderService orderService;
 
+
+    /**
+     * 购物车产品全选
+     *
+     * @return
+     */
+    @RequestMapping(value = "/editCheckAll", method = RequestMethod.POST, name = "购物车产品全选")
+    public RT putEditCheckAll(@RequestBody Map<String, Object> params, HttpServletRequest httpRequest) {
+        RT rt = new RT();
+        boolean checkAll = (boolean) params.get("checkAll");
+        if (checkAll) {
+            Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
+            QueryWrapper<CartEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("user_id", userIdforReqCookies);
+            CartEntity cartEntity = new CartEntity();
+            cartEntity.setChecked("1");
+            boolean update = cartService.update(cartEntity, queryWrapper);
+            rt.setResult("suc");
+            rt.setStatus("0");
+            rt.setMsg("修改成功");
+        } else {
+            rt.setResult("err");
+            rt.setStatus("1");
+            rt.setMsg("修改失败");
+        }
+        return rt;
+    }
 
     /**
      * 修改购物车产品数量
@@ -181,7 +211,7 @@ public class UserController {
         RT rt = new RT();
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
         QueryWrapper<OrderEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", userIdforReqCookies);
+        queryWrapper.eq("user_id", userIdforReqCookies).orderByDesc("create_date");
         List<OrderEntity> orderEntityList = orderService.list(queryWrapper);
         rt.setResult(orderEntityList);
         rt.setStatus("0");
@@ -197,10 +227,8 @@ public class UserController {
     @RequestMapping(value = "/payMent", method = RequestMethod.POST, name = "支付")
     public RT postPayMent(@RequestBody Map<String, Object> params, HttpServletRequest httpRequest) {
         RT rt = new RT();
-        Long inputAddressId = Long.parseLong((String) params.get("addressId"));
+        long inputAddressId = Long.parseLong((String) params.get("addressId"));
         long inputOrderTotal = Long.parseLong((String) params.get("orderTotal"));
-        Integer inputProductId = Integer.parseInt((String) params.get("productId"));
-        Integer inputProductNum = Integer.parseInt((String) params.get("productNum"));
         //addressId, orderTotal, productId, productNum
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpRequest);
         QueryWrapper<AddressEntity> addressEntityQueryWrapper = new QueryWrapper<>();
@@ -209,7 +237,8 @@ public class UserController {
         List<AddressEntity> addressEntityList = addressService.list(addressEntityQueryWrapper);
         QueryWrapper<CartEntity> cartEntityQueryWrapper = new QueryWrapper<>();
         cartEntityQueryWrapper.eq("user_id", userIdforReqCookies);
-        // 当前用户的购物车列表
+        cartEntityQueryWrapper.eq("checked", "1");
+        // 当前用户的购物车列表 / 且已勾选的checked=1
         List<CartEntity> cartEntityList = cartService.list(cartEntityQueryWrapper);
 
         //生成订单
@@ -217,13 +246,24 @@ public class UserController {
             if (addressEntity.getAddressId().equals(inputAddressId)) {
                 OrderEntity orderEntity = new OrderEntity();
                 orderEntity.setUserId(userIdforReqCookies.intValue());
-                orderEntity.setAddressId(inputAddressId.intValue());
-                orderEntity.setOrderGoods(JSONObject.toJSONString(cartEntityList));
+                orderEntity.setAddressId(Math.toIntExact(inputAddressId));
+                orderEntity.setGoodsList(JSONObject.toJSONString(cartEntityList));
                 orderEntity.setOrderTotal(BigDecimal.valueOf(inputOrderTotal));
+                orderEntity.setCreateDate(DateUtils.getCurrDate() + DateUtils.getCurrTime());
+                orderEntity.setOrderStatus("1"); //1 已支付
                 boolean save = orderService.save(orderEntity);
-                rt.setMsg("suc");
-                rt.setStatus("0");
-                rt.setResult("");
+                if (save) {
+                    // 支付成功删除购物商品
+                    // 已勾选的checked=1
+                    cartService.remove(cartEntityQueryWrapper);
+                    rt.setMsg("suc");
+                    rt.setStatus("0");
+                    rt.setResult("");
+                } else {
+                    rt.setMsg("err");
+                    rt.setStatus("1");
+                    rt.setResult("");
+                }
             }
         });
         return rt;
@@ -344,7 +384,33 @@ public class UserController {
     }
 
     /**
-     * 查询收获地址
+     * 查询单个收获地址
+     *
+     * @param httpServletRequest
+     * @return
+     */
+    @RequestMapping(value = "/addressListById", method = RequestMethod.POST, name = "查询单个收获地址")
+    public RT getAddressListByID(HttpServletRequest httpServletRequest, @RequestBody Map<String, Object> params) {
+        RT rt = new RT();
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
+        Integer inputAddressId = Integer.parseInt((String) params.get("addressId"));
+        QueryWrapper<AddressEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userIdforReqCookies).eq("address_id", inputAddressId);
+        List<AddressEntity> addressEntityList = addressService.list(queryWrapper);
+        if (addressEntityList.size() > 0) {
+            rt.setMsg("suc");
+            rt.setStatus("0");
+            rt.setResult(addressEntityList);
+        } else {
+            rt.setMsg("err");
+            rt.setStatus("0");
+            rt.setResult(" ");
+        }
+        return rt;
+    }
+
+    /**
+     * 查询所有收获地址
      *
      * @param httpServletRequest
      * @return
@@ -452,6 +518,31 @@ public class UserController {
             rt.setStatus("0");
         } else {
             rt.setMsg("账号或者密码错误");
+            rt.setStatus("1");
+        }
+        return rt;
+    }
+
+    /**
+     * 登出
+     *
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/loginOut", method = RequestMethod.POST)
+    public RT loginOut(@RequestBody Map<String, Object> params, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        RT rt = new RT();
+        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(httpServletRequest);
+        if (userIdforReqCookies != null) {
+            Cookie cookie = new Cookie("userId", null);
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            httpServletResponse.addCookie(cookie);
+            rt.setMsg("登出成功");
+            rt.setResult("");
+            rt.setStatus("0");
+        } else {
+            rt.setMsg("未登录");
             rt.setStatus("1");
         }
         return rt;

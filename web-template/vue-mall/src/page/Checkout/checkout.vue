@@ -172,7 +172,6 @@ export default {
         let data = res.result
         if (data.length) {
           this.addList = data
-          debugger
           this.addressId = data[0].addressId || '1'
         } else {
           this.addList = []

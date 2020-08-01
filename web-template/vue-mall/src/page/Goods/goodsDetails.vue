@@ -78,9 +78,7 @@ export default {
       productDet({ productId }).then(res => {
         let result = res.result
         this.product = result
-        debugger
         this.productMsg = result.productMsg.split(',')
-        console.log(this.productMsg, '=============')
         this.small = result.productMsg.split(',')
         this.big = this.small[0]
       })

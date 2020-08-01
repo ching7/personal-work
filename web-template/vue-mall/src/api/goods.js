@@ -36,6 +36,12 @@ export const cartDel = (params) => {
 export const addressList = (params) => {
   return http.fetchPost(`${baseUrl}/users/addressList`, params)
 }
+
+// 获取单个用户地址 ##
+export const addressListById = (params) => {
+  return http.fetchPost(`${baseUrl}/users/addressListById`, params)
+}
+
 // 修改收货地址 ##
 export const addressUpdate = (params) => {
   return http.fetchPost(`${baseUrl}/users/addressUpdate`, params)

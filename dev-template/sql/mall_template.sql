@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 31/07/2020 09:45:43
+ Date: 01/08/2020 16:13:48
 */
 
 SET NAMES utf8mb4;
@@ -29,17 +29,19 @@ CREATE TABLE `sys_address`  (
   `tel` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '电话号码',
   `is_default` int(1) NULL DEFAULT NULL COMMENT '是否为默认',
   PRIMARY KEY (`address_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_address
 -- ----------------------------
-INSERT INTO `sys_address` VALUES (1, 'admin', '1', '江南大道3588', '138', 0);
+INSERT INTO `sys_address` VALUES (1, 'admin', '1', '江南大道3588', '1385555', 0);
 INSERT INTO `sys_address` VALUES (2, 'admin', '1', '3588恒生电子', '13812222', 0);
 INSERT INTO `sys_address` VALUES (3, 'test', '2', '南湖春城', '123111111111', 1);
 INSERT INTO `sys_address` VALUES (5, 'test', '2', '江南大8888道3588123123123', '13222222222', 1);
 INSERT INTO `sys_address` VALUES (6, 'test', '2', '济南大学', '13222222222', 1);
 INSERT INTO `sys_address` VALUES (7, 'test', '2', '济南大学', '13222222222', 1);
+INSERT INTO `sys_address` VALUES (11, '1', '4', '1', '1', 0);
+INSERT INTO `sys_address` VALUES (12, '2', '4', '2', '2', 1);
 
 -- ----------------------------
 -- Table structure for sys_cart
@@ -55,32 +57,34 @@ CREATE TABLE `sys_cart`  (
   `product_num` int(11) NULL DEFAULT NULL COMMENT '产品数量',
   `product_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '产品价格',
   PRIMARY KEY (`cart_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_cart
 -- ----------------------------
-INSERT INTO `sys_cart` VALUES (3, 2, 2, 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', '《深泽直人》', '0', 20, 199.00);
-INSERT INTO `sys_cart` VALUES (7, 1, 1, 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', '《深泽直人》', '0', 3, 199.00);
+INSERT INTO `sys_cart` VALUES (11, 1, 1, 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', '《深泽直人》', '0', 1, 199.00);
+INSERT INTO `sys_cart` VALUES (12, 2, 1, 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', '《深泽直人》', '0', 1, 199.00);
 
 -- ----------------------------
 -- Table structure for sys_order
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_order`;
 CREATE TABLE `sys_order`  (
-  `order_id` bigint(20) NOT NULL COMMENT '订单编号',
+  `order_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单编号',
   `user_id` int(11) NULL DEFAULT NULL COMMENT '用户编号',
-  `order_goods` varchar(16000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '订单商品',
+  `goods_list` varchar(8000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '订单商品',
   `order_total` decimal(10, 0) NULL DEFAULT NULL COMMENT '订单总价',
   `address_id` int(11) NULL DEFAULT NULL COMMENT '收货地址',
   `order_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '订单状态',
-  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `create_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`order_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_order
 -- ----------------------------
+INSERT INTO `sys_order` VALUES (9, 1, '[{\"cartId\":9,\"checked\":\"1\",\"productId\":1,\"productImg\":\"http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg\",\"productName\":\"《深泽直人》\",\"productNum\":5,\"productPrice\":199.00,\"userId\":1}]', 995, 1, '1', '20200801154604');
+INSERT INTO `sys_order` VALUES (10, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 49, 1, '1', '20200801160115');
 
 -- ----------------------------
 -- Table structure for sys_product
@@ -128,5 +132,6 @@ CREATE TABLE `sys_user`  (
 INSERT INTO `sys_user` VALUES (1, '张三', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200730105134.png', 'admin', 'admin', NULL, NULL);
 INSERT INTO `sys_user` VALUES (2, '李四', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200730105134.png', 'test', 'test', NULL, NULL);
 INSERT INTO `sys_user` VALUES (3, '游客20200729190028', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'test123', 'test', NULL, NULL);
+INSERT INTO `sys_user` VALUES (4, '游客20200801161202', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 't', 't', NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

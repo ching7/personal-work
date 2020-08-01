@@ -32,7 +32,7 @@ public class OrderEntity implements Serializable {
 	/**
 	 * 订单商品
 	 */
-	private String orderGoods;
+	private String goodsList;
 	/**
 	 * 订单总价
 	 */
@@ -48,6 +48,6 @@ public class OrderEntity implements Serializable {
 	/**
 	 * 创建时间
 	 */
-	private Date createDate;
+	private String createDate;
 
 }

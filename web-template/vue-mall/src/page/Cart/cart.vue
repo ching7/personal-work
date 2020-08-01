@@ -189,7 +189,7 @@ export default {
       })
     },
     checkout () {
-      this.$router.push({ path: 'checkout' })
+      this.$router.push({ path: '/checkout' })
     }
   },
   mounted () {

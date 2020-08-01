@@ -98,7 +98,6 @@ export default {
       })
     },
     changeDef (item) {
-      debugger
       if (item.isDefault === 0) {
         item.isDefault = 1
         this._addressUpdate(item)
