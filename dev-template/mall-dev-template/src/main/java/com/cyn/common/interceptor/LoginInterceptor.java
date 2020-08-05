@@ -41,6 +41,13 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (includeUrl.contains(requestUrl)) {
             return true;
         }
+
+        // 后台
+        if (requestUrl.contains("vue-admin-template") || requestUrl.contains("webjars")) {
+            return true;
+        }
+
+        // 前台商城
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(request);
         if (userIdforReqCookies == null) {
             throw new Exception("未登陆");

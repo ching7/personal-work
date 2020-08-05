@@ -26,7 +26,30 @@ public class UserCtrl {
     AddressService addressService;
 
     /**
-     * 从cookies获取用户id
+     * 从cookies获取用户id-商城后台管理
+     *
+     * @param httpServletRequest
+     * @return
+     */
+    public Long getAdminTokenforReqCookies(HttpServletRequest httpServletRequest) {
+        Cookie[] cookies = httpServletRequest.getCookies();
+        for (Cookie cookie : cookies) {
+            if ("userId".equals(cookie.getName())) {
+                Integer inputUserId = Integer.parseInt(cookie.getValue());
+                // 查询当前用户是否存在
+                UserEntity byId = userService.getById(inputUserId);
+                if (byId != null) {
+                    return byId.getUserId();
+                } else {
+                    throw new RRException("用户不存在");
+                }
+            }
+        }
+        throw new RRException("未登录");
+    }
+
+    /**
+     * 从cookies获取用户id-商城页面
      *
      * @param httpServletRequest
      * @return
@@ -69,7 +92,7 @@ public class UserCtrl {
         AddressEntity addressEntityOn = new AddressEntity();
         addressEntityOn.setIsDefault(1);
         // 指定地址设为默认
-        boolean updateOn = addressService.update(addressEntityOn,queryWrapperOff);
+        boolean updateOn = addressService.update(addressEntityOn, queryWrapperOff);
         return updateOff && updateOn;
     }
 
@@ -85,7 +108,7 @@ public class UserCtrl {
         AddressEntity addressEntityOff = new AddressEntity();
         addressEntityOff.setIsDefault(0);
         // 先全部变成"0"
-        boolean updateOff = addressService.update(addressEntityOff,queryWrapperOff);
+        boolean updateOff = addressService.update(addressEntityOff, queryWrapperOff);
         QueryWrapper<AddressEntity> queryWrapperOn = new QueryWrapper<>();
         return updateOff;
     }
