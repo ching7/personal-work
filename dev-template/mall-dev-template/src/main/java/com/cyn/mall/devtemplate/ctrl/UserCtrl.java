@@ -3,8 +3,10 @@ package com.cyn.mall.devtemplate.ctrl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cyn.common.exception.RRException;
 import com.cyn.mall.devtemplate.entity.AddressEntity;
+import com.cyn.mall.devtemplate.entity.AdminEntity;
 import com.cyn.mall.devtemplate.entity.UserEntity;
 import com.cyn.mall.devtemplate.service.AddressService;
+import com.cyn.mall.devtemplate.service.AdminService;
 import com.cyn.mall.devtemplate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class UserCtrl {
     private UserService userService;
 
     @Autowired
+    private AdminService adminService;
+
+    @Autowired
     AddressService addressService;
 
     /**
@@ -31,15 +36,15 @@ public class UserCtrl {
      * @param httpServletRequest
      * @return
      */
-    public Long getAdminTokenforReqCookies(HttpServletRequest httpServletRequest) {
+    public Integer getAdminTokenforReqCookies(HttpServletRequest httpServletRequest) {
         Cookie[] cookies = httpServletRequest.getCookies();
         for (Cookie cookie : cookies) {
-            if ("userId".equals(cookie.getName())) {
-                Integer inputUserId = Integer.parseInt(cookie.getValue());
+            if ("vue_admin_template_token".equals(cookie.getName())) {
+                Integer adminId = Integer.parseInt(cookie.getValue());
                 // 查询当前用户是否存在
-                UserEntity byId = userService.getById(inputUserId);
-                if (byId != null) {
-                    return byId.getUserId();
+                AdminEntity adminEntity = adminService.getById(adminId);
+                if (adminEntity != null) {
+                    return adminEntity.getAdminId();
                 } else {
                     throw new RRException("用户不存在");
                 }

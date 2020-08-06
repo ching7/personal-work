@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 05/08/2020 16:01:38
+ Date: 06/08/2020 19:44:58
 */
 
 SET NAMES utf8mb4;
@@ -55,12 +55,28 @@ CREATE TABLE `sys_admin`  (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`admin_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_admin
 -- ----------------------------
 INSERT INTO `sys_admin` VALUES (1, 'admin', '123456', '1', '超级管理员', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200730105134.png');
+
+-- ----------------------------
+-- Table structure for sys_arg
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_arg`;
+CREATE TABLE `sys_arg`  (
+  `sys_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `sys_user_count` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `sys_
+description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `init_date` datetime(0) NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_arg
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_cart
@@ -102,8 +118,12 @@ CREATE TABLE `sys_order`  (
 -- ----------------------------
 -- Records of sys_order
 -- ----------------------------
-INSERT INTO `sys_order` VALUES (9, 1, '[{\"cartId\":9,\"checked\":\"1\",\"productId\":1,\"productImg\":\"http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg\",\"productName\":\"《深泽直人》\",\"productNum\":5,\"productPrice\":199.00,\"userId\":1}]', 995, 1, '1', '20200801154604');
-INSERT INTO `sys_order` VALUES (10, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 49, 1, '1', '20200801160115');
+INSERT INTO `sys_order` VALUES (9, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 995, 1, '1', '20200801154604');
+INSERT INTO `sys_order` VALUES (10, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 49000, 1, '1', '20200801160115');
+INSERT INTO `sys_order` VALUES (11, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 49000, 1, '1', '20200801160115');
+INSERT INTO `sys_order` VALUES (12, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 49000, 1, '1', '20200801160115');
+INSERT INTO `sys_order` VALUES (13, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 49000, 1, '1', '20200801160115');
+INSERT INTO `sys_order` VALUES (14, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 995, 1, '1', '20200801154604');
 
 -- ----------------------------
 -- Table structure for sys_product

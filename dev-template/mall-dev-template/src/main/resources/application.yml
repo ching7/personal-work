@@ -27,5 +27,5 @@ interceptorconfig:
       - /api/goods/computer
       - /error
       - /user
-      - /vue-admin-template/user/login
-      - /swagger-ui.html
+      - /api/admin/login
+      - /api/admin/logout

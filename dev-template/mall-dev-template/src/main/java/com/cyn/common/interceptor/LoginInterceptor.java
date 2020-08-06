@@ -27,6 +27,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Autowired
     UserCtrl userCtrl;
 
+
     /**
      * 不拦截的请求
      */
@@ -42,11 +43,15 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        // 后台
-        if (requestUrl.contains("vue-admin-template") || requestUrl.contains("webjars")) {
+        // 后台-swagger
+        if (requestUrl.contains("/api/admin") || requestUrl.contains("webjars")) {
             return true;
         }
-
+        // 后台商城管理
+        Integer adminTokenforReqCookies = userCtrl.getAdminTokenforReqCookies(request);
+        if (adminTokenforReqCookies == null) {
+            throw new Exception("未登陆");
+        }
         // 前台商城
         Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(request);
         if (userIdforReqCookies == null) {
