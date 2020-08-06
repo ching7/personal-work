@@ -1,19 +1,19 @@
 <template>
   <el-table :data="list" style="width: 100%;padding-top: 15px;">
-    <el-table-column label="Order_No" min-width="200">
+    <el-table-column label="订单号" min-width="200">
       <template slot-scope="scope">
-        {{ scope.row.order_no | orderNoFilter }}
+        {{ scope.row.orderId | orderNoFilter }}
       </template>
     </el-table-column>
-    <el-table-column label="Price" width="195" align="center">
+    <el-table-column label="订单总价" width="195" align="center">
       <template slot-scope="scope">
-        ¥{{ scope.row.price | toThousandFilter }}
+        ¥{{ scope.row.orderTotal | toThousandFilter }}
       </template>
     </el-table-column>
-    <el-table-column label="Status" width="100" align="center">
+    <el-table-column label="订单状态" width="100" align="center">
       <template slot-scope="{row}">
-        <el-tag :type="row.status | statusFilter">
-          {{ row.status }}
+        <el-tag :type="row.orderStatus | statusFilter">
+          {{ row.orderStatus }}
         </el-tag>
       </template>
     </el-table-column>
@@ -21,32 +21,36 @@
 </template>
 
 <script>
-import { transactionList } from '@/api/remote-search'
+import { getOrderAll } from '@/api/order'
 
 export default {
   filters: {
-    statusFilter(status) {
+    statusFilter (status) {
       const statusMap = {
-        success: 'success',
-        pending: 'danger'
+        '1': 'danger',
+        '2': 'success'
       }
       return statusMap[status]
     },
-    orderNoFilter(str) {
-      return str.substring(0, 30)
+    orderNoFilter (str) {
+      return str.toString().substring(0, 30)
+    },
+    toThousandFilter (num) {
+      return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
     }
   },
-  data() {
+  data () {
     return {
       list: null
     }
   },
-  created() {
+  created () {
     this.fetchData()
   },
   methods: {
-    fetchData() {
-      transactionList().then(response => {
+    fetchData () {
+      debugger
+      getOrderAll().then(response => {
         this.list = response.data.items.slice(0, 8)
       })
     }

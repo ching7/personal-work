@@ -20,20 +20,20 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '400px'
     }
   },
-  data() {
+  data () {
     return {
       chart: null
     }
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       this.initChart()
     })
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (!this.chart) {
       return
     }
@@ -41,7 +41,7 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart() {
+    initChart () {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
@@ -52,21 +52,22 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: ['新鲜水果', '蔬菜蛋品', '海鲜水产', '精选肉类', '冷冻素食', '地方特色']
         },
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '产品数量',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: 320, name: '新鲜水果' },
+              { value: 240, name: '蔬菜蛋品' },
+              { value: 149, name: '海鲜水产' },
+              { value: 100, name: '精选肉类' },
+              { value: 59, name: '冷冻素食' },
+              { value: 20, name: '地方特色' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600

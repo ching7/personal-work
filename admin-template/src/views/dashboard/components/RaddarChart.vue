@@ -22,20 +22,20 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '400px'
     }
   },
-  data() {
+  data () {
     return {
       chart: null
     }
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       this.initChart()
     })
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (!this.chart) {
       return
     }
@@ -43,7 +43,7 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart() {
+    initChart () {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
@@ -68,18 +68,18 @@ export default {
             }
           },
           indicator: [
-            { name: 'Sales', max: 10000 },
-            { name: 'Administration', max: 20000 },
-            { name: 'Information Technology', max: 20000 },
-            { name: 'Customer Support', max: 20000 },
-            { name: 'Development', max: 20000 },
-            { name: 'Marketing', max: 20000 }
+            { name: '库存', max: 10000 },
+            { name: '销量', max: 20000 },
+            { name: '好评率', max: 20000 },
+            { name: '点赞数', max: 20000 },
+            { name: '收藏数', max: 20000 },
+            { name: '差评数', max: 20000 }
           ]
         },
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Allocated Budget', 'Expected Spending', 'Actual Spending']
+          data: ['新鲜水果', '蔬菜蛋品', '海鲜水产', '精选肉类', '冷冻素食', '地方特色']
         },
         series: [{
           type: 'radar',
@@ -96,15 +96,27 @@ export default {
           data: [
             {
               value: [5000, 7000, 12000, 11000, 15000, 14000],
-              name: 'Allocated Budget'
+              name: '新鲜水果'
+            },
+            {
+              value: [4000, 2000, 15000, 15000, 13000, 11000],
+              name: '蔬菜蛋品'
+            },
+            {
+              value: [5500, 1000, 5000, 15000, 12000, 12000],
+              name: '海鲜水产'
+            },
+            {
+              value: [1500, 7000, 8000, 11000, 15000, 14000],
+              name: '精选肉类'
             },
             {
               value: [4000, 9000, 15000, 15000, 13000, 11000],
-              name: 'Expected Spending'
+              name: '冷冻素食'
             },
             {
-              value: [5500, 11000, 12000, 15000, 12000, 12000],
-              name: 'Actual Spending'
+              value: [1000, 11000, 12000, 15000, 12000, 12000],
+              name: '地方特色'
             }
           ],
           animationDuration: animationDuration

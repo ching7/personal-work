@@ -22,10 +22,10 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
-      title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      title: '商城管理后台',
+      logo: 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200806173107.png'
     }
   }
 }

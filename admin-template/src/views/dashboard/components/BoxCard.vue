@@ -1,25 +1,18 @@
 <template>
-  <el-card class="box-card-component"
-           style="margin-left:8px;">
-    <div slot="header"
-         class="box-card-header">
-      <img src="https://wpimg.wallstcn.com/e7d23d71-cf19-4b90-a1cc-f56af8c0903d.png">
+  <el-card class="box-card-component" style="margin-left:8px;">
+    <div slot="header" class="box-card-header">
+      <img src="https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200806171717.jpg" style="object-fit: contain;">
     </div>
     <div style="position:relative;">
-      <pan-thumb :image="avatar"
-                 class="panThumb" />
-      <mallki class-name="mallki-text"
-              text="vue-element-admin" />
-      <div style="padding-top:35px;"
-           class="progress-item">
-        <span>姓名： {{name}}</span>
+      <pan-thumb :image="avatar" class="panThumb" />
+      <mallki class-name="mallki-text" text="vue-element-admin" />
+      <div style="padding-top:35px;" class="progress-item">
+        <span>姓名： {{ name }}</span>
       </div>
-      <div style="padding-top:35px;"
-           class="progress-item">
-        <span>上次登陆： {{name}}</span>
+      <div style="padding-top:35px;" class="progress-item">
+        <span>上次登陆： {{ name }}</span>
       </div>
-      <div style="padding-top:35px;"
-           class="progress-item">
+      <div style="padding-top:35px;" class="progress-item">
         <span>系统已被：999 人访问</span>
       </div>
     </div>
