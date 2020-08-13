@@ -1,18 +1,25 @@
 package com.cyn.mall.devtemplate.controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cyn.common.utils.DateUtils;
+import com.cyn.mall.devtemplate.bean.AdminIndexMsg;
 import com.cyn.mall.devtemplate.bean.HomeFloor;
 import com.cyn.mall.devtemplate.bean.RT;
+import com.cyn.mall.devtemplate.bean.RTD;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
 import com.cyn.mall.devtemplate.entity.CartEntity;
+import com.cyn.mall.devtemplate.entity.OrderEntity;
 import com.cyn.mall.devtemplate.service.CartService;
+import com.cyn.mall.devtemplate.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +50,50 @@ public class ProductController {
 
     @Autowired
     private UserCtrl userCtrl;
+
+    @Autowired
+    private OrderService orderService;
+
+    /**
+     * 管理员首页统计
+     *
+     * @return
+     */
+    @RequestMapping(value = "/admin/getAdminIndexMsg", method = RequestMethod.GET, name = "管理员首页统计")
+    public RTD getAdminIndexMsg(@RequestParam Map<String, Object> params) {
+        RTD rtd = new RTD();
+        AdminIndexMsg adminIndexMsg = new AdminIndexMsg();
+        //本周订单总数
+        QueryWrapper<OrderEntity> tWrapper = new QueryWrapper<>();
+        String endDate = DateUtils.getCurrDate() + DateUtils.getCurrTime();
+        // 7天前
+        String startDate = DateUtils.getBeforeDate(360) + DateUtils.getCurrTime();
+        tWrapper.ge("create_date", startDate);
+        tWrapper.le("create_date", endDate);
+        List<OrderEntity> orderList = orderService.list(tWrapper);
+        adminIndexMsg.setWeekNewOrder(orderList.size());
+
+        //本周销售额
+        final int[] weekIncome = {0};
+        orderList.forEach(orderEntity -> {
+            weekIncome[0] = weekIncome[0] + orderEntity.getOrderTotal().intValue();
+        });
+        adminIndexMsg.setWeekIncome(weekIncome[0]);
+
+        //订单总数
+        int allOrders = orderService.count();
+        adminIndexMsg.setAllOrders(allOrders);
+
+        //所有商品数
+        int goods = productService.count();
+        adminIndexMsg.setAllGoods(goods);
+
+
+        rtd.setStatus("suc");
+        rtd.setCode(20000);
+        rtd.setData(adminIndexMsg);
+        return rtd;
+    }
 
 
     /**
@@ -230,7 +281,6 @@ public class ProductController {
 
         return R.ok().put("page", page);
     }
-
 
     /**
      * 信息

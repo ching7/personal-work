@@ -3,6 +3,7 @@ package com.cyn.mall.devtemplate.bean;
 import com.cyn.mall.devtemplate.entity.ProductEntity;
 import lombok.Data;
 
+
 import java.io.Serializable;
 import java.util.List;
 

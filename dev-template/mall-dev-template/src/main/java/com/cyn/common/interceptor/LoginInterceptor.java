@@ -44,7 +44,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         // 后台-swagger
-        if (requestUrl.contains("/api/admin") || requestUrl.contains("webjars")) {
+        if (requestUrl.contains("admin") || requestUrl.contains("webjars")) {
             return true;
         }
         // 后台商城管理

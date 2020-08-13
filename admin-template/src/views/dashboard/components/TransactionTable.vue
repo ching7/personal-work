@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     fetchData () {
-      debugger
       getOrderAll().then(response => {
         this.list = response.data.items.slice(0, 8)
       })
