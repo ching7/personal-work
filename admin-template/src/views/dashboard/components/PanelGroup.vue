@@ -9,7 +9,7 @@
           <div class="card-panel-text">
             本周新增订单
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="adminIndexMsg?adminIndexMsg.weekNewOrder:0" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -22,7 +22,7 @@
           <div class="card-panel-text">
             商品总数
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="adminIndexMsg?adminIndexMsg.allGoods:0" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -35,7 +35,7 @@
           <div class="card-panel-text">
             总订单数
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="adminIndexMsg?adminIndexMsg.allOrders:0" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -46,9 +46,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            总销售额
+            本周销售额
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="adminIndexMsg?adminIndexMsg.weekIncome:0" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -57,15 +57,33 @@
 
 <script>
 import CountTo from 'vue-count-to'
-import { getOrderAll } from '@/api/order'
+import { getAdminIndexMsg } from '@/api/product'
 
 export default {
   components: {
     CountTo
   },
+  data () {
+    return {
+      adminIndexMsg: null
+    }
+  },
   methods: {
+    initPanel () {
+      getAdminIndexMsg().then(response => {
+        debugger
+        this.adminIndexMsg = response.data
+      })
+    }
+  },
+  created () {
 
-  }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.initPanel()
+    })
+  },
 }
 </script>
 

@@ -1,35 +1,34 @@
 <template>
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="产品编号" width="95">
         <template slot-scope="scope">
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Title">
+      <el-table-column label="产品名称" width="150" align="center">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.productName }}
         </template>
       </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column label="产品描述">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.subTitle }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
+      <el-table-column label="单次购买上限" width="110" align="center">
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+          {{ scope.row.limitNum }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
+      <el-table-column class-name="status-col" label="零售价" width="110" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          <el-tag :type="scope.row.salePrice">{{ scope.row.salePrice }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
+      <el-table-column align="center" label="库存" width="200">
         <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
+          <span>{{ scope.row.stock }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -37,7 +36,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getGoodsPage } from '@/api/product'
 
 export default {
   filters: {
@@ -62,8 +61,9 @@ export default {
   methods: {
     fetchData () {
       this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
+      getGoodsPage().then(response => {
+        this.list = response.data
+        debugger
         this.listLoading = false
       })
     }

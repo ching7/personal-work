@@ -95,6 +95,21 @@ public class ProductController {
         return rtd;
     }
 
+    /**
+     * 管理员商品分页查询
+     *
+     * @return
+     */
+    @RequestMapping(value = "/admin/getGoodsPage", method = RequestMethod.GET, name = "管理员商品分页查询")
+    public RTD getGoodsPage(@RequestParam Map<String, Object> params) {
+        RTD rtd = new RTD();
+        List<ProductEntity> list = productService.list();
+        rtd.setStatus("suc");
+        rtd.setCode(20000);
+        rtd.setData(list);
+        return rtd;
+    }
+
 
     /**
      * 商品详情
