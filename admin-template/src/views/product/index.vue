@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
-    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
+    <el-input placeholder="输入要查找的商品名称，支持模糊查找" v-model="searchVal" clearable>
+      <el-button slot="append" icon="el-icon-search"></el-button>
+    </el-input>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row style="margin-top: 15px;">
       <el-table-column align="center" label="产品编号" width="95">
         <template slot-scope="scope">
           {{ scope.$index }}
@@ -31,7 +34,26 @@
           <span>{{ scope.row.stock }}</span>
         </template>
       </el-table-column>
+      <el-table-column fixed="right" label="操作" width="100">
+        <template slot-scope="scope">
+          <el-button @click="goodDetail(scope.row)" type="text" size="small">查看</el-button>
+          <el-button type="text" size="small">编辑</el-button>
+        </template>
+      </el-table-column>
     </el-table>
+    <!-- 查看详情 -->
+    <el-dialog title="商品详情" :visible.sync="goodsDetailFormVisible">
+      <el-form :model="detailGood">
+        <el-form-item label="活动名称" :label-width="formLabelWidth">
+          <el-input v-model="detailGood.productName" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="goodsDetailFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="goodsDetailFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 编辑 -->
   </div>
 </template>
 
@@ -52,7 +74,11 @@ export default {
   data () {
     return {
       list: null,
-      listLoading: true
+      listLoading: true,
+      searchVal: '',
+      formLabelWidth: '120px',
+      goodsDetailFormVisible: false,
+      detailGood: null
     }
   },
   created () {
@@ -64,8 +90,14 @@ export default {
       getGoodsPage().then(response => {
         this.list = response.data
         debugger
+        this.detailGood = this.list[0]
         this.listLoading = false
       })
+
+    },
+    goodDetail (good) {
+      this.detailGood = good
+      this.goodsDetailFormVisible = true
     }
   }
 }
