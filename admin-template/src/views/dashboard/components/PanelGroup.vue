@@ -71,7 +71,6 @@ export default {
   methods: {
     initPanel () {
       getAdminIndexMsg().then(response => {
-        debugger
         this.adminIndexMsg = response.data
       })
     }

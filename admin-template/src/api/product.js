@@ -14,3 +14,21 @@ export function getGoodsPage (query) {
     params: query
   })
 }
+
+//不存在支持新增
+export function putUpdateGood (param) {
+  return request({
+    url: '/api/goods/admin/putUpdateGood',
+    method: 'post',
+    params: param
+  })
+}
+
+export function getSearchGoods (param) {
+  return request({
+    url: '/api/goods/admin/getSearchGoods',
+    method: 'post',
+    params: param
+  })
+}
+
