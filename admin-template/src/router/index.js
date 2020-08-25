@@ -48,7 +48,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/dashboard',
     children: [{
-      path: 'dashboard/index',
+      path: 'dashboard',
       name: '商城详情',
       component: () => import('@/views/dashboard/index'),
       meta: { title: '商城详情', icon: 'dashboard' }
@@ -101,7 +101,7 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'order/index',
+        path: 'order',
         component: () => import('@/views/order/index'),
         name: '订单管理',
         meta: { title: '订单管理' }
