@@ -21,7 +21,6 @@ import com.cyn.mall.devtemplate.entity.AdminEntity;
 import com.cyn.mall.devtemplate.service.AdminService;
 import com.cyn.common.utils.PageUtils;
 import com.cyn.common.utils.R;
-import sun.security.provider.MD5;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +43,15 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private UserCtrl userCtrl;
+
+    @RequestMapping(value = "/getOrderPage", method = RequestMethod.GET)
+    public RTD getOrderPage() {
+        RTD rtd = new RTD();
+        List<OrderEntity> list = orderService.list();
+        rtd.setData(list);
+        rtd.setCode(20000);
+        return rtd;
+    }
 
     /**
      * 订单列表

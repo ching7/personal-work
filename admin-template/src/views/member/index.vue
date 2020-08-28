@@ -1,85 +1,172 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="Activity name">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="Activity zone">
-        <el-select v-model="form.region" placeholder="please select your zone">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="Activity time">
-        <el-col :span="11">
-          <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%;" />
-        </el-col>
-        <el-col :span="2" class="line">-</el-col>
-        <el-col :span="11">
-          <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" style="width: 100%;" />
-        </el-col>
-      </el-form-item>
-      <el-form-item label="Instant delivery">
-        <el-switch v-model="form.delivery" />
-      </el-form-item>
-      <el-form-item label="Activity type">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="Online activities" name="type" />
-          <el-checkbox label="Promotion activities" name="type" />
-          <el-checkbox label="Offline activities" name="type" />
-          <el-checkbox label="Simple brand exposure" name="type" />
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="Resources">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="Sponsor" />
-          <el-radio label="Venue" />
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="Activity form">
-        <el-input v-model="form.desc" type="textarea" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
-        <el-button @click="onCancel">Cancel</el-button>
-      </el-form-item>
-    </el-form>
+    <el-input size="medium"
+              v-model="searchMemberVal"
+              class="search-input"
+              placeholder="输入要查找的用户名称，支持模糊查找"
+              clearable>
+      <el-button slot="append"
+                 icon="el-icon-search"
+                 @click="searchMember()"></el-button>
+    </el-input>
+    <el-table v-loading="listLoading"
+              :data="memberList"
+              element-loading-text="Loading"
+              border
+              fit
+              highlight-current-row
+              style="margin-top: 15px;">
+      <el-table-column align="center"
+                       label="用户id"
+                       width="95">
+        <template slot-scope="scope">
+          {{ scope.$index }}
+        </template>
+      </el-table-column>
+      <el-table-column label="用户姓名"
+                       width="150"
+                       align="center">
+        <template slot-scope="scope">
+          {{ scope.row.name}}
+        </template>
+      </el-table-column>
+      <el-table-column label="用户头像">
+        <template slot-scope="scope">
+          <span>{{ scope.row.avatar }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right"
+                       label="操作"
+                       width="100">
+        <template slot-scope="scope">
+          <el-button @click="memberDetail(scope.row)"
+                     type="text"
+                     size="small">查看</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="block">
+      <el-pagination layout="total, sizes, prev, pager, next"
+                     :total="totalCount"
+                     @current-change="handleCurrentChange"
+                     @size-change='changePageSize'
+                     :page-size='pageSize'
+                     background>
+      </el-pagination>
+    </div>
+    <!-- 查看详情 -->
+    <el-dialog title="用户详情"
+               :visible.sync="memberDetailFormVisible">
+      <el-form :model="detailMember">
+        <el-form-item label="用户ID"
+                      :label-width="formLabelWidth">
+          <el-input v-model="detailMember.userId"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="用户姓名"
+                      :label-width="formLabelWidth">
+          <el-input v-model="detailMember.name"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="用户头像"
+                      :label-width="formLabelWidth">
+          <el-input v-model="detailMember.avatar"
+                    type="textarea"
+                    :rows="4"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="memberDetailFormVisible = false">取消</el-button>
+      </div>
+    </el-dialog>
+    <!-- 编辑 -->
   </div>
 </template>
 
 <script>
+import { getMemberPage, getSearchMember } from '@/api/member'
+
 export default {
-  data() {
-    return {
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+  filters: {
+    statusFilter (status) {
+      const statusMap = {
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
       }
+      return statusMap[status]
     }
   },
-  methods: {
-    onSubmit() {
-      this.$message('submit!')
+  data () {
+    return {
+      memberList: [],
+      listLoading: true,
+      searchMemberVal: '',
+      formLabelWidth: '120px',
+      memberDetailFormVisible: false,
+      detailMember: {},
+      pageSize: 10,
+      currPage: 1,
+      totalCount: 1000
+    }
+  },
+  watch: {
+    pageSize (val) {
+      alert(val + '333')
     },
-    onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
+    currPage (val) {
+      alert(val + '444')
+    }
+  },
+  created () {
+    this.fetchData()
+  },
+  methods: {
+    fetchData () {
+      this.listLoading = true
+      debugger
+      getMemberPage().then(response => {
+        this.memberList = response.data
+        this.detailMember = this.memberList[0]
+        this.listLoading = false
       })
+
+    },
+    memberDetail (member) {
+      this.detailMember = member
+      this.memberDetailFormVisible = true
+    },
+    searchMember () {
+      // this.listLoading = true
+      alert(this.searchMemberVal)
+      getSearchMember(this.searchMemberVal).then(response => {
+        this.memberList = response.data
+        this.detailMember = this.memberList[0]
+        this.listLoading = false
+      })
+    },
+    handleCurrentChange (data) {
+      this.currPage = data
+      alert(data + '==111')
+    },
+    changePageSize (data) {
+      this.pageSize = data
+
+      alert(data + '==2222')
     }
   }
 }
 </script>
 
 <style scoped>
-.line{
+.line {
   text-align: center;
+}
+.search-input {
+  width: 50%;
+  margin-left: 2%;
 }
 </style>
 

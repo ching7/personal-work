@@ -2,7 +2,11 @@
   <div class="app-container">
     <el-input v-model="filterText"
               placeholder="输入查找的类别，支持模糊匹配"
-              style="margin-bottom:30px;" />
+              style="margin-bottom:30px;"
+              class='search-input-prd'>
+      <el-button slot="append"
+                 icon="el-icon-search"></el-button>
+    </el-input>
     <div style="width:30%;display: inline-flex;border">
       <el-tree ref="tree2"
                :data="data2"
@@ -31,13 +35,11 @@
         </el-table-column>
       </el-table>
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
-
   data () {
     return {
       filterText: '',
@@ -124,4 +126,10 @@ export default {
   }
 }
 </script>
-
+<style>
+.search-input-prd {
+  width: 50%;
+  margin-left: 2%;
+  display: table;
+}
+</style>
