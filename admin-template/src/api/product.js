@@ -23,6 +23,14 @@ export function putUpdateGood (param) {
     params: param
   })
 }
+//删除商品
+export function putDelGood (param) {
+  return request({
+    url: '/api/goods/admin/putDelGood',
+    method: 'post',
+    params: param
+  })
+}
 
 export function getSearchGoods (param) {
   return request({

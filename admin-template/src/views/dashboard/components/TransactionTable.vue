@@ -1,19 +1,38 @@
 <template>
-  <el-table :data="list" style="width: 100%;padding-top: 15px;">
-    <el-table-column label="订单号" min-width="200">
+  <el-table :data="list"
+            style="width: 100%;padding-top: 15px;">
+    <el-table-column label="订单号"
+                     min-width="50">
       <template slot-scope="scope">
         {{ scope.row.orderId | orderNoFilter }}
       </template>
     </el-table-column>
-    <el-table-column label="订单总价" width="195" align="center">
+    <el-table-column label="订单创建时间"
+                     min-width="50">
+      <template slot-scope="scope">
+        {{ scope.row.createDate}}
+      </template>
+    </el-table-column>
+    <el-table-column label="订单商品"
+                     width="150"
+                     align="center">
+      <template slot-scope="scope">
+        {{ showOrderGoods(JSON.parse(scope.row.goodsList)) }}
+      </template>
+    </el-table-column>
+    <el-table-column label="订单总价"
+                     width="100"
+                     align="center">
       <template slot-scope="scope">
         ¥{{ scope.row.orderTotal | toThousandFilter }}
       </template>
     </el-table-column>
-    <el-table-column label="订单状态" width="100" align="center">
+    <el-table-column label="订单状态"
+                     width="200"
+                     align="center">
       <template slot-scope="{row}">
-        <el-tag :type="row.orderStatus | statusFilter">
-          {{ row.orderStatus }}
+        <el-tag :type="row.orderStatus">
+          {{ row.orderStatus | statusFilter}}
         </el-tag>
       </template>
     </el-table-column>
@@ -27,8 +46,10 @@ export default {
   filters: {
     statusFilter (status) {
       const statusMap = {
-        '1': 'danger',
-        '2': 'success'
+        '1': '已付款,待发货',
+        '2': '已发货',
+        '3': '已收货',
+        '4': '已评价'
       }
       return statusMap[status]
     },
@@ -52,6 +73,13 @@ export default {
       getOrderAll().then(response => {
         this.list = response.data.items.slice(0, 8)
       })
+    },
+    showOrderGoods (order) {
+      let goodsStr = '';
+      order.forEach(goods => {
+        goodsStr = goods.productName + "x" + goods.productNum + " "
+      })
+      return goodsStr
     }
   }
 }

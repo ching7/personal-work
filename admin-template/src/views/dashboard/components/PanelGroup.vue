@@ -1,54 +1,83 @@
 <template>
-  <el-row :gutter="40" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+  <el-row :gutter="40"
+          class="panel-group">
+    <el-col :xs="12"
+            :sm="12"
+            :lg="6"
+            class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+          <svg-icon icon-class="peoples"
+                    class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
             本周新增订单
           </div>
-          <count-to :start-val="0" :end-val="adminIndexMsg?adminIndexMsg.weekNewOrder:0" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0"
+                    :end-val="adminIndexMsg?adminIndexMsg.weekNewOrder:0"
+                    :duration="2600"
+                    class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="12"
+            :sm="12"
+            :lg="6"
+            class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+          <svg-icon icon-class="message"
+                    class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
             商品总数
           </div>
-          <count-to :start-val="0" :end-val="adminIndexMsg?adminIndexMsg.allGoods:0" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0"
+                    :end-val="adminIndexMsg?adminIndexMsg.allGoods:0"
+                    :duration="3000"
+                    class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="12"
+            :sm="12"
+            :lg="6"
+            class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <svg-icon icon-class="money"
+                    class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
             总订单数
           </div>
-          <count-to :start-val="0" :end-val="adminIndexMsg?adminIndexMsg.allOrders:0" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0"
+                    :end-val="adminIndexMsg?adminIndexMsg.allOrders:0"
+                    :duration="3200"
+                    class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="12"
+            :sm="12"
+            :lg="6"
+            class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
+          <svg-icon icon-class="shopping"
+                    class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
             本周销售额
           </div>
-          <count-to :start-val="0" :end-val="adminIndexMsg?adminIndexMsg.weekIncome:0" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0"
+                    :end-val="adminIndexMsg?adminIndexMsg.weekIncome:0"
+                    :duration="3600"
+                    class="card-panel-num" />
         </div>
       </div>
     </el-col>

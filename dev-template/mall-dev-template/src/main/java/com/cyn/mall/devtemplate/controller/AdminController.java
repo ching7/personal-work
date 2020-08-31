@@ -64,7 +64,7 @@ public class AdminController {
         RTD rt = new RTD();
         IPage<OrderEntity> iPage = new Page<OrderEntity>(1, Long.parseLong(pageSize));
         QueryWrapper<OrderEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByAsc("order_id");
+        queryWrapper.orderByDesc("create_date");
         IPage<OrderEntity> orderEntityList = orderService.page(iPage, queryWrapper);
         resMap.put("items", orderEntityList.getRecords());
         resMap.put("total", orderEntityList.getSize());

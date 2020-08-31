@@ -67,6 +67,9 @@
           <el-button @click="goodDetail(scope.row)"
                      type="text"
                      size="small">编辑</el-button>
+          <el-button @click="delGood(scope.row)"
+                     type="text"
+                     size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -82,48 +85,58 @@
     <!-- 查看详情 -->
     <el-dialog title="商品详情"
                :visible.sync="goodsDetailFormVisible">
-      <el-form :model="detailGood">
+      <el-form :model="detailGood"
+               :rules="rules"
+               ref='goodDetails'>
         <el-form-item label="商品名称"
-                      :label-width="formLabelWidth">
+                      :label-width="formLabelWidth"
+                      prop="productName">
           <el-input v-model="detailGood.productName"
                     autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="商品描述"
-                      :label-width="formLabelWidth">
+                      :label-width="formLabelWidth"
+                      prop="subTitle">
           <el-input v-model="detailGood.subTitle"
                     autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="库存"
-                      :label-width="formLabelWidth">
-          <el-input v-model="detailGood.stock"
+                      :label-width="formLabelWidth"
+                      prop="stock">
+          <el-input v-model.number="detailGood.stock"
                     autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="单次购买上限"
-                      :label-width="formLabelWidth">
-          <el-input v-model="detailGood.limitNum"
+                      :label-width="formLabelWidth"
+                      prop="limitNum">
+          <el-input v-model.number="detailGood.limitNum"
                     autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="零售价"
-                      :label-width="formLabelWidth">
-          <el-input v-model="detailGood.salePrice"
+                      :label-width="formLabelWidth"
+                      prop="salePrice">
+          <el-input v-model.number="detailGood.salePrice"
                     autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="商品大图"
-                      :label-width="formLabelWidth">
+                      :label-width="formLabelWidth"
+                      prop="productImageBig">
           <el-input v-model="detailGood.productImageBig"
                     type="textarea"
                     :rows="2"
                     autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="商品小图"
-                      :label-width="formLabelWidth">
+                      :label-width="formLabelWidth"
+                      prop="productImageSmall">
           <el-input v-model="detailGood.productImageSmall"
                     type="textarea"
                     :rows="2"
                     autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="商品细节图"
-                      :label-width="formLabelWidth">
+                      :label-width="formLabelWidth"
+                      prop="productMsg">
           <el-input v-model="detailGood.productMsg"
                     type="textarea"
                     :rows="4"
@@ -134,7 +147,7 @@
            class="dialog-footer">
         <el-button @click="goodsDetailFormVisible = false">取消</el-button>
         <el-button @click="updateGood()"
-                   type="primary">确认修改</el-button>
+                   type="primary">确认</el-button>
       </div>
     </el-dialog>
     <!-- 编辑 -->
@@ -142,7 +155,7 @@
 </template>
 
 <script>
-import { getGoodsPage, putUpdateGood, getSearchGoods } from '@/api/product'
+import { getGoodsPage, putUpdateGood, getSearchGoods, putDelGood } from '@/api/product'
 
 export default {
   filters: {
@@ -165,7 +178,33 @@ export default {
       detailGood: {},
       pageSize: 10,
       currPage: 1,
-      totalCount: 1000
+      totalCount: 1000,
+      rules: {
+        productName: [
+          { required: true, message: '请输入商品名称', trigger: 'change' },
+        ],
+        limitNum: [
+          { type: 'number', required: true, message: '请输入商品单词购买上限', trigger: 'change' },
+        ],
+        subTitle: [
+          { required: true, message: '请输入商品描述', trigger: 'change' }
+        ],
+        stock: [
+          { type: 'number', required: true, message: '请输入商品库存', trigger: 'change' }
+        ],
+        salePrice: [
+          { type: 'number', required: true, message: '请输入商品售价', trigger: 'change' }
+        ],
+        productImageBig: [
+          { required: true, message: '请输入商品大图地址', trigger: 'change' }
+        ],
+        productImageSmall: [
+          { required: true, message: '请输入商品小图地址', trigger: 'change' }
+        ],
+        productMsg: [
+          { required: true, message: '请输入商品细节图地址', trigger: 'change' }
+        ]
+      }
     }
   },
   // computed: {
@@ -185,45 +224,81 @@ export default {
     }
   },
   created () {
-    this.fetchData()
+    this.fetchData(this.currPage, this.pageSize)
   },
   methods: {
-    fetchData () {
+    fetchData (pageNum, pageSize) {
+      let queryPageParam = {
+        'currPage': pageNum,
+        'pageSize': pageSize,
+        'productName': this.searchVal.trim()
+      }
       this.listLoading = true
-      getGoodsPage().then(response => {
-        this.goodList = response.data
-        this.detailGood = this.goodList[0]
-        this.listLoading = false
+      getGoodsPage(queryPageParam).then(response => {
+        if (response.data.length > 0) {
+          this.goodList = response.data
+          this.detailGood = this.goodList[0]
+          this.totalCount = response.totalCount
+          this.listLoading = false
+        } else {
+          this.goodList = []
+          this.detailGood = {}
+          this.totalCount = response.totalCount
+          this.listLoading = false
+        }
       })
-
     },
     goodDetail (good) {
       this.detailGood = good
       this.goodsDetailFormVisible = true
     },
+    delGood (good) {
+      this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        putDelGood(good).then(response => {
+          this.fetchData(this.currPage, this.pageSize)
+        })
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
+    },
     updateGood () {
-      putUpdateGood(this.detailGood).then(response => {
-        this.fetchData()
-      })
-      this.goodsDetailFormVisible = false
+      this.$refs['goodDetails'].validate((valid) => {
+        if (valid) {
+          putUpdateGood(this.detailGood).then(response => {
+            this.fetchData(this.currPage, this.pageSize)
+          })
+          this.goodsDetailFormVisible = false
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     searchGood () {
-      // this.listLoading = true
-      alert(this.searchVal)
-      getSearchGoods(this.searchVal).then(response => {
-        this.goodList = response.data
-        this.detailGood = this.goodList[0]
-        this.listLoading = false
-      })
+      if (this.searchVal.trim().length == 0) {
+        this.fetchData(this.currPage, this.pageSize)
+        return false
+      }
+      this.fetchData(this.currPage, this.pageSize)
+
     },
     handleCurrentChange (data) {
-      this.currPage = data
-      alert(data + '==111')
+      this.fetchData(data, this.pageSize)
     },
     changePageSize (data) {
-      this.pageSize = data
-
-      alert(data + '==2222')
+      this.fetchData(this.currPage, data)
     }
   }
 }

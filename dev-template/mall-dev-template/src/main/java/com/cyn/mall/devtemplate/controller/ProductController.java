@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cyn.common.utils.Constant;
 import com.cyn.common.utils.DateUtils;
 import com.cyn.mall.devtemplate.bean.AdminIndexMsg;
 import com.cyn.mall.devtemplate.bean.HomeFloor;
@@ -20,6 +21,7 @@ import com.cyn.mall.devtemplate.entity.CartEntity;
 import com.cyn.mall.devtemplate.entity.OrderEntity;
 import com.cyn.mall.devtemplate.service.CartService;
 import com.cyn.mall.devtemplate.service.OrderService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +55,90 @@ public class ProductController {
 
     @Autowired
     private OrderService orderService;
+
+    /**
+     * 管理员商品搜索
+     *
+     * @return
+     */
+    @RequestMapping(value = "/admin/getSearchGoods", method = RequestMethod.POST, name = "管理员商品搜索")
+    public RTD getSearchGoods(@RequestParam Map<String, Object> params) {
+        RTD rtd = new RTD();
+        String prdName = params.get("productName").toString();
+        if (!prdName.trim().isEmpty()) {
+            QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.like("product_name", prdName);
+            List<ProductEntity> list = productService.list(queryWrapper);
+            rtd.setStatus("suc");
+            rtd.setCode(20000);
+            rtd.setData(list);
+        }
+        return rtd;
+    }
+
+    /**
+     * 删除商品
+     *
+     * @return
+     */
+    @RequestMapping(value = "/admin/putDelGood", method = RequestMethod.POST, name = "删除商品")
+    public RTD putDelGood(@RequestParam Map<String, Object> params) {
+        RTD rtd = new RTD();
+        Integer prdId = Integer.parseInt(params.get("productId").toString());
+        ProductEntity productServiceById = productService.getById(prdId);
+        if (productServiceById != null) {
+            QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("product_id", prdId);
+            productService.remove(queryWrapper);
+        }
+        rtd.setStatus("suc");
+        rtd.setCode(20000);
+        return rtd;
+    }
+
+    /**
+     * 商品管理，修改商品详情，不存在新增
+     *
+     * @return
+     */
+    @RequestMapping(value = "/admin/putUpdateGood", method = RequestMethod.POST, name = "商品管理")
+    public RTD putUpdateGood(@RequestParam Map<String, Object> params) {
+        BigDecimal salePrice = new BigDecimal((params.get("salePrice")).toString());
+        String productName = params.get("productName").toString();
+        String productImageSmall = params.get("productImageSmall").toString();
+        String productImageBig = params.get("productImageBig").toString();
+        String productMsg = params.get("productMsg").toString();
+        Integer stock = Integer.parseInt(params.get("stock").toString());
+        String subTitle = params.get("subTitle").toString();
+        Integer limitNum = Integer.parseInt(params.get("limitNum").toString());
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setLimitNum(limitNum);
+        productEntity.setSubTitle(subTitle);
+        productEntity.setStock(stock);
+        productEntity.setProductMsg(productMsg);
+        productEntity.setProductImageBig(productImageBig);
+        productEntity.setProductImageSmall(productImageSmall);
+        productEntity.setProductName(productName);
+        productEntity.setSalePrice(salePrice);
+        RTD rtd = new RTD();
+        if (params.get("productId") == null) {
+            productService.save(productEntity);
+            rtd.setStatus("suc");
+            rtd.setCode(20000);
+            return rtd;
+        }
+        Integer prdId = Integer.parseInt(params.get("productId").toString());
+        ProductEntity productServiceById = productService.getById(prdId);
+        if (productServiceById != null) {
+            QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("product_id", prdId);
+            productService.update(productEntity, queryWrapper);
+        }
+        rtd.setStatus("suc");
+        rtd.setCode(20000);
+        return rtd;
+    }
+
 
     /**
      * 管理员首页统计
@@ -102,11 +188,21 @@ public class ProductController {
      */
     @RequestMapping(value = "/admin/getGoodsPage", method = RequestMethod.GET, name = "管理员商品分页查询")
     public RTD getGoodsPage(@RequestParam Map<String, Object> params) {
+        String currPage = params.get("currPage").toString();
+        String pageSize = params.get("pageSize").toString();
+        String productName = params.get("productName").toString();
+
         RTD rtd = new RTD();
-        List<ProductEntity> list = productService.list();
+        QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("product_name", productName);
+         IPage<ProductEntity> iPage = new Page<ProductEntity>(Long.parseLong(currPage), Long.parseLong(pageSize));
+        IPage<ProductEntity> productEntityIPage = productService.page(iPage, queryWrapper);
+
+        List<ProductEntity> list = productEntityIPage.getRecords();
         rtd.setStatus("suc");
         rtd.setCode(20000);
         rtd.setData(list);
+        rtd.setTotalCount(productEntityIPage.getTotal());
         return rtd;
     }
 
