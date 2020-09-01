@@ -6,6 +6,7 @@
 	<!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.cyn.mall.devtemplate.entity.ProductEntity" id="productMap">
         <result property="productId" column="product_id"/>
+        <result property="cateId" column="cate_id"/>
         <result property="salePrice" column="sale_price"/>
         <result property="productName" column="product_name"/>
         <result property="productImageSmall" column="product_image_small"/>

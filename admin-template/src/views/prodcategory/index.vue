@@ -1,114 +1,154 @@
 <template>
   <div class="app-container">
-    <el-input v-model="filterText"
+    <el-input v-model="seachCate"
               placeholder="输入查找的类别，支持模糊匹配"
               style="margin-bottom:30px;"
               class='search-input-prd'>
       <el-button slot="append"
                  icon="el-icon-search"></el-button>
     </el-input>
-    <div style="width:30%;display: inline-flex;border">
-      <el-tree ref="tree2"
-               :data="data2"
+    <div class="cate-nodes">
+      <el-tree ref="cateNodesTree"
+               :data="cateNodes"
                :props="defaultProps"
                :filter-node-method="filterNode"
                :render-content='renderContent'
                :highlight-current='true'
                :expand-on-click-node='false'
                class="filter-tree"
-               default-expand-all />
+               @node-click='selectCate'
+               :default-expand-all='false' />
     </div>
-    <div style="width: 60%;display: inline-flex;">
-      <el-table :data="tableData"
-                border
-                style="width: 100%">
-        <el-table-column prop="date"
-                         label="日期"
-                         width="180">
-        </el-table-column>
-        <el-table-column prop="name"
-                         label="姓名"
-                         width="180">
-        </el-table-column>
-        <el-table-column prop="address"
-                         label="地址">
-        </el-table-column>
-      </el-table>
+    <div class="cate-prd">
+      <div>
+        <el-table v-loading="listLoading"
+                  :data="prdGoodList"
+                  element-loading-text="Loading"
+                  border
+                  fit
+                  highlight-current-row
+                  style="margin-top: 15px;">
+          <el-table-column align="center"
+                           label="产品编号"
+                           width="95">
+            <template slot-scope="scope">
+              {{ scope.$index }}
+            </template>
+          </el-table-column>
+          <el-table-column label="产品名称"
+                           width="150"
+                           align="center">
+            <template slot-scope="scope">
+              {{ scope.row.productName}}
+            </template>
+          </el-table-column>
+          <el-table-column label="产品描述"
+                           width="200">
+            <template slot-scope="scope">
+              <span>{{ scope.row.subTitle }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="单次购买上限"
+                           width="110"
+                           align="center">
+            <template slot-scope="scope">
+              {{ scope.row.limitNum }}
+            </template>
+          </el-table-column>
+          <el-table-column class-name="status-col"
+                           label="零售价"
+                           width="110"
+                           align="center">
+            <template slot-scope="scope">
+              {{ scope.row.salePrice }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center"
+                           label="库存"
+                           width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.stock }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div>
+        <el-pagination layout="total, sizes, prev, pager, next"
+                       :total="totalCount"
+                       @current-change="handleCurrentChange"
+                       @size-change='changePageSize'
+                       :page-size='pageSize'
+                       background>
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getCateAll, getCatePrd, getSearchGoods, putDelGood } from '@/api/category'
+
 export default {
   data () {
     return {
-      filterText: '',
-      data2: [{
-        id: 1,
-        label: '果蔬',
-        children: [{
-          id: 4,
-          label: '热带水果',
-          children: [{
-            id: 9,
-            label: '芒果'
-          }, {
-            id: 10,
-            label: '榴莲'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '坚果',
-        children: [{
-          id: 5,
-          label: '核桃'
-        }, {
-          id: 6,
-          label: '杏仁'
-        }]
-      }, {
-        id: 3,
-        label: '肉类',
-        children: [{
-          id: 7,
-          label: '羊肉'
-        }, {
-          id: 8,
-          label: '猪肉'
-        }]
-      }],
+      seachCate: '',
+      pageSize: 10,
+      currPage: 1,
+      totalCount: 0,
+      cateNodes: [],
+      currentNode: {},
+      listLoading: false,
       defaultProps: {
         children: 'children',
         label: 'label'
       },
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
-
+      prdGoodList: []
     }
   },
   watch: {
-    filterText (val) {
-      this.$refs.tree2.filter(val)
+    seachCate (val) {
+      this.$refs.cateNodesTree.filter(val)
     }
   },
-
+  created () {
+    this.initCartNode()
+    this.prdGoodList = []
+  },
   methods: {
+    handleCurrentChange (data) {
+      this.ininPrdGoods(this.currentNode, data, this.pageSize)
+    },
+    changePageSize (data) {
+      this.ininPrdGoods(this.currentNode, this.currPage, data)
+    },
+    ininPrdGoods (currentNode, currPage, pageSize) {
+      if (currentNode.children.length == 0) {
+        this.listLoading = true
+        let getCatePrdParam = {
+          'cateId': currentNode.id,
+          'currPage': currPage,
+          'pageSize': pageSize
+        }
+        getCatePrd(getCatePrdParam).then(response => {
+          if (response.code === 20000 && response.data.length > 0) {
+            this.prdGoodList = response.data
+            this.totalCount = response.totalCount
+          } else {
+            this.prdGoodList = []
+          }
+        })
+      }
+      this.listLoading = false
+    },
+    selectCate (data) {
+      this.currentNode = data
+      this.ininPrdGoods(data, this.currPage, this.pageSize)
+    },
+    initCartNode () {
+      getCateAll().then(response => {
+        this.cateNodes = response.data
+      })
+    },
     filterNode (value, data) {
       if (!value) return true
       return data.label.indexOf(value) !== -1
@@ -131,5 +171,16 @@ export default {
   width: 50%;
   margin-left: 2%;
   display: table;
+}
+.cate-nodes {
+  width: 30%;
+  display: inline-table;
+  height: 500px;
+  overflow: auto;
+}
+.cate-prd {
+  width: 60%;
+  display: inline-table;
+  padding-left: 10px;
 }
 </style>

@@ -13,7 +13,7 @@ import lombok.Data;
  * 
  * @author chenyn
  * @email 775608598@qq.com
- * @date 2020-07-25 14:59:41
+ * @date 2020-09-01 10:27:01
  */
 @Data
 @TableName("sys_product")
@@ -25,6 +25,10 @@ public class ProductEntity implements Serializable {
 	 */
 	@TableId
 	private Long productId;
+	/**
+	 * 商品分类id
+	 */
+	private Integer cateId;
 	/**
 	 * 零售价
 	 */

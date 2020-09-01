@@ -178,7 +178,7 @@ export default {
       detailGood: {},
       pageSize: 10,
       currPage: 1,
-      totalCount: 1000,
+      totalCount: 0,
       rules: {
         productName: [
           { required: true, message: '请输入商品名称', trigger: 'change' },
@@ -217,10 +217,10 @@ export default {
   // },
   watch: {
     pageSize (val) {
-      alert(val + '333')
+      //alert(val + '333')
     },
     currPage (val) {
-      alert(val + '444')
+      //alert(val + '444')
     }
   },
   created () {
