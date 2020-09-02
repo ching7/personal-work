@@ -23,7 +23,7 @@
                        label="产品编号"
                        width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.row.productId }}
         </template>
       </el-table-column>
       <el-table-column label="产品名称"

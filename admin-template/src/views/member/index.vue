@@ -20,7 +20,7 @@
                        label="用户id"
                        width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.row.userId }}
         </template>
       </el-table-column>
       <el-table-column label="用户姓名"
@@ -109,7 +109,7 @@ export default {
       detailMember: {},
       pageSize: 10,
       currPage: 1,
-      totalCount: 1000
+      totalCount: 0,
     }
   },
   watch: {
@@ -125,36 +125,43 @@ export default {
   },
   methods: {
     fetchData () {
-      this.listLoading = true
-      debugger
-      getMemberPage().then(response => {
-        this.memberList = response.data
-        this.detailMember = this.memberList[0]
-        this.listLoading = false
-      })
-
+      this.updateMember(this.searchMemberVal, this.currPage, this.pageSize)
     },
     memberDetail (member) {
       this.detailMember = member
       this.memberDetailFormVisible = true
     },
     searchMember () {
-      // this.listLoading = true
-      alert(this.searchMemberVal)
-      getSearchMember(this.searchMemberVal).then(response => {
-        this.memberList = response.data
-        this.detailMember = this.memberList[0]
-        this.listLoading = false
+      this.updateMember(this.searchMemberVal, this.currPage, this.pageSize)
+    },
+    updateMember (searchMemberVal, currPage, pageSize) {
+      this.listLoading = true
+      // if (searchMemberVal.trim().length === 0) {
+      //   return false
+      // }
+      let searchMember = {
+        'name': searchMemberVal,
+        'currPage': currPage,
+        'pageSize': pageSize
+      }
+      getMemberPage(searchMember).then(response => {
+        if (response.code === 20000 && response.data.length > 0) {
+          this.memberList = response.data
+          this.totalCount = response.totalCount
+          this.detailMember = this.memberList[0]
+        } else {
+          this.memberList = []
+          this.totalCount = 0
+        }
       })
+      this.listLoading = false
+
     },
     handleCurrentChange (data) {
-      this.currPage = data
-      alert(data + '==111')
+      this.updateMember(this.searchMemberVal, data, this.pageSize)
     },
     changePageSize (data) {
-      this.pageSize = data
-
-      alert(data + '==2222')
+      this.updateMember(this.searchMemberVal, this.currPage, data)
     }
   }
 }

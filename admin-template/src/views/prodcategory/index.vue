@@ -32,7 +32,7 @@
                            label="产品编号"
                            width="95">
             <template slot-scope="scope">
-              {{ scope.$index }}
+              {{ scope.row.productId }}
             </template>
           </el-table-column>
           <el-table-column label="产品名称"
@@ -174,13 +174,13 @@ export default {
 }
 .cate-nodes {
   width: 30%;
-  display: inline-table;
+  float: left;
   height: 500px;
   overflow: auto;
 }
 .cate-prd {
   width: 60%;
-  display: inline-table;
+  float: left;
   padding-left: 10px;
 }
 </style>
