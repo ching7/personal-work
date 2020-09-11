@@ -106,6 +106,13 @@
           <el-input v-model.number="detailGood.stock"
                     autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="所属分类"
+                      :label-width="formLabelWidth"
+                      prop="stock">
+          <el-cascader v-model="value"
+                       :options="categorys"
+                       @change="handleChange"></el-cascader>
+        </el-form-item>
         <el-form-item label="单次购买上限"
                       :label-width="formLabelWidth"
                       prop="limitNum">
@@ -156,6 +163,7 @@
 
 <script>
 import { getGoodsPage, putUpdateGood, getSearchGoods, putDelGood } from '@/api/product'
+import { getCateAll } from '@/api/category'
 
 export default {
   filters: {
@@ -173,6 +181,10 @@ export default {
       goodList: [],
       listLoading: true,
       searchVal: '',
+      // 下拉分类
+      categorys: [],
+      // 产品原始分类
+      cateNodes: [],
       formLabelWidth: '120px',
       goodsDetailFormVisible: false,
       detailGood: {},
@@ -247,10 +259,18 @@ export default {
           this.listLoading = false
         }
       })
+      this.initCartNodes()
     },
     goodDetail (good) {
       this.detailGood = good
       this.goodsDetailFormVisible = true
+    },
+    initCartNodes () {
+      debugger
+      getCateAll().then(response => {
+        this.categorys = response.data
+      })
+      debugger
     },
     delGood (good) {
       this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
