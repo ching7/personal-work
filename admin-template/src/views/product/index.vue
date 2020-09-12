@@ -1,28 +1,32 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" size="medium" @click="goodDetail({})">新增商品</el-button>
-    <el-input
-      v-model="searchVal"
-      size="medium"
-      class="search-input"
-      placeholder="输入要查找的商品名称，支持模糊查找"
-      clearable
-    >
-      <el-button slot="append" icon="el-icon-search" @click="searchGood()" />
+    <el-button type="primary"
+               size="small"
+               @click="goodDetail({})">新增商品</el-button>
+    <el-input v-model="searchVal"
+              size="medium"
+              class="search-input"
+              placeholder="输入要查找的商品名称，支持模糊查找"
+              clearable>
+      <el-button slot="append"
+                 icon="el-icon-search"
+                 @click="searchGood()" />
     </el-input>
-    <el-table
-      v-loading="listLoading"
-      :data="goodList"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-      style="margin-top: 15px;"
-    >
-      <el-table-column align="center" label="产品编号" width="95">
+    <el-table v-loading="listLoading"
+              :data="goodList"
+              element-loading-text="Loading"
+              border
+              fit
+              highlight-current-row
+              style="margin-top: 15px;">
+      <el-table-column align="center"
+                       label="产品编号"
+                       width="95">
         <template slot-scope="scope">{{ scope.row.productId }}</template>
       </el-table-column>
-      <el-table-column label="产品名称" width="150" align="center">
+      <el-table-column label="产品名称"
+                       width="150"
+                       align="center">
         <template slot-scope="scope">{{ scope.row.productName }}</template>
       </el-table-column>
       <el-table-column label="产品描述">
@@ -30,78 +34,138 @@
           <span>{{ scope.row.subTitle }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="单次购买上限" width="110" align="center">
+      <el-table-column label="产品分类">
+        <template slot-scope="scope">
+          <span>{{ scope.row.cateId }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="单次购买上限"
+                       width="110"
+                       align="center">
         <template slot-scope="scope">{{ scope.row.limitNum }}</template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="零售价" width="110" align="center">
+      <el-table-column class-name="status-col"
+                       label="零售价"
+                       width="110"
+                       align="center">
         <template slot-scope="scope">{{ scope.row.salePrice }}</template>
       </el-table-column>
-      <el-table-column align="center" label="库存" width="200">
+      <el-table-column align="center"
+                       label="库存"
+                       width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.stock }}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column align="center"
+                       label="更新日期"
+                       width="100">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="goodDetail(scope.row)">编辑</el-button>
-          <el-button type="text" size="small" @click="delGood(scope.row)">删除</el-button>
+          <span>{{ scope.row.createDate }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center"
+                       label="更新时间"
+                       width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.createTime }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right"
+                       label="操作"
+                       width="100">
+        <template slot-scope="scope">
+          <el-button type="text"
+                     size="small"
+                     @click="goodDetail(scope.row)">编辑</el-button>
+          <el-button type="text"
+                     size="small"
+                     @click="delGood(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="block">
-      <el-pagination
-        layout="total, sizes, prev, pager, next"
-        :total="totalCount"
-        :page-size="pageSize"
-        background
-        @current-change="handleCurrentChange"
-        @size-change="changePageSize"
-      />
+      <el-pagination layout="total, sizes, prev, pager, next"
+                     :total="totalCount"
+                     :page-size="pageSize"
+                     background
+                     @current-change="handleCurrentChange"
+                     @size-change="changePageSize" />
     </div>
     <!-- 查看详情 -->
-    <el-dialog title="商品详情" :visible.sync="goodsDetailFormVisible">
-      <el-form ref="goodDetails" :model="detailGood" :rules="rules">
-        <el-form-item label="商品名称" :label-width="formLabelWidth" prop="productName">
-          <el-input v-model="detailGood.productName" autocomplete="off" />
+    <el-dialog title="商品详情"
+               :visible.sync="goodsDetailFormVisible">
+      <el-form ref="goodDetails"
+               :model="detailGood"
+               :rules="rules">
+        <el-form-item label="商品名称"
+                      :label-width="formLabelWidth"
+                      prop="productName">
+          <el-input v-model="detailGood.productName"
+                    autocomplete="off" />
         </el-form-item>
-        <el-form-item label="商品描述" :label-width="formLabelWidth" prop="subTitle">
-          <el-input v-model="detailGood.subTitle" autocomplete="off" />
+        <el-form-item label="商品描述"
+                      :label-width="formLabelWidth"
+                      prop="subTitle">
+          <el-input v-model="detailGood.subTitle"
+                    autocomplete="off" />
         </el-form-item>
-        <el-form-item label="库存" :label-width="formLabelWidth" prop="stock">
-          <el-input v-model.number="detailGood.stock" autocomplete="off" />
+        <el-form-item label="库存"
+                      :label-width="formLabelWidth"
+                      prop="stock">
+          <el-input v-model.number="detailGood.stock"
+                    autocomplete="off" />
         </el-form-item>
-        <el-form-item label="所属分类" :label-width="formLabelWidth" prop="stock">
-          <el-cascader v-model="value" :options="categorys" @change="handleChange" />
+        <el-form-item label="所属分类"
+                      :label-width="formLabelWidth">
+          <el-cascader filterable
+                       v-model="detailGood.cateId"
+                       :options="categorys"
+                       placeholder='请选择分类'
+                       clearable />
         </el-form-item>
-        <el-form-item label="单次购买上限" :label-width="formLabelWidth" prop="limitNum">
-          <el-input v-model.number="detailGood.limitNum" autocomplete="off" />
+        <el-form-item label="单次购买上限"
+                      :label-width="formLabelWidth"
+                      prop="limitNum">
+          <el-input v-model.number="detailGood.limitNum"
+                    autocomplete="off" />
         </el-form-item>
-        <el-form-item label="零售价" :label-width="formLabelWidth" prop="salePrice">
-          <el-input v-model.number="detailGood.salePrice" autocomplete="off" />
+        <el-form-item label="零售价"
+                      :label-width="formLabelWidth"
+                      prop="salePrice">
+          <el-input v-model.number="detailGood.salePrice"
+                    autocomplete="off" />
         </el-form-item>
-        <el-form-item label="商品大图" :label-width="formLabelWidth" prop="productImageBig">
-          <el-input
-            v-model="detailGood.productImageBig"
-            type="textarea"
-            :rows="2"
-            autocomplete="off"
-          />
+        <el-form-item label="商品大图"
+                      :label-width="formLabelWidth"
+                      prop="productImageBig">
+          <el-input v-model="detailGood.productImageBig"
+                    type="textarea"
+                    :rows="2"
+                    autocomplete="off" />
         </el-form-item>
-        <el-form-item label="商品小图" :label-width="formLabelWidth" prop="productImageSmall">
-          <el-input
-            v-model="detailGood.productImageSmall"
-            type="textarea"
-            :rows="2"
-            autocomplete="off"
-          />
+        <el-form-item label="商品小图"
+                      :label-width="formLabelWidth"
+                      prop="productImageSmall">
+          <el-input v-model="detailGood.productImageSmall"
+                    type="textarea"
+                    :rows="2"
+                    autocomplete="off" />
         </el-form-item>
-        <el-form-item label="商品细节图" :label-width="formLabelWidth" prop="productMsg">
-          <el-input v-model="detailGood.productMsg" type="textarea" :rows="4" autocomplete="off" />
+        <el-form-item label="商品细节图"
+                      :label-width="formLabelWidth"
+                      prop="productMsg">
+          <el-input v-model="detailGood.productMsg"
+                    type="textarea"
+                    :rows="4"
+                    autocomplete="off" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer"
+           class="dialog-footer">
         <el-button @click="goodsDetailFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="updateGood()">确认</el-button>
+        <el-button type="primary"
+                   @click="updateGood()">确认</el-button>
       </div>
     </el-dialog>
     <!-- 编辑 -->
@@ -132,6 +196,7 @@ export default {
       categorys: [],
       // 产品原始分类
       cateNodes: [],
+      currgory: [],
       formLabelWidth: '120px',
       goodsDetailFormVisible: false,
       detailGood: {},
@@ -211,6 +276,9 @@ export default {
     },
     currPage (val) {
       // alert(val + '444')
+    },
+    currgory (newVal, oldVal) {
+      console.log("newVal==", newVal)
     }
   },
   created () {
@@ -241,6 +309,7 @@ export default {
     },
     goodDetail (good) {
       this.detailGood = good
+      this.detailGood.cateId = typeof (good.cateId) === 'object' ? good.cateId : JSON.parse(good.cateId)
       this.goodsDetailFormVisible = true
     },
     initCartNodes () {
@@ -248,7 +317,7 @@ export default {
         this.categorys = this.initCatrgorys(response.data)
       })
     },
-    initCatrgorys(nodes) {
+    initCatrgorys (nodes) {
       const tempgory = []
       nodes.forEach(node => {
         const temp = {}
@@ -258,7 +327,7 @@ export default {
           temp['children'] = this.initCatrgorys(node.children)
         }
         tempgory.push(temp)
-        console.log(' this.tempgory==', tempgory)
+        // console.log(' this.tempgory==', tempgory)
       })
       return tempgory
     },
@@ -285,6 +354,10 @@ export default {
     updateGood () {
       this.$refs['goodDetails'].validate((valid) => {
         if (valid) {
+          debugger
+          // 获取分类
+          console.log('this.detailGood=', this.detailGood.cateId.toString())
+          this.detailGood.cateId = typeof (this.detailGood.cateId) === 'object' ? JSON.stringify(this.detailGood.cateId) : this.detailGood.cateId
           putUpdateGood(this.detailGood).then(response => {
             this.fetchData(this.currPage, this.pageSize)
           })

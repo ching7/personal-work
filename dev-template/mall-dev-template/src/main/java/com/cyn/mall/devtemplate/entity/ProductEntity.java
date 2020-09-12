@@ -28,7 +28,7 @@ public class ProductEntity implements Serializable {
 	/**
 	 * 商品分类id
 	 */
-	private Integer cateId;
+	private String cateId;
 	/**
 	 * 零售价
 	 */
@@ -62,5 +62,13 @@ public class ProductEntity implements Serializable {
 	 * 限制购买数量
 	 */
 	private Integer limitNum;
+	/**
+	 * 创建日期
+	 */
+	private String createDate;
+	/**
+	 * 创建时间
+	 */
+	private String createTime;
 
 }

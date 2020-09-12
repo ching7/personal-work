@@ -1,6 +1,7 @@
 package com.cyn.mall.devtemplate.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,70 @@ public class PrdCategoryController {
 
     @Autowired
     private ProductService productService;
+
+    /**
+     * 删除节点
+     */
+    @RequestMapping(value = "/admin/deleteCate", method = RequestMethod.GET)
+    //@RequiresPermissions("devtemplate:cart:list")
+    public RTD deleteCate(@RequestParam Map<String, Object> params) {
+        RTD rtd = new RTD();
+        String cateId = params.get("cateId").toString();
+        // 1 判断节点是否有子节点
+        // 2 无子节点直接删除，有子节点报错返回
+        QueryWrapper<PrdCategoryEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("parent_id", Integer.parseInt(cateId));
+        List<PrdCategoryEntity> list = prdCategoryService.list(queryWrapper);
+        if (list.size() > 0) {
+            rtd.setCode(50000);
+            rtd.setStatus("当前节点有子节点，禁止删除");
+            return rtd;
+        } else {
+            prdCategoryService.removeById(cateId);
+            rtd.setCode(20000);
+            rtd.setStatus("节点删除成功");
+            return rtd;
+        }
+    }
+
+    /**
+     * 新增子分类
+     */
+    @RequestMapping(value = "/admin/appendCate", method = RequestMethod.POST)
+    //@RequiresPermissions("devtemplate:cart:list")
+    public RTD appendCate(@RequestParam Map<String, Object> params) {
+        RTD rtd = new RTD();
+        String parentId = params.get("parentId").toString();
+        String name = params.get("name").toString();
+        // 1 父节点isParent=1
+        QueryWrapper<PrdCategoryEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("cat_id", parentId);
+        PrdCategoryEntity prdCategoryEntity = new PrdCategoryEntity();
+        PrdCategoryEntity parent = prdCategoryService.getById(parentId);
+        if (parent != null) {
+            prdCategoryEntity.setIsParent(1);
+            boolean update = prdCategoryService.update(prdCategoryEntity, queryWrapper);
+        }
+        // 2 新增子节点
+        PrdCategoryEntity newPrdCategoryEntity = new PrdCategoryEntity();
+        if (parent == null) {
+            newPrdCategoryEntity.setIsParent(1);
+        } else {
+            newPrdCategoryEntity.setIsParent(0);
+        }
+        newPrdCategoryEntity.setName(name);
+        newPrdCategoryEntity.setParentId(Integer.parseInt(parentId));
+        newPrdCategoryEntity.setStatus(1);
+        newPrdCategoryEntity.setSortOrder(0);
+        newPrdCategoryEntity.setCreated(new Date());
+        newPrdCategoryEntity.setUpdated(new Date());
+        boolean save = prdCategoryService.save(newPrdCategoryEntity);
+        if (save) {
+            rtd.setCode(20000);
+            rtd.setStatus("新增子分类成功");
+        }
+        return rtd;
+    }
 
     /**
      * 查询指定分类对应产品

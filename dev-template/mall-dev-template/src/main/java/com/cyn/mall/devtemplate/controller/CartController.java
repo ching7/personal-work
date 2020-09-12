@@ -4,6 +4,11 @@ import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.additional.update.impl.UpdateChainWrapper;
+import com.cyn.mall.devtemplate.bean.PrdCate;
+import com.cyn.mall.devtemplate.bean.RTD;
+import com.cyn.mall.devtemplate.entity.PrdCategoryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +24,10 @@ import com.cyn.common.utils.R;
  * @date 2020-07-25 14:59:41
  */
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/api/cart/admin")
 public class CartController {
     @Autowired
     private CartService cartService;
-
 
     /**
      * 列表

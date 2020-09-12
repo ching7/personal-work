@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <el-input v-model="seachCate"
+              size="medium"
               placeholder="输入查找的类别，支持模糊匹配"
               style="margin-bottom:30px;"
               class='search-input-prd'>
@@ -8,6 +9,10 @@
                  icon="el-icon-search"></el-button>
     </el-input>
     <div class="cate-nodes">
+      <el-button type="primary"
+                 size="small"
+                 style="margin: 0px 5px 5px 5px;"
+                 @click="addRootCate()">新增根分类</el-button>
       <el-tree ref="cateNodesTree"
                :data="cateNodes"
                :props="defaultProps"
@@ -82,11 +87,22 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog title="分类名称"
+               :visible.sync="cateFormVisible">
+      <el-input v-model="currCatename"
+                placeholder="分类名称"></el-input>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="cateFormVisible = false">取消</el-button>
+        <el-button type="primary"
+                   @click="appendCateHandler()">确认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getCateAll, getCatePrd, getSearchGoods, putDelGood } from '@/api/category'
+import { getCateAll, getCatePrd, appendCate, deleteCate } from '@/api/category'
 
 export default {
   data () {
@@ -94,9 +110,13 @@ export default {
       seachCate: '',
       pageSize: 10,
       currPage: 1,
+      category: {},
       totalCount: 0,
       cateNodes: [],
       currentNode: {},
+      isAddRootCate: false,
+      currCatename: "",
+      cateFormVisible: false,
       listLoading: false,
       defaultProps: {
         children: 'children',
@@ -154,14 +174,66 @@ export default {
       return data.label.indexOf(value) !== -1
     },
     renderContent (h, { node, data, store }) {
+      debugger
       return (
         <span class="custom-tree-node">
           <span>{node.label}</span>
           <span>
-            <el-button size="mini" type="text" on-click={() => this.append(data)}>新增</el-button>
-            <el-button size="mini" type="text" on-click={() => this.remove(node, data)}>删除</el-button>
+            <el-button size="mini" type="text" on-click={() => this.appendCateNode(data)}>新增</el-button>
+            <el-button v-show={data.children && data.children.length === 0} size="mini" type="text" on-click={() => this.removeCateNode(node, data)}>删除</el-button>
           </span>
-        </span>);
+        </span >);
+    },
+    addRootCate () {
+      this.cateFormVisible = true
+      this.isAddRootCate = true
+    },
+    appendCateHandler () {
+      let param = {}
+      if (this.isAddRootCate) {
+        param = {
+          'parentId': '0',//-1为所有商品，总根节点
+          'name': this.currCatename
+        }
+      } else {
+        param = {
+          'parentId': this.currentNode.id,
+          'name': this.currCatename
+        }
+      }
+      appendCate(param).then(resopnse => {
+        this.initCartNode()
+      })
+      this.cateFormVisible = false
+      this.isAddRootCate = false
+    },
+    appendCateNode (data) {
+      this.cateFormVisible = true
+      this.currentNode = data
+    },
+    removeCateNode (node, data) {
+      let param = {
+        'cateId': data.id
+      }
+      this.$confirm('此操作将永久删除该分类, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteCate(param).then(resopnse => {
+          this.initCartNode()
+        })
+        console.log('删除节点=', node, data)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }

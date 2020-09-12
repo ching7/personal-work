@@ -109,6 +109,7 @@ public class ProductController {
         String productImageBig = params.get("productImageBig").toString();
         String productMsg = params.get("productMsg").toString();
         Integer stock = Integer.parseInt(params.get("stock").toString());
+        String cateId = params.get("cateId").toString();
         String subTitle = params.get("subTitle").toString();
         Integer limitNum = Integer.parseInt(params.get("limitNum").toString());
         ProductEntity productEntity = new ProductEntity();
@@ -120,6 +121,9 @@ public class ProductController {
         productEntity.setProductImageSmall(productImageSmall);
         productEntity.setProductName(productName);
         productEntity.setSalePrice(salePrice);
+        productEntity.setCateId(cateId);
+        productEntity.setCreateDate(DateUtils.getCurrDate());
+        productEntity.setCreateTime(DateUtils.getCurrTime());
         RTD rtd = new RTD();
         if (params.get("productId") == null) {
             productService.save(productEntity);
@@ -195,7 +199,8 @@ public class ProductController {
         RTD rtd = new RTD();
         QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("product_name", productName);
-         IPage<ProductEntity> iPage = new Page<ProductEntity>(Long.parseLong(currPage), Long.parseLong(pageSize));
+        queryWrapper.orderByDesc("product_id");
+        IPage<ProductEntity> iPage = new Page<ProductEntity>(Long.parseLong(currPage), Long.parseLong(pageSize));
         IPage<ProductEntity> productEntityIPage = productService.page(iPage, queryWrapper);
 
         List<ProductEntity> list = productEntityIPage.getRecords();

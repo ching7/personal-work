@@ -18,3 +18,20 @@ export function getCatePrd (param) {
   })
 }
 
+//删除分类
+export function deleteCate (param) {
+  return request({
+    url: '/api/prdCate/admin/deleteCate',
+    method: 'get',
+    params: param
+  })
+}
+
+//新增分类
+export function appendCate (param) {
+  return request({
+    url: '/api/prdCate/admin/appendCate',
+    method: 'post',
+    params: param
+  })
+}
