@@ -118,9 +118,11 @@
         </el-form-item>
         <el-form-item label="所属分类"
                       :label-width="formLabelWidth">
-          <el-cascader filterable
+          <el-cascader ref="cascader"
+                       filterable
                        v-model="detailGood.cateId"
                        :options="categorys"
+                       size="medium"
                        placeholder='请选择分类'
                        clearable />
         </el-form-item>
@@ -308,8 +310,22 @@ export default {
       this.initCartNodes()
     },
     goodDetail (good) {
-      this.detailGood = good
-      this.detailGood.cateId = typeof (good.cateId) === 'object' ? good.cateId : JSON.parse(good.cateId)
+      // fix https://github.com/ElemeFE/element/issues/18669
+      this.$nextTick(() => {
+        this.detailGood = good
+        if (this.$refs.cascader) {
+          this.$refs.cascader.$refs.panel.activePath = []
+          this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
+        }
+        if (good.cateId) {
+          this.detailGood.cateId = typeof (good.cateId) === 'object' ? good.cateId : JSON.parse(good.cateId)
+          // this.$refs.cascader.$refs.panel.checkedValue = this.detailGood.cateId
+          // this.$refs.cascader.$refs.panel.activePath = this.detailGood.cateId
+          // this.$refs.cascader.$refs.panel.syncActivePath()
+        } else {
+          this.detailGood.cateId = []
+        }
+      })
       this.goodsDetailFormVisible = true
     },
     initCartNodes () {
