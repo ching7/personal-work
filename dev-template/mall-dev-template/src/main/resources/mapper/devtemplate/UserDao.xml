@@ -3,7 +3,7 @@
 
 <mapper namespace="com.cyn.mall.devtemplate.dao.UserDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.cyn.mall.devtemplate.entity.UserEntity" id="userMap">
         <result property="userId" column="user_id"/>
         <result property="name" column="name"/>
@@ -12,6 +12,8 @@
         <result property="userPwd" column="user_pwd"/>
         <result property="cartId" column="cart_id"/>
         <result property="addressId" column="address_id"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createTime" column="create_time"/>
     </resultMap>
 
 

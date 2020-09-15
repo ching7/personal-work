@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { getOrderPage, getSearchOrder } from '@/api/order'
+import { getOrderPage, getSearchOrderPage } from '@/api/order'
 
 export default {
   filters: {
@@ -135,36 +135,39 @@ export default {
   },
   methods: {
     fetchData () {
-      this.listLoading = true
-      debugger
-      getOrderPage().then(response => {
-        this.OrderList = response.data
-        this.detailOrder = this.OrderList[0]
-        this.listLoading = false
-      })
-
+      this.searchOrderPage(this.searchOrderVal, this.currPage, this.pageSize)
     },
     OrderDetail (Order) {
       this.detailOrder = Order
       this.OrderDetailFormVisible = true
     },
     searchOrder () {
-      // this.listLoading = true
-      alert(this.searchOrderVal)
-      getSearchOrder(this.searchOrderVal).then(response => {
-        this.OrderList = response.data
-        this.detailOrder = this.OrderList[0]
+      this.searchOrderPage(this.searchOrderVal, this.currPage, this.pageSize)
+    },
+    searchOrderPage (searchOrderVal, currPage, pageSize) {
+      this.listLoading = true
+      let searchOrder = {
+        'orderId': searchOrderVal,
+        'currPage': currPage,
+        'pageSize': pageSize
+      }
+      getSearchOrderPage(searchOrder).then(response => {
+        if (response.code === 20000 && response.data.length > 0) {
+          this.OrderList = response.data
+          this.detailOrder = this.OrderList[0]
+          this.totalCount = response.totalCount
+        } else {
+          this.OrderList = []
+          this.totalCount = 0
+        }
         this.listLoading = false
       })
     },
     handleCurrentChange (data) {
-      this.currPage = data
-      alert(data + '==111')
+      this.searchOrderPage(this.searchOrderVal, data, this.pageSize)
     },
     changePageSize (data) {
-      this.pageSize = data
-
-      alert(data + '==2222')
+      this.searchOrderPage(this.searchOrderVal, this.currPage, data)
     }
   }
 }

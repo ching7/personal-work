@@ -23,6 +23,20 @@
           {{ scope.row.userId }}
         </template>
       </el-table-column>
+      <el-table-column label="创建日期"
+                       width="150"
+                       align="center">
+        <template slot-scope="scope">
+          {{ scope.row.createDate}}
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间"
+                       width="150"
+                       align="center">
+        <template slot-scope="scope">
+          {{ scope.row.createTime}}
+        </template>
+      </el-table-column>
       <el-table-column label="用户姓名"
                        width="150"
                        align="center">
@@ -61,6 +75,16 @@
         <el-form-item label="用户ID"
                       :label-width="formLabelWidth">
           <el-input v-model="detailMember.userId"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="创建日期"
+                      :label-width="formLabelWidth">
+          <el-input v-model="detailMember.createDate"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="创建时间"
+                      :label-width="formLabelWidth">
+          <el-input v-model="detailMember.createTime"
                     autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="用户姓名"

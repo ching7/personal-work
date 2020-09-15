@@ -164,6 +164,8 @@ public class UserController {
             UserEntity userEntityAdd = new UserEntity();
             userEntityAdd.setAvatar("https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png");
             userEntityAdd.setName("游客" + DateUtils.getCurrDate() + DateUtils.getCurrTime());
+            userEntityAdd.setCreateDate(DateUtils.getCurrDate());
+            userEntityAdd.setCreateTime(DateUtils.getCurrTime());
             userEntityAdd.setUserName(inputUserName);
             userEntityAdd.setUserPwd(inputUserPwd);
             boolean save = userService.save(userEntityAdd);

@@ -53,6 +53,28 @@ public class AdminController {
         return rtd;
     }
 
+    @RequestMapping(value = "/getSearchOrderPage", method = RequestMethod.GET)
+    public RTD getSearchOrderPage(@RequestParam Map<String, Object> params) {
+        String currPage = params.get("currPage").toString();
+        String pageSize = params.get("pageSize").toString();
+        String orderId = params.get("orderId").toString();
+
+        RTD rtd = new RTD();
+        QueryWrapper<OrderEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("order_id", orderId);
+        queryWrapper.orderByDesc("order_id");
+        IPage<OrderEntity> iPage = new Page<OrderEntity>(Long.parseLong(currPage), Long.parseLong(pageSize));
+        IPage<OrderEntity> orderEntityIPage = orderService.page(iPage, queryWrapper);
+
+        List<OrderEntity> list = orderEntityIPage.getRecords();
+        rtd.setStatus("suc");
+        rtd.setCode(20000);
+        rtd.setData(list);
+        rtd.setTotalCount(orderEntityIPage.getTotal());
+        return rtd;
+    }
+
+
     /**
      * 订单列表
      *

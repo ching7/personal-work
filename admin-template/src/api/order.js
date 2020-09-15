@@ -16,19 +16,11 @@ export function getOrderPage (query) {
   })
 }
 
-export function transactionList (query) {
+export function getSearchOrderPage (query) {
   return request({
-    url: '/vue-element-admin/transaction/list',
+    url: '/api/admin/getSearchOrderPage',
     method: 'get',
     params: query
-  })
-}
-
-export function getSearchOrder (query) {
-  return request({
-    url: '/api/admin/getSearchOrder',
-    method: 'get',
-    params: { query }
   })
 }
 
