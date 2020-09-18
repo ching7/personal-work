@@ -6,7 +6,8 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    userDetailInfo: {}
   }
 }
 
@@ -24,6 +25,10 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_USERDETAILINFO: (state, user) => {
+    debugger
+    state.userDetailInfo = user
   }
 }
 
@@ -54,7 +59,7 @@ const actions = {
         }
 
         const { name, avatar } = data
-
+        commit('SET_USERDETAILINFO', data)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         resolve(data)

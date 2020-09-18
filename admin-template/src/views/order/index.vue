@@ -37,9 +37,15 @@
           {{ scope.row.orderStatus}}
         </template>
       </el-table-column>
-      <el-table-column label="订单总价">
+      <el-table-column label="订单总价"
+                       width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.orderTotal }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="订单商品列表">
+        <template slot-scope="scope">
+          <span>{{ scope.row.goodsList }}</span>
         </template>
       </el-table-column>
       <el-table-column fixed="right"
@@ -68,6 +74,11 @@
         <el-form-item label="订单编号"
                       :label-width="formLabelWidth">
           <el-input v-model="detailOrder.orderId"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="订单创建时间"
+                      :label-width="formLabelWidth">
+          <el-input v-model="detailOrder.createDate"
                     autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="订单商品"

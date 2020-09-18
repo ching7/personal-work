@@ -370,7 +370,6 @@ export default {
     updateGood () {
       this.$refs['goodDetails'].validate((valid) => {
         if (valid) {
-          debugger
           // 获取分类
           console.log('this.detailGood=', this.detailGood.cateId.toString())
           this.detailGood.cateId = typeof (this.detailGood.cateId) === 'object' ? JSON.stringify(this.detailGood.cateId) : this.detailGood.cateId

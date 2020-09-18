@@ -54,7 +54,6 @@ export const constantRoutes = [
       meta: { title: '商城详情', icon: 'dashboard' }
     }]
   },
-
   {
     path: '/product',
     component: Layout,
@@ -76,7 +75,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/member',
     component: Layout,
@@ -86,6 +84,18 @@ export const constantRoutes = [
         name: '会员管理',
         component: () => import('@/views/member/index'),
         meta: { title: '会员管理', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/admin',
+    component: Layout,
+    children: [
+      {
+        path: 'admin',
+        name: '个人信息',
+        component: () => import('@/views/admin/index'),
+        meta: { title: '个人信息', icon: 'form' }
       }
     ]
   },

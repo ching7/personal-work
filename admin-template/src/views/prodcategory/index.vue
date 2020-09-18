@@ -174,7 +174,6 @@ export default {
       return data.label.indexOf(value) !== -1
     },
     renderContent (h, { node, data, store }) {
-      debugger
       return (
         <span class="custom-tree-node">
           <span>{node.label}</span>
