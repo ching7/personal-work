@@ -1,32 +1,32 @@
 package com.cyn.mall.devtemplate.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cyn.common.utils.PageUtils;
+import com.cyn.common.utils.R;
+import com.cyn.mall.devtemplate.bean.RTD;
+import com.cyn.mall.devtemplate.ctrl.PassWordHandlerCtrl;
+import com.cyn.mall.devtemplate.ctrl.UserCtrl;
+import com.cyn.mall.devtemplate.entity.AdminEntity;
+import com.cyn.mall.devtemplate.entity.OrderEntity;
+import com.cyn.mall.devtemplate.service.AdminService;
+import com.cyn.mall.devtemplate.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import org.apache.shiro.authz.annotation.RequiresPermissions;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cyn.mall.devtemplate.bean.RTD;
-import com.cyn.mall.devtemplate.ctrl.UserCtrl;
-import com.cyn.mall.devtemplate.entity.OrderEntity;
-import com.cyn.mall.devtemplate.entity.ProductEntity;
-import com.cyn.mall.devtemplate.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import com.cyn.mall.devtemplate.entity.AdminEntity;
-import com.cyn.mall.devtemplate.service.AdminService;
-import com.cyn.common.utils.PageUtils;
-import com.cyn.common.utils.R;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import static com.cyn.mall.devtemplate.constants.Constants.pageSize;
+
+//import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 
 /**
@@ -43,6 +43,8 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private UserCtrl userCtrl;
+    @Value("${mall.private-key:test}")
+    private String privateKey;
 
     @RequestMapping(value = "/getOrderPage", method = RequestMethod.GET)
     public RTD getOrderPage() {
@@ -139,14 +141,17 @@ public class AdminController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     //@RequiresPermissions("devtemplate:admin:list")
-    public RTD adminLogin(@RequestBody Map<String, Object> params, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public RTD adminLogin(@RequestBody Map<String, Object> params, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
         RTD rtd = new RTD();
         Map<String, Object> data = new HashMap<>();
-
         String userName = (String) params.get("username");
         String passWord = (String) params.get("password");
+        // 密码RSA私钥解密
+        String decryptPwd = PassWordHandlerCtrl.decrypt(passWord, privateKey);
+        // 密码md5 32位 存入数据库，解密出来md5加密
+        String pwdMd532 = PassWordHandlerCtrl.getPwdMd532(decryptPwd);
         QueryWrapper<AdminEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name", userName).eq("user_password", passWord);
+        queryWrapper.eq("user_name", userName).eq("user_password", pwdMd532);
         AdminEntity adminEntity = adminService.getOne(queryWrapper);
         if (adminEntity != null) {
             Cookie cookie = new Cookie("token", adminEntity.getAdminId().toString());
@@ -154,9 +159,13 @@ public class AdminController {
             cookie.setMaxAge(7200);
             httpServletResponse.addCookie(cookie);
             data.put("token", adminEntity.getAdminId());
+            rtd.setData(data);
+            rtd.setCode(20000);
+        } else {
+            rtd.setStatus("登陆失败，账号或者密码错误");
+            rtd.setCode(50000);
         }
-        rtd.setData(data);
-        rtd.setCode(20000);
+
         return rtd;
     }
 
