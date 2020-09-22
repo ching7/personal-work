@@ -1267,7 +1267,7 @@ CREATE TABLE `sys_admin`  (
 -- ----------------------------
 -- Records of sys_admin
 -- ----------------------------
-INSERT INTO `sys_admin` VALUES (1, 'admin', '123456', '1', '超级管理员', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200730105134.png');
+INSERT INTO `sys_admin` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '1', '超级管理员', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200730105134.png');
 
 -- ----------------------------
 -- Table structure for sys_arg
