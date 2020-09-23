@@ -20,6 +20,7 @@
         <!--        <mysql-connector-version>5.7</mysql-connector-version>-->
         <fastjson-verion>1.2.72</fastjson-verion>
         <minio-version>3.0.10</minio-version>
+        <commons-io-version>2.4</commons-io-version>
     </properties>
     <dependencies>
         <!-- springBoot 的启动器 -->
@@ -87,14 +88,22 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <!--  单元测试-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+        <!-- oss存储-->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>${minio-version}</version>
+        </dependency>
+        <!-- 文件处理工具类-->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
         </dependency>
     </dependencies>
     <build>

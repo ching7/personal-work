@@ -5,7 +5,11 @@ import io.minio.MinioClient;
 import io.minio.policy.PolicyType;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,8 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.FileNameMap;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -129,6 +136,38 @@ public class OssMinioController {
             outputStream.close();
         } catch (Exception ex) {
             log.error(ex.getMessage(), "下载失败：");
+        }
+    }
+
+    /**
+     * 文件预览
+     *
+     * @param filePath
+     * @return
+     */
+    @ApiOperation("文件预览")
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> viewFiles(@RequestParam("filePath") String filePath, HttpServletResponse httpResponse) throws Exception {
+        try {
+            MinioClient minioClient = new MinioClient(endpoint, accessKey, secretKey);
+            InputStream object = minioClient.getObject(bucketName, filePath);
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            byte[] readBuf = new byte[1024 * 100];
+            int readLen = 0;
+            while ((readLen = object.read(readBuf)) > 0) {
+                output.write(readBuf, 0, readLen);
+            }
+            byte[] file = output.toByteArray();
+            HttpHeaders headers = new HttpHeaders();
+            FileNameMap fileNameMap = URLConnection.getFileNameMap();
+            String mimeType = fileNameMap.getContentTypeFor(FilenameUtils.getName(filePath));
+            if (null != mimeType) {
+                headers.add("Content-Type", mimeType);
+            }
+            return new ResponseEntity(file, headers, HttpStatus.OK);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), "下载失败：");
+            throw new Exception();
         }
     }
 }
