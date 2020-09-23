@@ -1,10 +1,8 @@
 package com.cyn.common.interceptor;
 
 import com.cyn.common.bean.InterceptorFilterConfig;
-import com.cyn.common.config.InterceptorConfig;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -36,13 +34,16 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 配置拦截器例外
+        // 配置拦截器请求例外
         String requestUrl = request.getRequestURI();
         List<String> includeUrl = interceptorFilterConfig.getInclude();
         if (includeUrl.contains(requestUrl)) {
             return true;
         }
-
+        // oss
+        if (requestUrl.contains("oss")) {
+            return true;
+        }
         // 后台-swagger
         if (requestUrl.contains("admin") || requestUrl.contains("webjars")) {
             return true;

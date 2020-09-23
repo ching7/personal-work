@@ -11,10 +11,10 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 15/09/2020 20:05:44
+ Date: 23/09/2020 20:41:38
 */
 
-SET NAMES utf8;
+SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
@@ -1257,7 +1257,7 @@ DROP TABLE IF EXISTS `sys_admin`;
 CREATE TABLE `sys_admin`  (
   `admin_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `user_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `user_password` varchar(4000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `roles` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -1301,7 +1301,7 @@ CREATE TABLE `sys_cart`  (
   `product_num` int(11) NULL DEFAULT NULL COMMENT '产品数量',
   `product_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '产品价格',
   PRIMARY KEY (`cart_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_cart

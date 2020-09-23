@@ -19,6 +19,7 @@ public class RTD {
     private Integer code;
     private Object data;
     private String status;
+    private String message;
     private Long totalCount;
 
 }

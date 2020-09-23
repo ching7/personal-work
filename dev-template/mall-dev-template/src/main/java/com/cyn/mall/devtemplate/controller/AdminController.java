@@ -162,7 +162,7 @@ public class AdminController {
             rtd.setData(data);
             rtd.setCode(20000);
         } else {
-            rtd.setStatus("登陆失败，账号或者密码错误");
+            rtd.setMessage("登陆失败，账号或者密码错误");
             rtd.setCode(50000);
         }
 
