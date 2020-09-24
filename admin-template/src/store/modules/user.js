@@ -27,7 +27,6 @@ const mutations = {
     state.avatar = avatar
   },
   SET_USERDETAILINFO: (state, user) => {
-    debugger
     state.userDetailInfo = user
   }
 }

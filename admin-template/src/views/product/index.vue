@@ -21,17 +21,40 @@
               style="margin-top: 15px;">
       <el-table-column align="center"
                        label="产品编号"
-                       width="95">
+                       width="50">
         <template slot-scope="scope">{{ scope.row.productId }}</template>
       </el-table-column>
       <el-table-column label="产品名称"
-                       width="150"
+                       width="100"
                        align="center">
         <template slot-scope="scope">{{ scope.row.productName }}</template>
       </el-table-column>
-      <el-table-column label="产品描述">
+      <el-table-column label="产品描述"
+                       width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.subTitle }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="产品大图"
+                       width="150">
+        <template slot-scope="scope">
+          <product-img :imgUrls='scope.row.productImageBig'>
+          </product-img>
+          <!-- {{ scope.row.productImageBig }} -->
+        </template>
+      </el-table-column>
+      <el-table-column label="产品小图"
+                       width="150">
+        <template slot-scope="scope">
+          <product-img :imgUrls='scope.row.productImageSmall'>
+          </product-img>
+        </template>
+      </el-table-column>
+      <el-table-column label="产品细节图"
+                       width="150">
+        <template slot-scope="scope">
+          <product-img :imgUrls='scope.row.productMsg'>
+          </product-img>
         </template>
       </el-table-column>
       <el-table-column label="产品分类">
@@ -40,19 +63,19 @@
         </template>
       </el-table-column>
       <el-table-column label="单次购买上限"
-                       width="110"
+                       width="50"
                        align="center">
         <template slot-scope="scope">{{ scope.row.limitNum }}</template>
       </el-table-column>
       <el-table-column class-name="status-col"
                        label="零售价"
-                       width="110"
+                       width="50"
                        align="center">
         <template slot-scope="scope">{{ scope.row.salePrice }}</template>
       </el-table-column>
       <el-table-column align="center"
                        label="库存"
-                       width="200">
+                       width="50">
         <template slot-scope="scope">
           <span>{{ scope.row.stock }}</span>
         </template>
@@ -177,6 +200,7 @@
 <script>
 import { getGoodsPage, putUpdateGood, getSearchGoods, putDelGood } from '@/api/product'
 import { getCateAll } from '@/api/category'
+import productImg from './productImg'
 
 export default {
   filters: {
@@ -188,6 +212,9 @@ export default {
       }
       return statusMap[status]
     }
+  },
+  components: {
+    productImg
   },
   data () {
     return {

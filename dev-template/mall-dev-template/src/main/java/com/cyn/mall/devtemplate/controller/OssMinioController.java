@@ -1,11 +1,14 @@
 package com.cyn.mall.devtemplate.controller;
 
 import com.cyn.mall.devtemplate.bean.RTD;
+import com.cyn.mall.devtemplate.ctrl.OssObjectCtrl;
 import io.minio.MinioClient;
 import io.minio.policy.PolicyType;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,6 +43,9 @@ import java.util.Date;
 @RestController
 @RequestMapping("/oss/minio/")
 public class OssMinioController {
+    @Autowired
+    OssObjectCtrl ossObjectCtrl;
+
     @Value("${minio.endpoint}")
     private String endpoint;
     @Value("${minio.bucketName}")
@@ -73,11 +79,18 @@ public class OssMinioController {
             // 文件存储的目录结构
             String objectName = sdf.format(new Date()) + "/" + filename;
             // 存储文件
-            minioClient.putObject(bucketName, objectName, file.getInputStream(), file.getContentType());
-            log.info("文件上传成功!");
-            String filePath = endpoint + "/" + bucketName + "/" + objectName;
+            // 上传前判断文件是否已存在，已存在直接返回路径
+            String existFileAllPath = ossObjectCtrl.existObject(file);
+            if (StringUtils.isNotBlank(existFileAllPath)) {
+                log.info("{}，文件已存在!", existFileAllPath);
+                rtd.setData(existFileAllPath);
+            } else {
+                minioClient.putObject(bucketName, objectName, file.getInputStream(), file.getContentType());
+                log.info("文件上传成功!");
+                String ossFileAllPaht = ossObjectCtrl.addOssObject(objectName, file, filename);
+                rtd.setData(ossFileAllPaht);
+            }
             rtd.setCode(20000);
-            rtd.setData(filePath);
         } catch (Exception e) {
             rtd.setCode(50000);
             rtd.setMessage(e.getMessage());
