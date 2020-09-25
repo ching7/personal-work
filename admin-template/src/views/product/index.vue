@@ -13,6 +13,7 @@
                  @click="searchGood()" />
     </el-input>
     <el-table v-loading="listLoading"
+              row-key="productId"
               :data="goodList"
               element-loading-text="Loading"
               border
@@ -57,9 +58,11 @@
           </product-img>
         </template>
       </el-table-column>
-      <el-table-column label="产品分类">
+      <el-table-column label="产品分类"
+                       width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.cateId }}</span>
+
+          <span>{{ getCateName(scope.row.cateId) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="单次购买上限"
@@ -165,25 +168,49 @@
                       :label-width="formLabelWidth"
                       prop="productImageBig">
           <el-input v-model="detailGood.productImageBig"
-                    type="textarea"
+                    :disabled="true"
                     :rows="2"
-                    autocomplete="off" />
+                    autocomplete="off">
+          </el-input>
+          <product-img :imgUrls='detailGood.productImageBig' />
+          <el-upload class="upload-demo"
+                     ref="imageBigUpload"
+                     :action="fileUploadUrl"
+                     multiple
+                     :with-credentials="true"
+                     :auto-upload="false"
+                     :limit="3"
+                     :on-exceed="handleExceed"
+                     :file-list="fileImageBigList">
+            <el-button size="small"
+                       slot="trigger"
+                       type="primary">点击上传替换图片</el-button>
+            <el-button style="margin-left: 10px;"
+                       size="small"
+                       type="success"
+                       @click="submitImageBigUpload">上传到服务器</el-button>
+            <div slot="tip"
+                 class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
         </el-form-item>
         <el-form-item label="商品小图"
                       :label-width="formLabelWidth"
                       prop="productImageSmall">
           <el-input v-model="detailGood.productImageSmall"
-                    type="textarea"
-                    :rows="2"
-                    autocomplete="off" />
+                    :disabled="true"
+                    autocomplete="off">
+
+          </el-input>
+          <product-img :imgUrls='detailGood.productImageSmall' />
         </el-form-item>
         <el-form-item label="商品细节图"
                       :label-width="formLabelWidth"
                       prop="productMsg">
           <el-input v-model="detailGood.productMsg"
-                    type="textarea"
-                    :rows="4"
-                    autocomplete="off" />
+                    :disabled="true"
+                    autocomplete="off">
+          </el-input>
+          <product-img :imgUrls='detailGood.productMsg' />
         </el-form-item>
       </el-form>
       <div slot="footer"
@@ -199,7 +226,9 @@
 
 <script>
 import { getGoodsPage, putUpdateGood, getSearchGoods, putDelGood } from '@/api/product'
-import { getCateAll } from '@/api/category'
+import { getCateAll, getAllPrdCate } from '@/api/category'
+import { FILE_UPLOAD_URL, viewFiles } from '@/api/file'
+
 import productImg from './productImg'
 
 export default {
@@ -218,13 +247,15 @@ export default {
   },
   data () {
     return {
+      fileImageBigList: [],
+      fileUploadUrl: '',
       goodList: [],
       listLoading: true,
       searchVal: '',
-      // 下拉分类
+      // 未归类分类
+      allcategorys: [],
+      // 归类下拉分类
       categorys: [],
-      // 产品原始分类
-      cateNodes: [],
       currgory: [],
       formLabelWidth: '120px',
       goodsDetailFormVisible: false,
@@ -311,10 +342,18 @@ export default {
     }
   },
   created () {
+    this.fileUploadUrl = FILE_UPLOAD_URL
     this.fetchData(this.currPage, this.pageSize)
   },
   methods: {
+    submitImageBigUpload () {
+      this.$refs.imageBigUpload.submit()
+    },
+    handleExceed (files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    },
     fetchData (pageNum, pageSize) {
+      this.goodList = []
       const queryPageParam = {
         'currPage': pageNum,
         'pageSize': pageSize,
@@ -324,6 +363,7 @@ export default {
       getGoodsPage(queryPageParam).then(response => {
         if (response.data.length > 0) {
           this.goodList = response.data
+          debugger
           this.detailGood = this.goodList[0]
           this.totalCount = response.totalCount
           this.listLoading = false
@@ -359,6 +399,10 @@ export default {
       getCateAll().then(response => {
         this.categorys = this.initCatrgorys(response.data)
       })
+      getAllPrdCate().then(response => {
+        debugger
+        this.allcategorys = response.data
+      })
     },
     initCatrgorys (nodes) {
       const tempgory = []
@@ -375,6 +419,7 @@ export default {
       return tempgory
     },
     delGood (good) {
+      debugger
       this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -422,6 +467,20 @@ export default {
     },
     changePageSize (data) {
       this.fetchData(this.currPage, data)
+    },
+    getCateName (node) {
+      let names = ""
+      if (typeof (node) === "string") {
+        JSON.parse(node).forEach(cat => {
+          this.allcategorys.forEach(cate => {
+            if (cat === cate.catId) {
+              names = names + "/" + cate.name
+            }
+          })
+        })
+      }
+      return names
+
     }
   }
 }

@@ -35,3 +35,11 @@ export function appendCate (param) {
     params: param
   })
 }
+
+//查询所有分类
+export function getAllPrdCate () {
+  return request({
+    url: '/api/prdCate/admin/getAllPrdCate',
+    method: 'get'
+  })
+}

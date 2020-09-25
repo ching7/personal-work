@@ -39,4 +39,3 @@ export function getSearchGoods (param) {
     params: param
   })
 }
-

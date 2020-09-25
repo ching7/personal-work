@@ -1,6 +1,7 @@
 <!--  -->
 <template>
-  <div class=''>
+  <div class=''
+       style='height: 100px;overflow-x: auto;'>
     <img v-for="(imgurl,index) in imgArr"
          :key="index"
          :src="imgurl"
@@ -28,19 +29,28 @@ export default {
     return {
       imgArr: [],
       imgSrc: "",
-      showImg: false
+      showImg: false,
     };
   },
   //监听属性 类似于data概念
   computed: {
+    // imgUrls (val) {
+    //   this.init()
+    // }
   },
   //监控data中的数据变化
   watch: {
+    imgUrls () {
+      if (this.imgUrls && this.imgUrls.match("http")) {
+        this.imgArr = this.imgUrls.split(',')
+        this.showImg = true
+      }
+    }
   },
   //方法集合
   methods: {
     init () {
-      if (this.imgUrls.match("http")) {
+      if (this.imgUrls && this.imgUrls.match("http")) {
         this.imgArr = this.imgUrls.split(',')
         this.showImg = true
       }
