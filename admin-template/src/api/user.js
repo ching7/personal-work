@@ -16,6 +16,14 @@ export function getInfo (token) {
   })
 }
 
+export function getSysInfo (token) {
+  return request({
+    url: '/api/sys/getSysInfo',
+    method: 'get',
+    params: { token }
+  })
+}
+
 export function logout () {
   return request({
     url: '/api/admin/logout',

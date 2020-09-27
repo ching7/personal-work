@@ -40,3 +40,4 @@ interceptorconfig:
       - /user
       - /api/admin/login
       - /api/admin/logout
+      - /api/sys/getSysInfo

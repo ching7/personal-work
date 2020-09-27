@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-button type="primary"
                size="small"
-               @click="goodDetail({})">新增商品</el-button>
+               @click="goodDetail(emptyGood)">新增商品</el-button>
     <el-input v-model="searchVal"
               size="medium"
               class="search-input"
@@ -179,18 +179,21 @@
                      multiple
                      :with-credentials="true"
                      :auto-upload="false"
-                     :limit="3"
+                     :limit="1"
+                     :on-success="imgeBigUploadSuc"
                      :on-exceed="handleExceed"
+                     :before-upload="beforeImgUpload"
                      :file-list="fileImageBigList">
             <el-button size="small"
                        slot="trigger"
-                       type="primary">点击上传替换图片</el-button>
+                       type="primary"
+                       @click="clearFileList">点击上传替换图片</el-button>
             <el-button style="margin-left: 10px;"
                        size="small"
                        type="success"
                        @click="submitImageBigUpload">上传到服务器</el-button>
             <div slot="tip"
-                 class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                 class="el-upload__tip">只能上传jpg/png文件，且不超过2000kb</div>
           </el-upload>
         </el-form-item>
         <el-form-item label="商品小图"
@@ -199,9 +202,30 @@
           <el-input v-model="detailGood.productImageSmall"
                     :disabled="true"
                     autocomplete="off">
-
           </el-input>
           <product-img :imgUrls='detailGood.productImageSmall' />
+          <el-upload class="upload-demo"
+                     ref="imageSmallUpload"
+                     :action="fileUploadUrl"
+                     multiple
+                     :with-credentials="true"
+                     :auto-upload="false"
+                     :limit="3"
+                     :on-success="imgSmlUploadSuc"
+                     :on-exceed="handleExceed"
+                     :before-upload="beforeImgUpload"
+                     :file-list="fileImageSmallList">
+            <el-button size="small"
+                       slot="trigger"
+                       type="primary"
+                       @click="clearFileList">点击上传替换图片</el-button>
+            <el-button style="margin-left: 10px;"
+                       size="small"
+                       type="success"
+                       @click="submitImageSmallUpload">上传到服务器</el-button>
+            <div slot="tip"
+                 class="el-upload__tip">只能上传jpg/png文件，且不超过2000kb</div>
+          </el-upload>
         </el-form-item>
         <el-form-item label="商品细节图"
                       :label-width="formLabelWidth"
@@ -211,6 +235,28 @@
                     autocomplete="off">
           </el-input>
           <product-img :imgUrls='detailGood.productMsg' />
+          <el-upload class="upload-demo"
+                     ref="imageMsgUpload"
+                     :action="fileUploadUrl"
+                     multiple
+                     :with-credentials="true"
+                     :auto-upload="false"
+                     :limit="3"
+                     :on-success="imgMsgloadSuc"
+                     :on-exceed="handleExceed"
+                     :before-upload="beforeImgUpload"
+                     :file-list="fileImageMsgList">
+            <el-button size="small"
+                       slot="trigger"
+                       type="primary"
+                       @click="clearFileList">点击上传替换图片</el-button>
+            <el-button style="margin-left: 10px;"
+                       size="small"
+                       type="success"
+                       @click="submitImageMsgUpload">上传到服务器</el-button>
+            <div slot="tip"
+                 class="el-upload__tip">只能上传jpg/png文件，且不超过2000kb</div>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer"
@@ -247,6 +293,11 @@ export default {
   },
   data () {
     return {
+      emptyGood: {},
+      //商品大图
+      imgUploadUrls: '',
+      fileImageMsgList: [],
+      fileImageSmallList: [],
       fileImageBigList: [],
       fileUploadUrl: '',
       goodList: [],
@@ -342,15 +393,79 @@ export default {
     }
   },
   created () {
+    this.emptyGood = {
+      cateId: [],
+      createDate: '',
+      createTime: '',
+      limitNum: 0,
+      productId: 0,
+      productImageBig: "",
+      productImageSmall: "",
+      productMsg: "",
+      productName: "",
+      salePrice: 0,
+      stock: 0,
+      subTitle: ""
+    }
+    this.imgUploadUrls = ""
+    this.fileImageMsgList = []
+    this.fileImageSmallList = []
+    this.fileImageBigList = []
     this.fileUploadUrl = FILE_UPLOAD_URL
     this.fetchData(this.currPage, this.pageSize)
   },
   methods: {
+    clearFileList () {
+      debugger
+      this.imgUploadUrls = ""
+      this.fileImageMsgList = []
+      this.fileImageSmallList = []
+      this.fileImageBigList = []
+    },
+    beforeImgUpload (file) {
+      const isJPGOrPng = (file.type === 'image/jpeg') || (file.type === 'image/png') || (file.type === 'image/jpg');
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPGOrPng) {
+        this.$message.error('上传图片只能是 JPG或PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 2MB!');
+      }
+      return isJPGOrPng && isLt2M;
+    },
+    imgeBigUploadSuc (response, file, fileList) {
+      if (response.code === 20000) {
+        debugger
+        this.imgUploadUrls = this.imgUploadUrls + "," + response.data
+        this.detailGood.productImageBig = this.imgUploadUrls
+        this.$message.success('上传成功!')
+      }
+    },
+    imgSmlUploadSuc (response, file, fileList) {
+      if (response.code === 20000) {
+        this.imgUploadUrls = this.imgUploadUrls + "," + response.data
+        this.detailGood.productImageSmall = this.imgUploadUrls
+        this.$message.success('上传成功!')
+      }
+    },
+    imgMsgloadSuc (response, file, fileList) {
+      if (response.code === 20000) {
+        this.imgUploadUrls = this.imgUploadUrls + "," + response.data
+        this.detailGood.productMsg = this.imgUploadUrls
+        this.$message.success('上传成功!')
+      }
+    },
+    submitImageMsgUpload () {
+      this.$refs.imageMsgUpload.submit()
+    },
+    submitImageSmallUpload () {
+      this.$refs.imageSmallUpload.submit()
+    },
     submitImageBigUpload () {
       this.$refs.imageBigUpload.submit()
     },
     handleExceed (files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
     fetchData (pageNum, pageSize) {
       this.goodList = []
@@ -379,18 +494,33 @@ export default {
     goodDetail (good) {
       // fix https://github.com/ElemeFE/element/issues/18669
       this.$nextTick(() => {
+        this.imgUploadUrls = ""
+        this.fileImageMsgList = []
+        this.fileImageSmallList = []
+        this.fileImageBigList = []
         this.detailGood = good
         if (this.$refs.cascader) {
           this.$refs.cascader.$refs.panel.activePath = []
           this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
         }
-        if (good.cateId) {
+        if (good.cateId && good.cateId.length > 0) {
           this.detailGood.cateId = typeof (good.cateId) === 'object' ? good.cateId : JSON.parse(good.cateId)
           // this.$refs.cascader.$refs.panel.checkedValue = this.detailGood.cateId
           // this.$refs.cascader.$refs.panel.activePath = this.detailGood.cateId
           // this.$refs.cascader.$refs.panel.syncActivePath()
         } else {
           this.detailGood.cateId = []
+          this.detailGood.createDate = ''
+          this.detailGood.createTime = ''
+          this.detailGood.limitNum = 0
+          this.detailGood.productId = 0
+          this.detailGood.productImageBig = ""
+          this.detailGood.productImageSmall = ""
+          this.detailGood.productMsg = ""
+          this.detailGood.productName = ""
+          this.detailGood.salePrice = 0
+          this.detailGood.stock = 0
+          this.detailGood.subTitle = ""
         }
       })
       this.goodsDetailFormVisible = true

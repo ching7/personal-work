@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyn.mall.devtemplate.dao.ArgDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.cyn.mall.devtemplate.entity.ArgEntity" id="argMap">
+        <result property="sysName" column="sys_name"/>
+        <result property="sysUserCount" column="sys_user_count"/>
+        <result property="sysDescription" column="sys_description"/>
+        <result property="initDate" column="init_date"/>
+        <result property="sysViewsCount" column="sys_views_count"/>
+    </resultMap>
+
+
+</mapper>

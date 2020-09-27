@@ -115,6 +115,7 @@ export default {
           this.loading = true
           this.loginForm.password = setPasswordEncrypt(this.loginForm.password)
           this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$store.dispatch('user/getSysInfo');
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {

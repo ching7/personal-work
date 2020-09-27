@@ -11,11 +11,52 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 23/09/2020 20:41:38
+ Date: 27/09/2020 19:10:59
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for oss_object
+-- ----------------------------
+DROP TABLE IF EXISTS `oss_object`;
+CREATE TABLE `oss_object`  (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `create_date` varchar(16) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `create_time` varchar(16) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `file_all_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `file_md5` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `file_size` double NULL DEFAULT NULL,
+  PRIMARY KEY (`file_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '对象存储信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of oss_object
+-- ----------------------------
+INSERT INTO `oss_object` VALUES (1, '20200924', '190105', '2020-09-24/abc.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-24/abc.jpg', 'abc.jpg', '83f7dc3392bd75bd24e43c07c2749cbe', 1074086);
+INSERT INTO `oss_object` VALUES (2, '20200925', '200431', '2020-09-25/80.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-25/80.jpg', '80.jpg', 'dc65a7e689753b304c7077e5fed9e032', 39018);
+INSERT INTO `oss_object` VALUES (3, '20200925', '200725', '2020-09-25/aobama.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-25/aobama.jpg', 'aobama.jpg', 'd455737f662fdb30db11839ea26bb737', 159471);
+INSERT INTO `oss_object` VALUES (4, '20200927', '113100', '2020-09-27/back2.png', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/back2.png', 'back2.png', '2ceacf58042583b341e5cfda2ad86891', 624169);
+INSERT INTO `oss_object` VALUES (5, '20200927', '113353', '2020-09-27/80111.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80111.jpg', '80111.jpg', 'dec6de55c429ac1dc5fdf3b2cb36885f', 24380);
+INSERT INTO `oss_object` VALUES (6, '20200927', '113353', '2020-09-27/80.png', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80.png', '80.png', 'badfac226d4e64b3a633034ecb725a66', 414035);
+INSERT INTO `oss_object` VALUES (7, '20200927', '114305', '2020-09-27/20A计划面试候选人个人自检表-财富经纪业务群-陈亚男22577.xlsx', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/20A计划面试候选人个人自检表-财富经纪业务群-陈亚男22577.xlsx', '20A计划面试候选人个人自检表-财富经纪业务群-陈亚男22577.xlsx', '1492d4ba41984219c90e6d6b14eebfea', 15379);
+INSERT INTO `oss_object` VALUES (8, '20200927', '114824', '2020-09-27/80222.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80222.jpg', '80222.jpg', '475348a008681eb4bcc48b5f5087ee30', 20808);
+INSERT INTO `oss_object` VALUES (9, '20200927', '135403', '2020-09-27/true.png', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/true.png', 'true.png', '00f99a6c57c1e4a464e59736af44ff02', 44257);
+INSERT INTO `oss_object` VALUES (10, '20200927', '140757', '2020-09-27/书籍1.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/书籍1.jpg', '书籍1.jpg', '5e4e40120d09fb6791f9430f914c6f68', 156494);
+INSERT INTO `oss_object` VALUES (11, '20200927', '141249', '2020-09-27/Inkedlicense2 (1)_LI.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/Inkedlicense2 (1)_LI.jpg', 'Inkedlicense2 (1)_LI.jpg', '1ad151a2397849870505e6a4ce614e74', 768615);
+INSERT INTO `oss_object` VALUES (12, '20200927', '141555', '2020-09-27/2.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/2.jpg', '2.jpg', '6af8393f50917191b9e84d27bc9bc515', 71296);
+INSERT INTO `oss_object` VALUES (13, '20200927', '141555', '2020-09-27/4.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/4.jpg', '4.jpg', 'f6a330e17714841e2dca23b3bf71011c', 70371);
+INSERT INTO `oss_object` VALUES (14, '20200927', '141555', '2020-09-27/3.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/3.jpg', '3.jpg', '5e5a22606f7272b63ca416ce0d682f7f', 82376);
+INSERT INTO `oss_object` VALUES (15, '20200927', '141744', '2020-09-27/1.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/1.jpg', '1.jpg', 'd8009e8e38e32bbe758e31b95089d53c', 47893);
+INSERT INTO `oss_object` VALUES (16, '20200927', '141744', '2020-09-27/1 (1).jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/1 (1).jpg', '1 (1).jpg', '57d25a57d5872f1101467bb49505fed3', 91615);
+INSERT INTO `oss_object` VALUES (17, '20200927', '163731', '2020-09-27/80mask.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask.jpg', '80mask.jpg', 'b917b666f72789e1274e0e823006cc58', 8077);
+INSERT INTO `oss_object` VALUES (18, '20200927', '164016', '2020-09-27/1123.png', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/1123.png', '1123.png', '4c5367bc8b6076ffd29432bb7c3ea7e6', 122727);
+INSERT INTO `oss_object` VALUES (19, '20200927', '172011', '2020-09-27/6A1.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/6A1.jpg', '6A1.jpg', 'e4763ae1d487f030bff9d535d8b803b9', 305494);
+INSERT INTO `oss_object` VALUES (20, '20200927', '172928', '2020-09-27/80mask2.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask2.jpg', '80mask2.jpg', '16f991168d8ea6cdbed48312efa93fb6', 30299);
+INSERT INTO `oss_object` VALUES (21, '20200927', '172936', '2020-09-27/80M.JPG', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80M.JPG', '80M.JPG', '3c05e7ed21ac1d71e307d7230ee0731a', 265797);
 
 -- ----------------------------
 -- Table structure for prd_category
@@ -1236,7 +1277,7 @@ CREATE TABLE `sys_address`  (
   `tel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话号码',
   `is_default` int(1) NULL DEFAULT NULL COMMENT '是否为默认',
   PRIMARY KEY (`address_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_address
@@ -1276,16 +1317,15 @@ DROP TABLE IF EXISTS `sys_arg`;
 CREATE TABLE `sys_arg`  (
   `sys_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sys_user_count` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `sys_
-description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `init_date` datetime(0) NULL DEFAULT NULL,
-  `sys_views_count` int(11) NULL DEFAULT 0
+  `sys_views_count` int(11) NULL DEFAULT 0,
+  `sys_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_arg
 -- ----------------------------
-INSERT INTO `sys_arg` VALUES ('商城后台管理', '1', '一个简单的商城后台管理系统', '2020-09-01 10:05:38', 1);
+INSERT INTO `sys_arg` VALUES ('商城后台管理', '1', '2020-09-01 10:05:38', 23, NULL);
 
 -- ----------------------------
 -- Table structure for sys_cart
@@ -1301,7 +1341,7 @@ CREATE TABLE `sys_cart`  (
   `product_num` int(11) NULL DEFAULT NULL COMMENT '产品数量',
   `product_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '产品价格',
   PRIMARY KEY (`cart_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_cart
@@ -1353,41 +1393,20 @@ CREATE TABLE `sys_product`  (
   `create_time` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT ' ' COMMENT '创建时间',
   PRIMARY KEY (`product_id`) USING BTREE,
   UNIQUE INDEX `uk_product`(`product_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_product
 -- ----------------------------
 INSERT INTO `sys_product` VALUES (1, '[2,6]', 199.00, '《深泽直人》', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, '20200912', '135850');
 INSERT INTO `sys_product` VALUES (2, '[74,89,94]', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 1, '20200912', '140205');
-INSERT INTO `sys_product` VALUES (3, '[558,559,560]', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, '20200912', '140207');
+INSERT INTO `sys_product` VALUES (3, '[558,559,560]', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, '20200925', '170649');
 INSERT INTO `sys_product` VALUES (8, '[1,7,10]', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, '20200912', '140209');
 INSERT INTO `sys_product` VALUES (9, '[1,11,14]', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, '20200912', '140116');
-INSERT INTO `sys_product` VALUES (10, '[1,7,9]', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, '20200912', '140106');
-INSERT INTO `sys_product` VALUES (11, '[45,47]', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, '20200912', '140220');
-INSERT INTO `sys_product` VALUES (12, '0', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, '20200912', '140214');
-INSERT INTO `sys_product` VALUES (13, '0', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (14, '0', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (15, '0', 1.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (16, '0', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (17, '0', 199.00, '《深泽直人》1', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (18, '0', 199.00, '《深泽直人》2', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (19, '0', 199.00, '《深泽直人》3', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (20, '0', 199.00, '《深泽直人》4', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (21, '0', 199.00, '《深泽直人》5', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (22, '0', 199.00, '《深泽直人》6', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (23, '0', 199.00, '《深泽直人》7', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (24, '0', 199.00, '《深泽直人》8', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, NULL, NULL);
-INSERT INTO `sys_product` VALUES (25, '[18,23]', 199.00, '《深泽直人》9', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, '20200915', '190210');
-INSERT INTO `sys_product` VALUES (26, '[1,2,3]', 199.00, '《深泽直人》10', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, '20200915', '190152');
-INSERT INTO `sys_product` VALUES (27, '[1,2,4]', 199.00, '《深泽直人》11', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, '20200914', '195642');
-INSERT INTO `sys_product` VALUES (28, '[7,10]', 1.00, '测', '1', '1', '1', 1, '测', 1, '20200914', '195531');
-INSERT INTO `sys_product` VALUES (29, '[40,41]', 1.00, '1', '1', '1', '1', 1, '1', 1, '20200914', '195537');
-INSERT INTO `sys_product` VALUES (30, '[1,2,3]', 1.00, '1', '1', '1', '1', 1, '1', 1, '20200914', '185841');
-INSERT INTO `sys_product` VALUES (31, '[2,4]', 1.00, '1', '11', '1', '1', 1, '1', 1, '20200914', '193800');
-INSERT INTO `sys_product` VALUES (32, '[1,2,3]', 123.00, '123', '123', '123', '123', 123, '123', 123, '20200914', '191317');
-INSERT INTO `sys_product` VALUES (33, '[1,7,10]', 6.00, '6', '6', '6', '66', 6, '6', 6, '20200914', '195702');
-INSERT INTO `sys_product` VALUES (34, '[1201]', 123.00, '123', '123', '13', '123', 123, '123', 123, '20200914', '195757');
+INSERT INTO `sys_product` VALUES (10, '[1,7,9]', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, '20200925', '162518');
+INSERT INTO `sys_product` VALUES (26, '[1,2,3]', 199.00, '《深泽直人》10', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, '20200925', '162507');
+INSERT INTO `sys_product` VALUES (27, '[1,2,3]', 199.00, '《深泽直人》11', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/4.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/2.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/3.jpg', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/1123.png', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/Inkedlicense2 (1)_LI.jpg', 999, '《深泽直人》2', 2, '20200927', '165249');
+INSERT INTO `sys_product` VALUES (38, '[1,2,3]', 1.00, '1', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask2.jpg', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask.jpg', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80M.JPG', 1, '1', 1, '20200927', '172939');
 
 -- ----------------------------
 -- Table structure for sys_user

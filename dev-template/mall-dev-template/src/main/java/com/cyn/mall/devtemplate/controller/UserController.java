@@ -13,6 +13,7 @@ import com.cyn.common.utils.DateUtils;
 import com.cyn.common.utils.SerialUtils;
 import com.cyn.mall.devtemplate.bean.RT;
 import com.cyn.mall.devtemplate.bean.RTC;
+import com.cyn.mall.devtemplate.ctrl.SysArgCtrl;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
 import com.cyn.mall.devtemplate.entity.AddressEntity;
 import com.cyn.mall.devtemplate.entity.CartEntity;
@@ -56,6 +57,8 @@ public class UserController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private SysArgCtrl sysArgCtrl;
 
     /**
      * 购物车产品全选
@@ -515,6 +518,7 @@ public class UserController {
             cookie.setPath("/");
             cookie.setMaxAge(7200);
             httpServletResponse.addCookie(cookie);
+            sysArgCtrl.addSysViewCount();
             rt.setMsg("登陆成功");
             rt.setResult(userEntity);
             rt.setStatus("0");

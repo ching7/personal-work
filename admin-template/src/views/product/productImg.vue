@@ -2,12 +2,15 @@
 <template>
   <div class=''
        style='height: 100px;overflow-x: auto;'>
-    <img v-for="(imgurl,index) in imgArr"
+    <div v-for="(imgurl,index) in imgArr"
          :key="index"
-         :src="imgurl"
-         alt=""
-         class="img-thumbt"
-         srcset="">
+         style="display: inline;">
+      <img :src="imgurl"
+           v-if="imgurl && imgurl.trim().length>0"
+           alt=""
+           class="img-thumbt"
+           srcset="">
+    </div>
   </div>
 </template>
 
@@ -44,6 +47,8 @@ export default {
       if (this.imgUrls && this.imgUrls.match("http")) {
         this.imgArr = this.imgUrls.split(',')
         this.showImg = true
+      } else {
+        this.imgArr = []
       }
     }
   },
@@ -53,6 +58,8 @@ export default {
       if (this.imgUrls && this.imgUrls.match("http")) {
         this.imgArr = this.imgUrls.split(',')
         this.showImg = true
+      } else {
+        this.imgArr = []
       }
     },
   },

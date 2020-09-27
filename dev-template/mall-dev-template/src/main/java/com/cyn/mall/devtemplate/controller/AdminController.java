@@ -7,6 +7,7 @@ import com.cyn.common.utils.PageUtils;
 import com.cyn.common.utils.R;
 import com.cyn.mall.devtemplate.bean.RTD;
 import com.cyn.mall.devtemplate.ctrl.PassWordHandlerCtrl;
+import com.cyn.mall.devtemplate.ctrl.SysArgCtrl;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
 import com.cyn.mall.devtemplate.entity.AdminEntity;
 import com.cyn.mall.devtemplate.entity.OrderEntity;
@@ -43,8 +44,12 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private UserCtrl userCtrl;
+
     @Value("${mall.private-key:test}")
     private String privateKey;
+
+    @Autowired
+    private SysArgCtrl sysArgCtrl;
 
     @RequestMapping(value = "/getOrderPage", method = RequestMethod.GET)
     public RTD getOrderPage() {
@@ -158,6 +163,8 @@ public class AdminController {
             cookie.setPath("/");
             cookie.setMaxAge(7200);
             httpServletResponse.addCookie(cookie);
+            sysArgCtrl.addSysViewCount();
+
             data.put("token", adminEntity.getAdminId());
             rtd.setData(data);
             rtd.setCode(20000);

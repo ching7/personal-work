@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, getSysInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -7,7 +7,9 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    userDetailInfo: {}
+    userDetailInfo: {},
+    sysInfo: [],
+    sysViewsCount: 0
   }
 }
 
@@ -28,6 +30,11 @@ const mutations = {
   },
   SET_USERDETAILINFO: (state, user) => {
     state.userDetailInfo = user
+  },
+  SET_SYSINFO: (state, sysInfo) => {
+    state.sysInfo = sysInfo
+    debugger
+    state.sysViewsCount = sysInfo[0].sysViewsCount
   }
 }
 
@@ -46,17 +53,29 @@ const actions = {
       })
     })
   },
-
+  getSysInfo ({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      getSysInfo(state.token).then(response => {
+        debugger
+        const { data } = response
+        if (!data) {
+          return reject('Verification failed, please Login again.')
+        }
+        commit('SET_SYSINFO', data)
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
   // get user info
   getInfo ({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-
         if (!data) {
           return reject('Verification failed, please Login again.')
         }
-
         const { name, avatar } = data
         commit('SET_USERDETAILINFO', data)
         commit('SET_NAME', name)

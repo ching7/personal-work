@@ -125,7 +125,7 @@ public class ProductController {
         productEntity.setCreateDate(DateUtils.getCurrDate());
         productEntity.setCreateTime(DateUtils.getCurrTime());
         RTD rtd = new RTD();
-        if (params.get("productId") == null) {
+        if (params.get("productId") == null || params.get("productId").toString().equals("0")) {
             productService.save(productEntity);
             rtd.setStatus("suc");
             rtd.setCode(20000);

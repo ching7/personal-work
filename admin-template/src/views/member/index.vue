@@ -38,20 +38,20 @@
         </template>
       </el-table-column>
       <el-table-column label="用户姓名"
-                       width="150"
+                       width="250"
                        align="center">
         <template slot-scope="scope">
           {{ scope.row.name}}
         </template>
       </el-table-column>
-      <el-table-column label="用户头像">
+      <el-table-column label="用户头像"
+                       width="250">
         <template slot-scope="scope">
-          <span>{{ scope.row.avatar }}</span>
+          <product-img :imgUrls='scope.row.avatar' />
         </template>
       </el-table-column>
       <el-table-column fixed="right"
-                       label="操作"
-                       width="100">
+                       label="操作">
         <template slot-scope="scope">
           <el-button @click="memberDetail(scope.row)"
                      type="text"
@@ -95,9 +95,9 @@
         <el-form-item label="用户头像"
                       :label-width="formLabelWidth">
           <el-input v-model="detailMember.avatar"
-                    type="textarea"
-                    :rows="4"
+                    :disabled="true"
                     autocomplete="off"></el-input>
+          <product-img :imgUrls='detailMember.avatar' />
         </el-form-item>
       </el-form>
       <div slot="footer"
@@ -111,6 +111,7 @@
 
 <script>
 import { getMemberPage, getSearchMember } from '@/api/member'
+import productImg from '@/views/product/productImg'
 
 export default {
   filters: {
@@ -122,6 +123,9 @@ export default {
       }
       return statusMap[status]
     }
+  },
+  components: {
+    productImg
   },
   data () {
     return {
