@@ -5,10 +5,13 @@ import store from './store/'
 import VueLazyload from 'vue-lazyload'
 import infiniteScroll from 'vue-infinite-scroll'
 import VueCookie from 'vue-cookie'
+import ElementUI from 'element-ui'
 import { userInfo } from './api'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(infiniteScroll)
 Vue.use(VueCookie)
+Vue.use(ElementUI)
 Vue.use(VueLazyload, {
   // preLoad: 1.3,
   // error: 'dist/error.png',

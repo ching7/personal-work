@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="banner">
-      <div class="bg" ref="bg" @mouseover="bgOver($refs.bg)" @mousemove="bgMove($refs.bg,$event)" @mouseout="bgOut($refs.bg)">
+      <div class="bg"
+           ref="bg"
+           @mouseover="bgOver($refs.bg)"
+           @mousemove="bgMove($refs.bg,$event)"
+           @mouseout="bgOut($refs.bg)">
         <span class="img a"></span>
         <span class="text b">以傲慢与偏执<br />回敬傲慢与偏见</span>
         <span class="copyright c">code by qingjin.me | picture from t.tt</span>
@@ -10,18 +14,28 @@
 
     <section class="w mt30 clearfix">
       <y-shelf title="热门商品">
-        <div slot="content" class="hot">
-          <mall-goods :msg="item" v-for="(item,i) in hot" :key="i"></mall-goods>
+        <div slot="content"
+             class="hot">
+          <mall-goods :msg="item"
+                      v-for="(item,i) in hot"
+                      :key="i"></mall-goods>
         </div>
       </y-shelf>
     </section>
-    <section class="w mt30 clearfix" v-for="(item,i) in floors" :key="i">
+    <section class="w mt30 clearfix"
+             v-for="(item,i) in floors"
+             :key="i">
       <y-shelf :title="item.title">
-        <div slot="content" class="floors">
+        <div slot="content"
+             class="floors">
           <div class="imgbanner">
-            <img v-lazy="floors[i].image" class="img-object-fit " :alt="item.title">
+            <img v-lazy="floors[i].image"
+                 class="img-object-fit "
+                 :alt="item.title">
           </div>
-          <mall-goods :msg="tab" v-for="(tab,i) in item.tabs" :key="i"></mall-goods>
+          <mall-goods :msg="tab"
+                      v-for="(tab,i) in item.tabs"
+                      :key="i"></mall-goods>
         </div>
       </y-shelf>
     </section>
@@ -253,12 +267,24 @@ ul.box {
 
 .hot {
   display: flex;
+  overflow-x: auto;
   > div {
     flex: 1;
     width: 25%;
   }
 }
+.hot::-webkit-scrollbar {
+  width: 6px;
+}
 
+.hot::-webkit-scrollbar-thumb {
+  background: rgba(20, 20, 20, 0.2);
+  border-radius: 3px;
+}
+
+.hot::-webkit-scrollbar-track {
+  background: transparent;
+}
 .floors {
   width: 100%;
   display: flex;

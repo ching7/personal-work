@@ -39,7 +39,7 @@ public class UserCtrl {
     public Integer getAdminTokenforReqCookies(HttpServletRequest httpServletRequest) {
         Cookie[] cookies = httpServletRequest.getCookies();
         for (Cookie cookie : cookies) {
-            if ("vue_admin_template_token".equals(cookie.getName())) {
+            if ("token".equals(cookie.getName())) {
                 Integer adminId = Integer.parseInt(cookie.getValue());
                 // 查询当前用户是否存在
                 AdminEntity adminEntity = adminService.getById(adminId);

@@ -70,3 +70,9 @@ export const productDet = (params) => {
 export const delOrder = (params) => {
   return http.fetchPost(`${baseUrl}/users/delOrder`, params)
 }
+
+// 查询所有分类 #
+export const getCateAll = (params) => {
+  return http.fetchGet(`${baseUrl}/prdCate/admin/getCateAll`, params)
+}
+

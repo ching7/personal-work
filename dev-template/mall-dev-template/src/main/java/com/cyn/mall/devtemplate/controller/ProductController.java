@@ -1,17 +1,12 @@
 package com.cyn.mall.devtemplate.controller;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.*;
-
-//import org.apache.shiro.authz.annotation.RequiresPermissions;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cyn.common.utils.Constant;
 import com.cyn.common.utils.DateUtils;
+import com.cyn.common.utils.PageUtils;
+import com.cyn.common.utils.R;
 import com.cyn.mall.devtemplate.bean.AdminIndexMsg;
 import com.cyn.mall.devtemplate.bean.HomeFloor;
 import com.cyn.mall.devtemplate.bean.RT;
@@ -19,21 +14,21 @@ import com.cyn.mall.devtemplate.bean.RTD;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
 import com.cyn.mall.devtemplate.entity.CartEntity;
 import com.cyn.mall.devtemplate.entity.OrderEntity;
+import com.cyn.mall.devtemplate.entity.ProductEntity;
 import com.cyn.mall.devtemplate.service.CartService;
 import com.cyn.mall.devtemplate.service.OrderService;
-import org.springframework.beans.BeanUtils;
+import com.cyn.mall.devtemplate.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.cyn.mall.devtemplate.entity.ProductEntity;
-import com.cyn.mall.devtemplate.service.ProductService;
-import com.cyn.common.utils.PageUtils;
-import com.cyn.common.utils.R;
-
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.util.*;
 
-import static com.cyn.mall.devtemplate.constants.Constants.userIdStr;
 import static com.cyn.mall.devtemplate.constants.Constants.pageSize;
+import static com.cyn.mall.devtemplate.constants.Constants.userIdStr;
+
+//import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 
 /**
@@ -366,15 +361,18 @@ public class ProductController {
      */
     @RequestMapping(value = "/productHome", method = RequestMethod.GET)
     public RT getProductHome() {
+        // fixme 首页热门商品计算，分类商品展示
         List<ProductEntity> productEntityList = productService.list();
         List<HomeFloor> homeFloors = new ArrayList<>();
-        productEntityList.forEach(productEntity -> {
+        productEntityList = productEntityList.subList(0, 5);
+        List<ProductEntity> finalProductEntityList = productEntityList;
+        productEntityList.forEach((productEntity) -> {
             HomeFloor homeFloor = new HomeFloor();
             homeFloor.setImage(productEntity.getProductImageBig());
             homeFloor.setImageMobile(productEntity.getProductImageSmall());
             homeFloor.setLink(productEntity.getProductImageBig());
             homeFloor.setTitle(productEntity.getSubTitle());
-            homeFloor.setTabs(productEntityList);
+            homeFloor.setTabs(finalProductEntityList.subList(0, 1));
             homeFloors.add(homeFloor);
         });
         RT rt = new RT();
