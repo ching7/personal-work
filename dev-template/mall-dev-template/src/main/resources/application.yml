@@ -33,6 +33,7 @@ interceptorconfig:
       - /api/users/register
       - /api/users/userInfo
       - /api/users/login
+      - /api/users/loginOut
       - /api/goods/productHome
       - /api/goods/productDet
       - /api/goods/computer

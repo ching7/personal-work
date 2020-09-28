@@ -135,19 +135,24 @@
               <li>
                 <router-link to="/goods">全部商品</router-link>
               </li>
+              <li>
+                <router-link to="/goods">热门商品</router-link>
+              </li>
+              <li>
+                <router-link to="/goods">管理员后台</router-link>
+              </li>
+              分类查找：
+              <el-cascader :options="categorys"
+                           style="border-radius: 12px;"
+                           ref="cateGorys"
+                           v-model='currCate'
+                           expandTrigger='hover'
+                           @change="getCurrCate"
+                           clearable>
+              </el-cascader>
             </ul>
           </div>
         </div>
-      </div>
-      <!-- 左侧类别 -->
-      <div class="nav-sub-cate"
-           v-show="showNav">
-        <el-cascader-panel :options="categorys"
-                           ref="cateGorys"
-                           v-model='currCate'
-                           @change="getCurrCate"
-                           clearable>
-        </el-cascader-panel>
       </div>
     </div>
   </div>
@@ -198,6 +203,13 @@ export default {
   created () {
     this.initCartNodes()
   },
+  watch: {
+    // currCate () { //  v-model="currCate"
+    //   if (this.$refs.cateGorys) { // ref="cateGorys"是否存在
+    //     this.currCate = []
+    //   }
+    // }
+  },
   computed: {
     ...mapState([
       'cartList', 'login', 'receiveInCart', 'showCart', 'userInfo'
@@ -224,7 +236,9 @@ export default {
       debugger
       console.log('node==', node)
       this.$nextTick(() => {
-        // this.$refs.cateGorys.clearCheckedNodes()
+        this.$refs.cateGorys.activePath = []
+        this.$refs.cateGorys.calculateCheckedNodePaths()
+        this.$refs.cateGorys.calculateMultiCheckedValue()
       })
     },
     initCartNodes () {
@@ -321,7 +335,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" rel="stylesheet/scss">
 @import "../assets/style/theme";
 @import "../assets/style/mixin";
 
@@ -345,7 +359,16 @@ export default {
     transform: scale(1);
   }
 }
-
+.nav-sub-cate {
+  .el-cascader-menu__wrap {
+    height: 350px;
+    overflow-x: auto;
+  }
+}
+.el-input__inner {
+  text-overflow: ellipsis;
+  width: 300px;
+}
 .header-box {
   background: $head-bgc;
   background-image: -webkit-linear-gradient(#000, #121212);

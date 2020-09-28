@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ArgDao extends BaseMapper<ArgEntity> {
-	
+
 }

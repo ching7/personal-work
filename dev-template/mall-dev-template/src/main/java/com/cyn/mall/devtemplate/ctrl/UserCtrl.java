@@ -28,7 +28,7 @@ public class UserCtrl {
     private AdminService adminService;
 
     @Autowired
-    AddressService addressService;
+    private AddressService addressService;
 
     /**
      * 从cookies获取用户id-商城后台管理
