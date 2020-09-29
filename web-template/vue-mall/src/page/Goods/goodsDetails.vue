@@ -6,14 +6,21 @@
         <div class="gallery">
           <div class="thumbnail">
             <ul>
-              <li v-for="(item, i) in small" :key="i" :class="{on:big===item}" @click="big=item">
-                <img v-lazy="item" :alt="product.productName">
+              <li v-for="(item, i) in small"
+                  :key="i"
+                  :class="{on:big===item}"
+                  @click="big=item">
+                <img v-lazy="item"
+                     :alt="product.productName"
+                     style="object-fit: contain;">
               </li>
             </ul>
           </div>
           <div class="thumb">
             <div class="big">
-              <img :src="big" :alt="product.productName">
+              <img :src="big"
+                   :alt="product.productName"
+                   style="object-fit: contain;">
             </div>
           </div>
         </div>
@@ -30,11 +37,17 @@
         </div>
         <div class="num">
           <span class="params-name">数量</span>
-          <buy-num @edit-num="editNum" :limit="Number(product.limitNum)"></buy-num>
+          <buy-num @edit-num="editNum"
+                   :limit="Number(product.limitNum)"></buy-num>
         </div>
         <div class="buy">
-          <y-button text="加入购物车" @btnClick="addCart(product.productId,product.salePrice,product.productName,product.productImageBig)" classStyle="main-btn" style="width: 145px;height: 50px;line-height: 48px"></y-button>
-          <y-button text="现在购买" @btnClick="checkout(product.productId)" style="width: 145px;height: 50px;line-height: 48px"></y-button>
+          <y-button text="加入购物车"
+                    @btnClick="addCart(product.productId,product.salePrice,product.productName,product.productImageBig)"
+                    classStyle="main-btn"
+                    style="width: 145px;height: 50px;line-height: 48px"></y-button>
+          <y-button text="现在购买"
+                    @btnClick="checkout(product.productId)"
+                    style="width: 145px;height: 50px;line-height: 48px"></y-button>
         </div>
       </div>
     </div>
@@ -42,10 +55,16 @@
     <div class="item-info">
       <y-shelf title="产品信息">
         <div slot="content">
-          <div class="img-item" v-if="productMsg">
-            <img v-for="(item, i) in productMsg" v-lazy="item" alt="产品信息" :key="i">
+          <div class="img-item"
+               align="center"
+               v-if="productMsg">
+            <img v-for="(item, i) in productMsg"
+                 v-lazy="item"
+                 alt="产品信息"
+                 :key="i">
           </div>
-          <div class="no-info" v-else>
+          <div class="no-info"
+               v-else>
             该产品暂无内容
           </div>
         </div>
@@ -235,8 +254,8 @@ export default {
   .img-item {
     width: 1220px;
     img {
-      width: 100%;
-      height: auto;
+      width: auto;
+      height: 300px;
       display: block;
     }
   }

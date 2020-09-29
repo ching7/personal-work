@@ -1,8 +1,8 @@
 import http from './public'
 const baseUrl = '/api'
 // 电脑列表 ##
-export const getComputer = (params) => {
-  return http.fetchGet(`${baseUrl}/goods/computer`, params)
+export const getProducts = (params) => {
+  return http.fetchGet(`${baseUrl}/goods/getProducts`, params)
 }
 // 获取购物车列表 ##
 export const getCartList = (params) => {

@@ -21,4 +21,5 @@ public class RT implements Serializable {
     private String msg;
     private Object result;
     private String status;
+    private long totalCount;
 }

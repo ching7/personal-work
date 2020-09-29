@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static com.cyn.mall.devtemplate.constants.Constants.pageSize;
 import static com.cyn.mall.devtemplate.constants.Constants.userIdStr;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -318,12 +317,15 @@ public class ProductController {
      * 全部商品
      * 分页\价格排序
      */
-    @RequestMapping(value = "/computer", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProducts", method = RequestMethod.GET)
     public RT getPageProduct(@RequestParam Map<String, Object> params) {
-        Integer page = Integer.parseInt((String) params.get("page"));
+        Integer page = Integer.parseInt((String) params.get("currPage"));
         String sort = (String) params.get("sort");
+        String currProName = (String) params.get("currProName");
+        String currCate = params.get("currCate").toString();
         String priceGt = (String) params.get("priceGt");
         String priceLte = (String) params.get("priceLte");
+        String pageSize = params.get("pageSize").toString();
         String descStr = "-1";
         String ascStr = "1";
 
@@ -332,6 +334,13 @@ public class ProductController {
         //priceLte小于
         RT rt = new RT();
         QueryWrapper<ProductEntity> queryWrapper = new QueryWrapper<>();
+        String defaultCate = "0";
+        if (!defaultCate.equals(currCate)) {
+            queryWrapper.like("cate_id", currCate);
+        }
+        if (currProName.trim().length() > 0) {
+            queryWrapper.like("product_name", currProName);
+        }
         queryWrapper.ge("sale_price", priceGt);
         queryWrapper.le("sale_price", priceLte);
         if (ascStr.equals(sort)) {
@@ -345,11 +354,10 @@ public class ProductController {
         rt.setMsg("suc");
         rt.setStatus("0");
         Map<String, Object> pageRes = new HashMap<>();
-
         pageRes.put("data", productEntityIPage.getRecords());
         pageRes.put("count", productEntityIPage.getRecords().size());
-
         rt.setResult(pageRes);
+        rt.setTotalCount(productEntityIPage.getTotal());
         return rt;
 
     }

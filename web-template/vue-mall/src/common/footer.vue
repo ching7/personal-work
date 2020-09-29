@@ -4,9 +4,10 @@
       <a href="javascript:;">简体</a>
       <a href="javascript:;">繁体</a>
       <a href="javascript:;">English</a>
-      <a href="javascript:;">常见问题</a></div>
+      <a href="javascript:;">常见问题</a>
+    </div>
     <div class="cop">
-      <p>Copyright © 2004-2020 本网站大部分页面设计由锤子科技设计版权所有</p>
+      <p>Copyright © 2004-2020 本网站大部分页面设计由锤子科技设计版权所有-仅供学习使用</p>
     </div>
 
   </div>

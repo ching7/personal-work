@@ -12,7 +12,7 @@
           </div>
           <div class="right-box">
             <div class="nav-list">
-              <router-link to="/goods">全部商品</router-link>
+              <router-link :to="{path:'/goods',query: { currCate: 0, currProName: '' }}">全部商品</router-link>
             </div>
             <div class="nav-aside"
                  ref="aside"
@@ -71,7 +71,8 @@
                               <div class="cart-item-inner">
                                 <router-link :to="'goodsDetails?productId='+item.productId">
                                   <div class="item-thumb">
-                                    <img :src="item.productImg">
+                                    <img :src="item.productImg"
+                                         style="object-fit: contain;">
                                   </div>
                                 </router-link>
                                 <div class="item-desc">
@@ -133,23 +134,34 @@
                 <router-link to="/">首页</router-link>
               </li>
               <li>
-                <router-link to="/goods">全部商品</router-link>
+                <router-link :to="{path:'/goods',query: { currCate: 0, currProName: '' }}">全部商品</router-link>
               </li>
               <li>
-                <router-link to="/goods">热门商品</router-link>
+                <router-link :to="{path:'/goods',query: { currCate: 0, currProName: '' }}">热门商品</router-link>
               </li>
               <li>
-                <router-link to="/goods">管理员后台</router-link>
+                <router-link :to="{path:'/goods',query: { currCate: 0, currProName: '' }}">管理员后台</router-link>
               </li>
-              分类查找：
-              <el-cascader :options="categorys"
-                           style="border-radius: 12px;"
-                           ref="cateGorys"
-                           v-model='currCate'
-                           expandTrigger='hover'
-                           @change="getCurrCate"
-                           clearable>
-              </el-cascader>
+              <span>
+                分类查找：
+                <el-cascader :options="categorys"
+                             style="border-radius: 12px;"
+                             ref="cateGorys"
+                             v-model='currCate'
+                             expandTrigger='hover'
+                             @change="searchPrd"
+                             clearable>
+                </el-cascader>
+              </span>
+              <span style="margin-left: 20px;">
+                <span>搜索：</span>
+                <el-input placeholder="请输入内容"
+                          v-model="currProName"
+                          @keyup.enter.native='searchPrd'
+                          clearable
+                          type="text">
+                </el-input>
+              </span>
             </ul>
           </div>
         </div>
@@ -175,7 +187,8 @@ export default {
     return {
       activeIndex: '1',
       categorys: [],
-      currCate: [],
+      currCate: 0,
+      currProName: '',
       user: {},
       // 列表
       navList: [{
@@ -232,14 +245,8 @@ export default {
     }
   },
   methods: {
-    getCurrCate (node) {
-      debugger
-      console.log('node==', node)
-      this.$nextTick(() => {
-        this.$refs.cateGorys.activePath = []
-        this.$refs.cateGorys.calculateCheckedNodePaths()
-        this.$refs.cateGorys.calculateMultiCheckedValue()
-      })
+    searchPrd () {
+      this.$router.push({ path: '/goods', query: { currCate: this.currCate, currProName: this.currProName } })
     },
     initCartNodes () {
       getCateAll().then(response => {
@@ -359,16 +366,7 @@ export default {
     transform: scale(1);
   }
 }
-.nav-sub-cate {
-  .el-cascader-menu__wrap {
-    height: 350px;
-    overflow-x: auto;
-  }
-}
-.el-input__inner {
-  text-overflow: ellipsis;
-  width: 300px;
-}
+
 .header-box {
   background: $head-bgc;
   background-image: -webkit-linear-gradient(#000, #121212);
@@ -853,7 +851,16 @@ header {
   margin-top: 5%;
   background: #f7f7f7;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  .el-cascader-menu__wrap {
+    height: 350px;
+    overflow-x: auto;
+  }
+  .el-input__inner {
+    text-overflow: ellipsis;
+    width: 300px;
+  }
 }
+
 .nav-sub {
   position: relative;
   height: 90px;
@@ -905,6 +912,12 @@ header {
     display: flex;
     align-items: center;
     height: 100%;
+    .el-input {
+      position: relative;
+      font-size: 14px;
+      display: inline-block;
+      width: auto !important;
+    }
     li:first-child {
       padding-left: 0;
       a {

@@ -1,44 +1,74 @@
 <template>
   <div class="goods">
     <div class="nav">
-
       <div class="w">
-        <a href="javascript:;" :class="{active:sortType===1}" @click="reset()">综合排序</a>
-        <a href="javascript:;" @click="sort(1)" :class="{active:sortType===2}">价格从低到高</a>
-        <a href="javascript:;" @click="sort(-1)" :class="{active:sortType===3}">价格从高到低</a>
+        <a href="javascript:;"
+           :class="{active:sortType===1}"
+           @click="reset()">综合排序</a>
+        <a href="javascript:;"
+           @click="sort(1)"
+           :class="{active:sortType===2}">价格从低到高</a>
+        <a href="javascript:;"
+           @click="sort(-1)"
+           :class="{active:sortType===3}">价格从高到低</a>
         <div class="price-interval">
-          <input type="number" class="input" placeholder="价格" v-model="params.min">
+          <input type="number"
+                 class="input"
+                 placeholder="价格"
+                 v-model="params.min">
           <span style="margin: 0 5px"> - </span>
-          <input type="number" placeholder="价格" v-model="params.max">
-          <y-button text="确定" classStyle="main-btn" @btnClick="reset" style="margin-left: 10px;"></y-button>
+          <input type="number"
+                 placeholder="价格"
+                 v-model="params.max">
+          <y-button text="确定"
+                    classStyle="main-btn"
+                    @btnClick="reset"
+                    style="margin-left: 10px;"></y-button>
         </div>
       </div>
     </div>
-
+    <div v-show="busy"
+         class="w load-more">
+      {{tip}}
+    </div>
     <!--商品-->
     <div class="goods-box w">
-      <mall-goods v-for="(item,i) in computer" :key="i" :msg="item"></mall-goods>
+      <mall-goods v-for="(item,i) in products"
+                  :key="i"
+                  :msg="item"></mall-goods>
+      <div style="display:block">
+        <el-pagination layout="total, sizes, prev, pager, next"
+                       :total="params.totalCount"
+                       @current-change="handleCurrentChange"
+                       @size-change='changePageSize'
+                       :page-size='params.pageSize'
+                       background>
+        </el-pagination>
+      </div>
     </div>
-    <div v-show="!busy" class="w load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
-      正在加载中...
-    </div>
+
   </div>
 </template>
 <script>
-import { getComputer } from '/api/goods'
+import { getProducts } from '/api/goods'
 import mallGoods from '/components/mallGoods'
 import YButton from '/components/YButton'
 export default {
   data () {
     return {
-      computer: [],
+      tip: '正在加载。。。。。。',
+      products: [],
       busy: false,
       timer: null,
       sortType: 1,
       windowHeight: null,
       windowWidth: null,
       params: {
-        page: 1,  // 页码
+        currCate: 0, // 当前分类，默认查全部分类
+        currProName: '', // 当前查找商品名
+        currPage: 1,  // 页码
+        pageSize: 10, // 每页显示数量
+        totalCount: 0,
         sort: '1', // 排序
         min: '0',  // 最小价格
         max: '9999'
@@ -46,24 +76,40 @@ export default {
     }
   },
   methods: {
-    _getComputer (flag) {
-      const { page, sort, min, max } = this.params
+    handleCurrentChange (data) {
+      this.params.currPage = data
+      this._getProducts()
+    },
+    changePageSize (data) {
+      this.params.pageSize = data
+      this._getProducts()
+    },
+    _getProducts (flag) {
+      const { currPage, pageSize, currProName, currCate, sort, min, max } = this.params
       let params = {
-        page,
+        currPage,
+        currCate,
+        pageSize,
+        currProName,
         sort,
         priceGt: min,
         priceLte: max
       }
-      getComputer(params).then(res => {
+      getProducts(params).then(res => {
+        this.params.totalCount = res.totalCount
         if (res.result.count) {
           let data = res.result.data
           if (flag) {
-            this.computer = this.computer.concat(data)
+            this.products = this.products.concat(data)
           } else {
-            this.computer = data
+            this.products = data
           }
+          this.busy = false
+        } else if (res.result.count === 0) {
+          this.tip = '暂无数据'
+          this.products = []
+          this.busy = true
         } else {
-          clearTimeout(this.timer)
           this.busy = true
         }
       })
@@ -74,7 +120,7 @@ export default {
       this.params.sort = ''
       this.params.page = 1
       this.busy = false
-      this._getComputer()
+      this._getProducts()
     },
     // 价格排序
     sort (v) {
@@ -82,22 +128,28 @@ export default {
       this.params.sort = v
       this.params.page = 1
       this.busy = false
-      this._getComputer()
-    },
-    // 加载更多
-    loadMore () {
-      this.busy = true
-      this.timer = setTimeout(() => {
-        this.params.page++
-        this._getComputer(true)
-        this.busy = false
-      }, 500)
+      this._getProducts()
     }
   },
   created () {
-    this._getComputer()
+    debugger
+    this.params.currCate = this.$route.query.currCate === 0 ? 0 : this.$route.query.currCate[this.$route.currCate.length - 1]
+    this.params.currProName = this.$route.query.currProName
+    this._getProducts()
+  },
+  watch: {
+    '$route' (to, from) { // 监听路由是否变化
+      if ((to.query.currCate !== from.query.currCate) || (to.query.currProName !== from.query.currProName)) {
+        this.params.currCate = from.query.currCate === 0 ? 0 : from.query.currCate[from.query.currCate.length - 1]
+        this.params.currProName = from.query.currProName
+        this._getProducts()// 重新加载数据
+      }
+    }
   },
   mounted () {
+    this.params.currCate = this.$route.query.currCate === 0 ? 0 : this.$route.query.currCate[this.$route.currCate.length - 1]
+    this.params.currProName = this.$route.query.currProName
+    this._getProducts()
     this.windowHeight = window.innerHeight
     this.windowWidth = window.innerWidth
   },
@@ -155,7 +207,7 @@ export default {
 }
 .goods-box {
   > div {
-    float: left;
+    display: inline-table;
     border: 1px solid #efefef;
   }
 }
