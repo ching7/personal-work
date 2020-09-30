@@ -12,7 +12,7 @@
           </div>
           <div class="right-box">
             <div class="nav-list">
-              <router-link :to="{path:'/goods',query: { currCate: 0, currProName: '' }}">全部商品</router-link>
+              <router-link :to="{path:'/goods',query: { currCate: [], currProName: '' }}">全部商品</router-link>
             </div>
             <div class="nav-aside"
                  ref="aside"
@@ -134,13 +134,16 @@
                 <router-link to="/">首页</router-link>
               </li>
               <li>
-                <router-link :to="{path:'/goods',query: { currCate: 0, currProName: '' }}">全部商品</router-link>
+                <router-link :to="{path:'/goods',query: { currCate: [], currProName: '' }}"
+                             @click.native="initSearch">全部商品</router-link>
               </li>
               <li>
-                <router-link :to="{path:'/goods',query: { currCate: 0, currProName: '' }}">热门商品</router-link>
+                <router-link :to="{path:'/goods',query: { currCate: [], currProName: '' }}"
+                             @click.native="initSearch">热门商品</router-link>
               </li>
               <li>
-                <router-link :to="{path:'/goods',query: { currCate: 0, currProName: '' }}">管理员后台</router-link>
+                <router-link :to="{path:'/goods',query: { currCate: [], currProName: '' }}"
+                             @click.native="initSearch">管理员后台</router-link>
               </li>
               <span>
                 分类查找：
@@ -187,7 +190,7 @@ export default {
     return {
       activeIndex: '1',
       categorys: [],
-      currCate: 0,
+      currCate: [],
       currProName: '',
       user: {},
       // 列表
@@ -217,11 +220,6 @@ export default {
     this.initCartNodes()
   },
   watch: {
-    // currCate () { //  v-model="currCate"
-    //   if (this.$refs.cateGorys) { // ref="cateGorys"是否存在
-    //     this.currCate = []
-    //   }
-    // }
   },
   computed: {
     ...mapState([
@@ -245,6 +243,10 @@ export default {
     }
   },
   methods: {
+    initSearch () {
+      this.currCate = []
+      this.currProName = ''
+    },
     searchPrd () {
       this.$router.push({ path: '/goods', query: { currCate: this.currCate, currProName: this.currProName } })
     },

@@ -70,6 +70,7 @@
     </div>
     <!-- 查看详情 -->
     <el-dialog title="用户详情"
+               :close-on-click-modal="false"
                :visible.sync="memberDetailFormVisible">
       <el-form :model="detailMember">
         <el-form-item label="用户ID"

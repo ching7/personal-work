@@ -88,6 +88,7 @@
       </div>
     </div>
     <el-dialog title="分类名称"
+               :close-on-click-modal="false"
                :visible.sync="cateFormVisible">
       <el-input v-model="currCatename"
                 placeholder="分类名称"></el-input>

@@ -54,12 +54,12 @@ public class PassWordHandlerCtrl {
      * @return
      * @throws Exception
      */
-    public static String getPwdMd532(String pwd) throws Exception {
+    public static String getMd532(String pwd) throws Exception {
         return DigestUtils.md5DigestAsHex(pwd.getBytes());
     }
     @Test
     public void getMd5() throws Exception {
         String pwd = "123456";
-        String pwdMd532 = getPwdMd532(pwd);
+        String pwdMd532 = getMd532(pwd);
     }
 }

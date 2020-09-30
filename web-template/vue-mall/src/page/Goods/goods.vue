@@ -64,7 +64,7 @@ export default {
       windowHeight: null,
       windowWidth: null,
       params: {
-        currCate: 0, // 当前分类，默认查全部分类
+        currCate: [], // 当前分类，默认查全部分类
         currProName: '', // 当前查找商品名
         currPage: 1,  // 页码
         pageSize: 10, // 每页显示数量
@@ -132,22 +132,21 @@ export default {
     }
   },
   created () {
-    debugger
-    this.params.currCate = this.$route.query.currCate === 0 ? 0 : this.$route.query.currCate[this.$route.currCate.length - 1]
+    this.params.currCate = this.$route.query.currCate.length === 0 ? 0 : this.$route.query.currCate[this.$route.currCate.length - 1]
     this.params.currProName = this.$route.query.currProName
     this._getProducts()
   },
   watch: {
     '$route' (to, from) { // 监听路由是否变化
       if ((to.query.currCate !== from.query.currCate) || (to.query.currProName !== from.query.currProName)) {
-        this.params.currCate = from.query.currCate === 0 ? 0 : from.query.currCate[from.query.currCate.length - 1]
-        this.params.currProName = from.query.currProName
+        this.params.currCate = to.query.currCate.length === 0 ? 0 : to.query.currCate[to.query.currCate.length - 1]
+        this.params.currProName = to.query.currProName
         this._getProducts()// 重新加载数据
       }
     }
   },
   mounted () {
-    this.params.currCate = this.$route.query.currCate === 0 ? 0 : this.$route.query.currCate[this.$route.currCate.length - 1]
+    this.params.currCate = this.$route.query.currCate.length === 0 ? 0 : this.$route.query.currCate[this.$route.currCate.length - 1]
     this.params.currProName = this.$route.query.currProName
     this._getProducts()
     this.windowHeight = window.innerHeight

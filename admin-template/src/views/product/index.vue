@@ -120,6 +120,7 @@
     </div>
     <!-- 查看详情 -->
     <el-dialog title="商品详情"
+               :close-on-click-modal="false"
                :visible.sync="goodsDetailFormVisible">
       <el-form ref="goodDetails"
                :model="detailGood"
@@ -295,6 +296,7 @@ export default {
     return {
       emptyGood: {},
       //商品大图
+      imgUploadUrlsTemp: [],
       imgUploadUrls: '',
       fileImageMsgList: [],
       fileImageSmallList: [],
@@ -407,6 +409,7 @@ export default {
       stock: 0,
       subTitle: ""
     }
+    this.imgUploadUrlsTemp = []
     this.imgUploadUrls = ""
     this.fileImageMsgList = []
     this.fileImageSmallList = []
@@ -416,8 +419,8 @@ export default {
   },
   methods: {
     clearFileList () {
-      debugger
       this.imgUploadUrls = ""
+      this.imgUploadUrlsTemp = []
       this.fileImageMsgList = []
       this.fileImageSmallList = []
       this.fileImageBigList = []
@@ -435,22 +438,24 @@ export default {
     },
     imgeBigUploadSuc (response, file, fileList) {
       if (response.code === 20000) {
-        debugger
-        this.imgUploadUrls = this.imgUploadUrls + "," + response.data
+        this.imgUploadUrlsTemp.push(response.data)
+        this.imgUploadUrls = this.imgUploadUrlsTemp.toString()
         this.detailGood.productImageBig = this.imgUploadUrls
         this.$message.success('上传成功!')
       }
     },
     imgSmlUploadSuc (response, file, fileList) {
       if (response.code === 20000) {
-        this.imgUploadUrls = this.imgUploadUrls + "," + response.data
+        this.imgUploadUrlsTemp.push(response.data)
+        this.imgUploadUrls = this.imgUploadUrlsTemp.toString()
         this.detailGood.productImageSmall = this.imgUploadUrls
         this.$message.success('上传成功!')
       }
     },
     imgMsgloadSuc (response, file, fileList) {
       if (response.code === 20000) {
-        this.imgUploadUrls = this.imgUploadUrls + "," + response.data
+        this.imgUploadUrlsTemp.push(response.data)
+        this.imgUploadUrls = this.imgUploadUrlsTemp.toString()
         this.detailGood.productMsg = this.imgUploadUrls
         this.$message.success('上传成功!')
       }
@@ -478,7 +483,6 @@ export default {
       getGoodsPage(queryPageParam).then(response => {
         if (response.data.length > 0) {
           this.goodList = response.data
-          debugger
           this.detailGood = this.goodList[0]
           this.totalCount = response.totalCount
           this.listLoading = false
@@ -530,7 +534,6 @@ export default {
         this.categorys = this.initCatrgorys(response.data)
       })
       getAllPrdCate().then(response => {
-        debugger
         this.allcategorys = response.data
       })
     },
@@ -549,7 +552,6 @@ export default {
       return tempgory
     },
     delGood (good) {
-      debugger
       this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

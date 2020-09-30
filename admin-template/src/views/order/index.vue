@@ -69,6 +69,7 @@
     </div>
     <!-- 查看详情 -->
     <el-dialog title="订单详情"
+               :close-on-click-modal="false"
                :visible.sync="OrderDetailFormVisible">
       <el-form :model="detailOrder">
         <el-form-item label="订单编号"

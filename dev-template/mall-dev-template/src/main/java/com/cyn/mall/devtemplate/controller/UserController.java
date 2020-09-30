@@ -13,6 +13,7 @@ import com.cyn.common.utils.DateUtils;
 import com.cyn.common.utils.SerialUtils;
 import com.cyn.mall.devtemplate.bean.RT;
 import com.cyn.mall.devtemplate.bean.RTC;
+import com.cyn.mall.devtemplate.ctrl.PassWordHandlerCtrl;
 import com.cyn.mall.devtemplate.ctrl.SysArgCtrl;
 import com.cyn.mall.devtemplate.ctrl.UserCtrl;
 import com.cyn.mall.devtemplate.entity.AddressEntity;
@@ -22,6 +23,7 @@ import com.cyn.mall.devtemplate.service.AddressService;
 import com.cyn.mall.devtemplate.service.CartService;
 import com.cyn.mall.devtemplate.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import com.cyn.mall.devtemplate.entity.UserEntity;
@@ -59,6 +61,9 @@ public class UserController {
 
     @Autowired
     private SysArgCtrl sysArgCtrl;
+
+    @Value("${mall.private-key:test}")
+    private String privateKey;
 
     /**
      * 购物车产品全选
@@ -504,17 +509,21 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public RT login(@RequestBody Map<String, Object> params, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public RT login(@RequestBody Map<String, Object> params, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
         RT rt = new RT();
         String userName = (String) params.get("userName");
         String userPwd = (String) params.get("userPwd");
+        // 密码RSA私钥解密
+        String decryptPwd = PassWordHandlerCtrl.decrypt(userPwd, privateKey);
+        // 解密出来再进行md5加密：密码md5 32位 与数据库做比对
+        userPwd = PassWordHandlerCtrl.getMd532(decryptPwd);
         QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper
                 .eq("user_name", userName)
                 .eq("user_pwd", userPwd);
         UserEntity userEntity = userService.getOne(queryWrapper);
         if (userEntity != null) {
-            Cookie cookie = new Cookie("userId", userEntity.getUserId().toString());
+            Cookie cookie = new Cookie("token", userEntity.getUserId().toString());
             cookie.setPath("/");
             cookie.setMaxAge(7200);
             httpServletResponse.addCookie(cookie);

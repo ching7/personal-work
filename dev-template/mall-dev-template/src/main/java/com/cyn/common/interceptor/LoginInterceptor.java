@@ -48,16 +48,17 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (requestUrl.contains("admin") || requestUrl.contains("webjars")) {
             return true;
         }
-        // 后台商城管理
-        Integer adminTokenforReqCookies = userCtrl.getAdminTokenforReqCookies(request);
-        if (adminTokenforReqCookies == null) {
-            throw new Exception("未登陆");
-        }
-        // 前台商城
-        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(request);
-        if (userIdforReqCookies == null) {
-            throw new Exception("未登陆");
-        }
+        // fixme token验证
+//        // 后台商城管理
+//        Integer adminTokenforReqCookies = userCtrl.getAdminTokenforReqCookies(request);
+//        if (adminTokenforReqCookies == null) {
+//            throw new Exception("未登陆");
+//        }
+//        // 前台商城
+//        Long userIdforReqCookies = userCtrl.getUserIdforReqCookies(request);
+//        if (userIdforReqCookies == null) {
+//            throw new Exception("未登陆");
+//        }
         return true;
     }
 }

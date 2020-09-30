@@ -37,6 +37,7 @@ interceptorconfig:
       - /api/goods/productHome
       - /api/goods/productDet
       - /api/goods/getProducts
+      - /api/users/cartList
       - /error
       - /user
       - /api/admin/login

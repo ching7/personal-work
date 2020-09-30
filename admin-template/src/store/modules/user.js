@@ -33,7 +33,6 @@ const mutations = {
   },
   SET_SYSINFO: (state, sysInfo) => {
     state.sysInfo = sysInfo
-    debugger
     state.sysViewsCount = sysInfo[0].sysViewsCount
   }
 }
@@ -56,7 +55,6 @@ const actions = {
   getSysInfo ({ commit, state }) {
     return new Promise((resolve, reject) => {
       getSysInfo(state.token).then(response => {
-        debugger
         const { data } = response
         if (!data) {
           return reject('Verification failed, please Login again.')

@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 27/09/2020 19:10:59
+ Date: 30/09/2020 15:30:09
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,7 @@ CREATE TABLE `oss_object`  (
   `file_md5` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `file_size` double NULL DEFAULT NULL,
   PRIMARY KEY (`file_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '对象存储信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '对象存储信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of oss_object
@@ -57,6 +57,13 @@ INSERT INTO `oss_object` VALUES (18, '20200927', '164016', '2020-09-27/1123.png'
 INSERT INTO `oss_object` VALUES (19, '20200927', '172011', '2020-09-27/6A1.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/6A1.jpg', '6A1.jpg', 'e4763ae1d487f030bff9d535d8b803b9', 305494);
 INSERT INTO `oss_object` VALUES (20, '20200927', '172928', '2020-09-27/80mask2.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask2.jpg', '80mask2.jpg', '16f991168d8ea6cdbed48312efa93fb6', 30299);
 INSERT INTO `oss_object` VALUES (21, '20200927', '172936', '2020-09-27/80M.JPG', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80M.JPG', '80M.JPG', '3c05e7ed21ac1d71e307d7230ee0731a', 265797);
+INSERT INTO `oss_object` VALUES (22, '20200930', '150342', '2020-09-30/6B.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/6B.jpg', '6B.jpg', '83e038aea9cc243a809eba564d28be10', 349615);
+INSERT INTO `oss_object` VALUES (23, '20200930', '150945', '2020-09-30/pack3.png', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/pack3.png', 'pack3.png', 'e269f2e1a989c19ee9adedc0c4801f80', 13510);
+INSERT INTO `oss_object` VALUES (24, '20200930', '150945', '2020-09-30/longmao.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/longmao.jpg', 'longmao.jpg', 'ccad2a9b65d122fe4ace375401ed40e0', 217883);
+INSERT INTO `oss_object` VALUES (25, '20200930', '150945', '2020-09-30/laomao.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/laomao.jpg', 'laomao.jpg', '50ba3afafc966cae64090fa8b1606f5d', 244382);
+INSERT INTO `oss_object` VALUES (26, '20200930', '151005', '2020-09-30/back2.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/back2.jpg', 'back2.jpg', '8550e665daec9322951d7aa0fb64e6d3', 231259);
+INSERT INTO `oss_object` VALUES (27, '20200930', '151005', '2020-09-30/font2.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/font2.jpg', 'font2.jpg', '51b90bb91f6198cf806d9459e9aceecb', 209795);
+INSERT INTO `oss_object` VALUES (28, '20200930', '151256', '2020-09-30/6A.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/6A.jpg', '6A.jpg', '5b0761679918e0ff1885d0f945092c2e', 28690);
 
 -- ----------------------------
 -- Table structure for prd_category
@@ -1277,12 +1284,12 @@ CREATE TABLE `sys_address`  (
   `tel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话号码',
   `is_default` int(1) NULL DEFAULT NULL COMMENT '是否为默认',
   PRIMARY KEY (`address_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_address
 -- ----------------------------
-INSERT INTO `sys_address` VALUES (1, 'admin', '1', '江南大道3588', '1385555', 0);
+INSERT INTO `sys_address` VALUES (1, 'admin', '1', '江南大道3588', '1385555', 1);
 INSERT INTO `sys_address` VALUES (2, 'admin', '1', '3588恒生电子', '13812222', 0);
 INSERT INTO `sys_address` VALUES (3, 'test', '2', '南湖春城', '123111111111', 1);
 INSERT INTO `sys_address` VALUES (5, 'test', '2', '江南大8888道3588123123123', '13222222222', 1);
@@ -1290,6 +1297,9 @@ INSERT INTO `sys_address` VALUES (6, 'test', '2', '济南大学', '13222222222',
 INSERT INTO `sys_address` VALUES (7, 'test', '2', '济南大学', '13222222222', 1);
 INSERT INTO `sys_address` VALUES (11, '1', '4', '1', '1', 0);
 INSERT INTO `sys_address` VALUES (12, '2', '4', '2', '2', 1);
+INSERT INTO `sys_address` VALUES (13, '陈亚南', '1', '陈亚南', '123', 0);
+INSERT INTO `sys_address` VALUES (14, '123', '1', '123', '123', 0);
+INSERT INTO `sys_address` VALUES (15, 'chenyn', '5', '1', '1', 1);
 
 -- ----------------------------
 -- Table structure for sys_admin
@@ -1325,7 +1335,7 @@ CREATE TABLE `sys_arg`  (
 -- ----------------------------
 -- Records of sys_arg
 -- ----------------------------
-INSERT INTO `sys_arg` VALUES ('商城后台管理', '1', '2020-09-01 10:05:38', 23, NULL);
+INSERT INTO `sys_arg` VALUES ('商城后台管理', '1', '2020-09-01 10:05:38', 50, NULL);
 
 -- ----------------------------
 -- Table structure for sys_cart
@@ -1341,12 +1351,11 @@ CREATE TABLE `sys_cart`  (
   `product_num` int(11) NULL DEFAULT NULL COMMENT '产品数量',
   `product_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '产品价格',
   PRIMARY KEY (`cart_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_cart
 -- ----------------------------
-INSERT INTO `sys_cart` VALUES (11, 1, 1, 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', '《深泽直人》', '0', 1, 199.00);
 INSERT INTO `sys_cart` VALUES (12, 2, 1, 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', '《深泽直人》', '0', 1, 199.00);
 
 -- ----------------------------
@@ -1373,6 +1382,8 @@ INSERT INTO `sys_order` VALUES (11, 1, '[{\"cartId\":10,\"checked\":\"1\",\"prod
 INSERT INTO `sys_order` VALUES (12, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 49000, 1, '1', '20200801160115');
 INSERT INTO `sys_order` VALUES (13, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 49000, 1, '1', '20200801160115');
 INSERT INTO `sys_order` VALUES (14, 1, '[{\"cartId\":10,\"checked\":\"1\",\"productId\":2,\"productImg\":\"http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg\",\"productName\":\"坚果 Pro 软胶保护套\",\"productNum\":1,\"productPrice\":49.00,\"userId\":1}]', 995, 1, '1', '20200801154604');
+INSERT INTO `sys_order` VALUES (15, 1, '[{\"cartId\":11,\"checked\":\"1\",\"productId\":1,\"productImg\":\"http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg\",\"productName\":\"《深泽直人》\",\"productNum\":2,\"productPrice\":199.00,\"userId\":1}]', 398, 13, '1', '20200930112045');
+INSERT INTO `sys_order` VALUES (16, 5, '[{\"cartId\":13,\"checked\":\"1\",\"productId\":38,\"productImg\":\"http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask.jpg\",\"productName\":\"1\",\"productNum\":1,\"productPrice\":1.00,\"userId\":5}]', 1, 15, '1', '20200930144812');
 
 -- ----------------------------
 -- Table structure for sys_product
@@ -1393,7 +1404,7 @@ CREATE TABLE `sys_product`  (
   `create_time` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT ' ' COMMENT '创建时间',
   PRIMARY KEY (`product_id`) USING BTREE,
   UNIQUE INDEX `uk_product`(`product_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_product
@@ -1405,8 +1416,12 @@ INSERT INTO `sys_product` VALUES (8, '[1,7,10]', 49.00, '坚果 Pro 软胶保护
 INSERT INTO `sys_product` VALUES (9, '[1,11,14]', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, '20200912', '140116');
 INSERT INTO `sys_product` VALUES (10, '[1,7,9]', 49.00, '坚果 Pro 软胶保护套', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 'http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 100, '坚果 Pro 软胶保护套', 99, '20200925', '162518');
 INSERT INTO `sys_product` VALUES (26, '[1,2,3]', 199.00, '《深泽直人》10', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg', 'http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg,http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg,https://resource.smartisan.com/resource/63ea40e5c64db1c6b1d480c48fe01272.jpg,https://resource.smartisan.com/resource/4b8d00ab6ba508a977a475988e0fdb53.jpg,https://resource.smartisan.com/resource/87ea3888491d172b7d7a0e78e4294b4b.jpg,https://resource.smartisan.com/resource/8d30265188ddd1ba05e34f669c5dcf1c.jpg,http://image.smartisanos.cn/resource/902befd5f32a8caf4ca79b55d39ee25a.jpg', 999, '《深泽直人》2', 99, '20200925', '162507');
-INSERT INTO `sys_product` VALUES (27, '[1,2,3]', 199.00, '《深泽直人》11', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/4.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/2.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/3.jpg', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/1123.png', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/Inkedlicense2 (1)_LI.jpg', 999, '《深泽直人》2', 2, '20200927', '165249');
-INSERT INTO `sys_product` VALUES (38, '[1,2,3]', 1.00, '1', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask2.jpg', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask.jpg', ',http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80M.JPG', 1, '1', 1, '20200927', '172939');
+INSERT INTO `sys_product` VALUES (27, '[1,2,3]', 199.00, '《深泽直人》11', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/4.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/2.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/3.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/1123.png', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/Inkedlicense2 (1)_LI.jpg', 999, '《深泽直人》2', 2, '20200927', '165249');
+INSERT INTO `sys_product` VALUES (38, '[1,2,5]', 1.00, '测试商品', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask2.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-25/80.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-25/80.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/6A.jpg', 100, '测试商品', 100, '20200930', '151259');
+INSERT INTO `sys_product` VALUES (39, '[1,2,3]', 20.00, '《深泽直人》12', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/4.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/2.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/3.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/1123.png', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/Inkedlicense2 (1)_LI.jpg', 999, '《深泽直人》2', 2, '20200927', '165249');
+INSERT INTO `sys_product` VALUES (40, '[1,2,3]', 400.00, '《深泽直人》13', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/4.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/2.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/3.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/1123.png', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/back2.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/font2.jpg', 999, '《深泽直人》2', 2, '20200930', '151010');
+INSERT INTO `sys_product` VALUES (41, '[1,2,3]', 200.00, '《深泽直人》14', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/4.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/2.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/3.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/1123.png', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/pack3.png,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/longmao.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-30/laomao.jpg', 999, '《深泽直人》2', 2, '20200930', '150950');
+INSERT INTO `sys_product` VALUES (42, '[1,2,3]', 199.00, '《深泽直人》15', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/4.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/2.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/3.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-25/80.jpg', 'http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80mask2.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/书籍1.jpg,http://192.168.171.135:3333/oss/minio/view?filePath=2020-09-27/80M.JPG', 999, '《深泽直人》2', 2, '20200930', '150927');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -1424,18 +1439,21 @@ CREATE TABLE `sys_user`  (
   `create_date` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `uk_user`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, '张三', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200730105134.png', 'admin', 'admin', NULL, NULL, '12231510', '20200915');
-INSERT INTO `sys_user` VALUES (2, '李四', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200730105134.png', 'test', 'test', NULL, NULL, '12231510', '20200915');
-INSERT INTO `sys_user` VALUES (3, '游客20200729190028', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'test123', 'test', NULL, NULL, '12231510', '20200915');
-INSERT INTO `sys_user` VALUES (4, '游客20200801161202', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 't', 't', NULL, NULL, '12231510', '20200915');
-INSERT INTO `sys_user` VALUES (5, '游客20200915192034', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'cyn', 'cyn', NULL, NULL, '0', '0');
-INSERT INTO `sys_user` VALUES (6, '游客20200915192206', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'cyn2', 'cyn2', NULL, NULL, '0', '0');
-INSERT INTO `sys_user` VALUES (7, '游客20200915192239', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'cyn3', 'cyn3', NULL, NULL, '0', '0');
-INSERT INTO `sys_user` VALUES (8, '游客20200915192329', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'cyn4', 'cyn4', NULL, NULL, '0', '192329');
+INSERT INTO `sys_user` VALUES (1, '张三', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200730105134.png', 'admin', '21232f297a57a5a743894a0e4a801fc3', NULL, NULL, '12231510', '20200915');
+INSERT INTO `sys_user` VALUES (2, '李四', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200730105134.png', 'test', '098f6bcd4621d373cade4e832627b4f6', NULL, NULL, '12231510', '20200915');
+INSERT INTO `sys_user` VALUES (3, '游客20200729190028', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'test123', '098f6bcd4621d373cade4e832627b4f6', NULL, NULL, '12231510', '20200915');
+INSERT INTO `sys_user` VALUES (4, '游客20200801161202', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 't', 'e358efa489f58062f10dd7316b65649e', NULL, NULL, '12231510', '20200915');
+INSERT INTO `sys_user` VALUES (5, '游客20200915192034', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'cyn', '5beedb2de26da65b5d3bae7eea82283a', NULL, NULL, '0', '0');
+INSERT INTO `sys_user` VALUES (6, '游客20200915192206', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'cyn2', '11241aa3de184fb4af3bd031d670251b', NULL, NULL, '0', '0');
+INSERT INTO `sys_user` VALUES (7, '游客20200915192239', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'cyn3', '0553abf8ee34b9b9d7803c56384088b7', NULL, NULL, '0', '0');
+INSERT INTO `sys_user` VALUES (8, '游客20200915192329', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'cyn4', '9c1800e25e22b28c50931d92797a03b7', NULL, NULL, '0', '192329');
+INSERT INTO `sys_user` VALUES (9, '游客20200928202439', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', '123', '202cb962ac59075b964b07152d234b70', NULL, NULL, '202439', '20200928');
+INSERT INTO `sys_user` VALUES (10, '游客20200928202642', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', '1234', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, '202642', '20200928');
+INSERT INTO `sys_user` VALUES (11, '游客20200928204458', 'https://gitee.com/ching7777/gitee_graph_bed/raw/master/img/20200729185413.png', 'cynwml', '67bd0c5f8c1595d42dcc604075943fd3', NULL, NULL, '204458', '20200928');
 
 SET FOREIGN_KEY_CHECKS = 1;

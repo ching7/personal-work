@@ -103,6 +103,7 @@ import YFooter from '/common/footer'
 import YButton from '/components/YButton'
 import { userLogin, register } from '/api/index'
 import { addCartBatch } from '/api/goods'
+import { setPasswordEncrypt } from '/utils/auth'
 import { getStore, removeStore } from '/utils/storage'
 import Vcode from 'vue-puzzle-vcode'
 
@@ -166,10 +167,11 @@ export default {
       this.isShowVcode = false
     },
     login () {
-      const { userName, userPwd } = this.ruleForm
+      let { userName, userPwd } = this.ruleForm
       if (!userName || !userPwd) {
         this.ruleForm.errMsg = '账号或者密码不能为空!'
       } else {
+        userPwd = setPasswordEncrypt(userPwd)
         let params = { userName, userPwd }
         userLogin(params).then(res => {
           if (res.status === '0') {
@@ -189,7 +191,7 @@ export default {
       }
     },
     regist () {
-      const { userName, userPwd, userPwd2 } = this.registered
+      let { userName, userPwd, userPwd2 } = this.registered
       if (!userName || !userPwd || !userPwd2) {
         this.registered.errMsg = '账号密码不能为空'
         return false
@@ -198,6 +200,7 @@ export default {
         this.registered.errMsg = '两次输入的密码不相同'
         return false
       }
+      userPwd = setPasswordEncrypt(userPwd)
       register({ userName, userPwd }).then(res => {
         this.registered.errMsg = res.msg
         if (res.status === '0') {

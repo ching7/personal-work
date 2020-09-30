@@ -128,7 +128,7 @@ public class AdminController {
         RTD rtd = new RTD();
         Integer adminTokenforReqCookies = userCtrl.getAdminTokenforReqCookies(httpServletRequest);
         if (adminTokenforReqCookies != null) {
-            Cookie cookie = new Cookie("vue_admin_template_token", null);
+            Cookie cookie = new Cookie("token", null);
             cookie.setPath("/");
             cookie.setMaxAge(0);
             httpServletResponse.addCookie(cookie);
@@ -153,8 +153,8 @@ public class AdminController {
         String passWord = (String) params.get("password");
         // 密码RSA私钥解密
         String decryptPwd = PassWordHandlerCtrl.decrypt(passWord, privateKey);
-        // 密码md5 32位 存入数据库，解密出来md5加密
-        String pwdMd532 = PassWordHandlerCtrl.getPwdMd532(decryptPwd);
+        // 解密出来再进行md5加密：密码md5 32位 存入数据库
+        String pwdMd532 = PassWordHandlerCtrl.getMd532(decryptPwd);
         QueryWrapper<AdminEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_name", userName).eq("user_password", pwdMd532);
         AdminEntity adminEntity = adminService.getOne(queryWrapper);
@@ -164,7 +164,6 @@ public class AdminController {
             cookie.setMaxAge(7200);
             httpServletResponse.addCookie(cookie);
             sysArgCtrl.addSysViewCount();
-
             data.put("token", adminEntity.getAdminId());
             rtd.setData(data);
             rtd.setCode(20000);
