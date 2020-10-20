@@ -11,10 +11,9 @@ create table prd_category
     created    datetime             null,
     updated    datetime             null
 )
-    comment '商品分类表';
+    comment '商品分类表' charset = utf8;
 
-INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (-1, 0, '所有商品', 1, 0, 0, null, '2017-09-24 11:10:45', '2017-11-06 23:24:33');
-INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (1, 0, '图书、音像、电子书刊', 1, 19, 1, null, '2014-10-15 18:31:55', '2017-09-24 15:50:47');
+INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (1, 0, '图书、音像、电子书刊', 1, 19, 1, null, '2020-09-11 18:31:55', '2017-09-24 15:50:47');
 INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (2, 1, '电子书刊', 1, 1, 1, null, '2014-10-15 18:31:55', '2014-10-15 18:31:55');
 INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (3, 2, '电子书', 1, 1, 0, null, '2014-10-15 18:31:55', '2014-10-15 18:31:55');
 INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (4, 2, '网络原创', 1, 2, 0, null, '2014-10-15 18:31:55', '2014-10-15 18:31:55');
@@ -1198,3 +1197,5 @@ INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_or
 INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (1182, 1175, '戏曲综艺', 1, 7, 0, null, '2014-10-15 18:31:55', '2014-10-15 18:31:55');
 INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (1183, 0, '品牌周边', 1, 1, 1, null, '2018-04-18 20:37:47', '2018-04-18 20:37:49');
 INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (1184, 1183, '品牌周边', 1, 1, 0, null, '2018-04-18 20:38:07', '2018-04-18 20:38:09');
+INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (1197, 0, '123', 1, 0, 0, '', '2020-09-12 18:02:52', '2020-09-12 18:02:52');
+INSERT INTO mall_template.prd_category (cat_id, parent_id, name, status, sort_order, is_parent, icon, created, updated) VALUES (1201, 0, '测试商品分类', 1, 0, 1, '', '2020-09-14 19:57:37', '2020-09-14 19:57:37');

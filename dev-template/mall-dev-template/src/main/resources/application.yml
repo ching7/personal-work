@@ -1,8 +1,8 @@
 spring:
   datasource:
     username: root
-    password: root
-    url: jdbc:mysql://127.0.0.1:3306/mall_template?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    password: cynwml5201314
+    url: jdbc:mysql://106.54.70.153:3306/mall_template?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     ##url: jdbc:mysql://10.211.55.4:3306/mall_template?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     ## url: jdbc:mysql://10.211.55.4:3306/gulimall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.jdbc.Driver
