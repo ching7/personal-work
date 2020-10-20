@@ -61,19 +61,23 @@ public class UserCtrl {
      */
     public Long getUserIdforReqCookies(HttpServletRequest httpServletRequest) {
         Cookie[] cookies = httpServletRequest.getCookies();
-        for (Cookie cookie : cookies) {
-            if ("token".equals(cookie.getName())) {
-                Integer inputUserId = Integer.parseInt(cookie.getValue());
-                // 查询当前用户是否存在
-                UserEntity byId = userService.getById(inputUserId);
-                if (byId != null) {
-                    return byId.getUserId();
-                } else {
-                    throw new RRException("用户不存在");
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    Integer inputUserId = Integer.parseInt(cookie.getValue());
+                    // 查询当前用户是否存在
+                    UserEntity byId = userService.getById(inputUserId);
+                    if (byId != null) {
+                        return byId.getUserId();
+                    } else {
+                        throw new RRException("用户不存在");
+                    }
                 }
             }
+        }else{
+            return null;
         }
-        throw new RRException("未登录");
+        return null;
     }
 
     /**
