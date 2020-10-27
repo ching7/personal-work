@@ -1,270 +1,372 @@
 <template>
   <div class="app-container">
-    <el-button type="primary"
-               size="small"
-               @click="goodDetail(emptyGood)">新增商品</el-button>
-    <el-input v-model="searchVal"
-              size="medium"
-              class="search-input"
-              placeholder="输入要查找的商品名称，支持模糊查找"
-              clearable>
-      <el-button slot="append"
-                 icon="el-icon-search"
-                 @click="searchGood()" />
+    <el-button
+      type="primary"
+      size="small"
+      @click="goodDetail(emptyGood)"
+    >新增商品</el-button>
+    <el-input
+      v-model="searchVal"
+      size="medium"
+      class="search-input"
+      placeholder="输入要查找的商品名称，支持模糊查找"
+      clearable
+    >
+      <el-button
+        slot="append"
+        icon="el-icon-search"
+        @click="searchGood()"
+      />
     </el-input>
-    <el-table v-loading="listLoading"
-              row-key="productId"
-              :data="goodList"
-              element-loading-text="Loading"
-              border
-              fit
-              highlight-current-row
-              style="margin-top: 15px;">
-      <el-table-column align="center"
-                       label="产品编号"
-                       width="50">
+    <el-table
+      v-loading="listLoading"
+      row-key="productId"
+      :data="goodList"
+      element-loading-text="Loading"
+      border
+      fit
+      highlight-current-row
+      style="margin-top: 15px;"
+    >
+      <el-table-column
+        align="center"
+        label="产品编号"
+        width="50"
+      >
         <template slot-scope="scope">{{ scope.row.productId }}</template>
       </el-table-column>
-      <el-table-column label="产品名称"
-                       width="100"
-                       align="center">
+      <el-table-column
+        label="产品名称"
+        width="100"
+        align="center"
+      >
         <template slot-scope="scope">{{ scope.row.productName }}</template>
       </el-table-column>
-      <el-table-column label="产品描述"
-                       width="100">
+      <el-table-column
+        label="产品描述"
+        width="100"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.subTitle }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="产品大图"
-                       width="150">
+      <el-table-column
+        label="产品大图"
+        width="150"
+      >
         <template slot-scope="scope">
-          <product-img :imgUrls='scope.row.productImageBig'>
-          </product-img>
+          <product-img :img-urls="scope.row.productImageBig" />
           <!-- {{ scope.row.productImageBig }} -->
         </template>
       </el-table-column>
-      <el-table-column label="产品小图"
-                       width="150">
+      <el-table-column
+        label="产品小图"
+        width="150"
+      >
         <template slot-scope="scope">
-          <product-img :imgUrls='scope.row.productImageSmall'>
-          </product-img>
+          <product-img :img-urls="scope.row.productImageSmall" />
         </template>
       </el-table-column>
-      <el-table-column label="产品细节图"
-                       width="150">
+      <el-table-column
+        label="产品细节图"
+        width="150"
+      >
         <template slot-scope="scope">
-          <product-img :imgUrls='scope.row.productMsg'>
-          </product-img>
+          <product-img :img-urls="scope.row.productMsg" />
         </template>
       </el-table-column>
-      <el-table-column label="产品分类"
-                       width="150">
+      <el-table-column
+        label="产品分类"
+        width="150"
+      >
         <template slot-scope="scope">
 
           <span>{{ getCateName(scope.row.cateId) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="单次购买上限"
-                       width="50"
-                       align="center">
+      <el-table-column
+        label="单次购买上限"
+        width="50"
+        align="center"
+      >
         <template slot-scope="scope">{{ scope.row.limitNum }}</template>
       </el-table-column>
-      <el-table-column class-name="status-col"
-                       label="零售价"
-                       width="50"
-                       align="center">
+      <el-table-column
+        class-name="status-col"
+        label="零售价"
+        width="50"
+        align="center"
+      >
         <template slot-scope="scope">{{ scope.row.salePrice }}</template>
       </el-table-column>
-      <el-table-column align="center"
-                       label="库存"
-                       width="50">
+      <el-table-column
+        align="center"
+        label="库存"
+        width="50"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.stock }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center"
-                       label="更新日期"
-                       width="100">
+      <el-table-column
+        align="center"
+        label="更新日期"
+        width="100"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.createDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center"
-                       label="更新时间"
-                       width="100">
+      <el-table-column
+        align="center"
+        label="更新时间"
+        width="100"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed="right"
-                       label="操作"
-                       width="100">
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="100"
+      >
         <template slot-scope="scope">
-          <el-button type="text"
-                     size="small"
-                     @click="goodDetail(scope.row)">编辑</el-button>
-          <el-button type="text"
-                     size="small"
-                     @click="delGood(scope.row)">删除</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="goodDetail(scope.row)"
+          >编辑</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="delGood(scope.row)"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="block">
-      <el-pagination layout="total, sizes, prev, pager, next"
-                     :total="totalCount"
-                     :page-size="pageSize"
-                     background
-                     @current-change="handleCurrentChange"
-                     @size-change="changePageSize" />
+      <el-pagination
+        layout="total, sizes, prev, pager, next"
+        :total="totalCount"
+        :page-size="pageSize"
+        background
+        @current-change="handleCurrentChange"
+        @size-change="changePageSize"
+      />
     </div>
     <!-- 查看详情 -->
-    <el-dialog title="商品详情"
-               :close-on-click-modal="false"
-               :visible.sync="goodsDetailFormVisible">
-      <el-form ref="goodDetails"
-               :model="detailGood"
-               :rules="rules">
-        <el-form-item label="商品名称"
-                      :label-width="formLabelWidth"
-                      prop="productName">
-          <el-input v-model="detailGood.productName"
-                    autocomplete="off" />
+    <el-dialog
+      title="商品详情"
+      :close-on-click-modal="false"
+      :visible.sync="goodsDetailFormVisible"
+    >
+      <el-form
+        ref="goodDetails"
+        :model="detailGood"
+        :rules="rules"
+      >
+        <el-form-item
+          label="商品名称"
+          :label-width="formLabelWidth"
+          prop="productName"
+        >
+          <el-input
+            v-model="detailGood.productName"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="商品描述"
-                      :label-width="formLabelWidth"
-                      prop="subTitle">
-          <el-input v-model="detailGood.subTitle"
-                    autocomplete="off" />
+        <el-form-item
+          label="商品描述"
+          :label-width="formLabelWidth"
+          prop="subTitle"
+        >
+          <el-input
+            v-model="detailGood.subTitle"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="库存"
-                      :label-width="formLabelWidth"
-                      prop="stock">
-          <el-input v-model.number="detailGood.stock"
-                    autocomplete="off" />
+        <el-form-item
+          label="库存"
+          :label-width="formLabelWidth"
+          prop="stock"
+        >
+          <el-input
+            v-model.number="detailGood.stock"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="所属分类"
-                      :label-width="formLabelWidth">
-          <el-cascader ref="cascader"
-                       filterable
-                       v-model="detailGood.cateId"
-                       :options="categorys"
-                       size="medium"
-                       placeholder='请选择分类'
-                       clearable />
+        <el-form-item
+          label="所属分类"
+          :label-width="formLabelWidth"
+        >
+          <el-cascader
+            ref="cascader"
+            v-model="detailGood.cateId"
+            filterable
+            :options="categorys"
+            size="medium"
+            placeholder="请选择分类"
+            clearable
+          />
         </el-form-item>
-        <el-form-item label="单次购买上限"
-                      :label-width="formLabelWidth"
-                      prop="limitNum">
-          <el-input v-model.number="detailGood.limitNum"
-                    autocomplete="off" />
+        <el-form-item
+          label="单次购买上限"
+          :label-width="formLabelWidth"
+          prop="limitNum"
+        >
+          <el-input
+            v-model.number="detailGood.limitNum"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="零售价"
-                      :label-width="formLabelWidth"
-                      prop="salePrice">
-          <el-input v-model.number="detailGood.salePrice"
-                    autocomplete="off" />
+        <el-form-item
+          label="零售价"
+          :label-width="formLabelWidth"
+          prop="salePrice"
+        >
+          <el-input
+            v-model.number="detailGood.salePrice"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="商品大图"
-                      :label-width="formLabelWidth"
-                      prop="productImageBig">
-          <el-input v-model="detailGood.productImageBig"
-                    :disabled="true"
-                    :rows="2"
-                    autocomplete="off">
-          </el-input>
-          <product-img :imgUrls='detailGood.productImageBig' />
-          <el-upload class="upload-demo"
-                     ref="imageBigUpload"
-                     :action="fileUploadUrl"
-                     multiple
-                     :with-credentials="true"
-                     :auto-upload="false"
-                     :limit="1"
-                     :on-success="imgeBigUploadSuc"
-                     :on-exceed="handleExceed"
-                     :before-upload="beforeImgUpload"
-                     :file-list="fileImageBigList">
-            <el-button size="small"
-                       slot="trigger"
-                       type="primary"
-                       @click="clearFileList">点击上传替换图片</el-button>
-            <el-button style="margin-left: 10px;"
-                       size="small"
-                       type="success"
-                       @click="submitImageBigUpload">上传到服务器</el-button>
-            <div slot="tip"
-                 class="el-upload__tip">只能上传jpg/png文件，且不超过2000kb</div>
+        <el-form-item
+          label="商品大图"
+          :label-width="formLabelWidth"
+          prop="productImageBig"
+        >
+          <el-input
+            v-model="detailGood.productImageBig"
+            :disabled="true"
+            :rows="2"
+            autocomplete="off"
+          />
+          <product-img :img-urls="detailGood.productImageBig" />
+          <el-upload
+            ref="imageBigUpload"
+            class="upload-demo"
+            :action="fileUploadUrl"
+            multiple
+            :with-credentials="true"
+            :auto-upload="false"
+            :limit="1"
+            :on-success="imgeBigUploadSuc"
+            :on-exceed="handleExceed"
+            :before-upload="beforeImgUpload"
+            :file-list="fileImageBigList"
+          >
+            <el-button
+              slot="trigger"
+              size="small"
+              type="primary"
+              @click="clearFileList"
+            >点击上传替换图片</el-button>
+            <el-button
+              style="margin-left: 10px;"
+              size="small"
+              type="success"
+              @click="submitImageBigUpload"
+            >上传到服务器</el-button>
+            <div
+              slot="tip"
+              class="el-upload__tip"
+            >只能上传jpg/png文件，且不超过2000kb</div>
           </el-upload>
         </el-form-item>
-        <el-form-item label="商品小图"
-                      :label-width="formLabelWidth"
-                      prop="productImageSmall">
-          <el-input v-model="detailGood.productImageSmall"
-                    :disabled="true"
-                    autocomplete="off">
-          </el-input>
-          <product-img :imgUrls='detailGood.productImageSmall' />
-          <el-upload class="upload-demo"
-                     ref="imageSmallUpload"
-                     :action="fileUploadUrl"
-                     multiple
-                     :with-credentials="true"
-                     :auto-upload="false"
-                     :limit="3"
-                     :on-success="imgSmlUploadSuc"
-                     :on-exceed="handleExceed"
-                     :before-upload="beforeImgUpload"
-                     :file-list="fileImageSmallList">
-            <el-button size="small"
-                       slot="trigger"
-                       type="primary"
-                       @click="clearFileList">点击上传替换图片</el-button>
-            <el-button style="margin-left: 10px;"
-                       size="small"
-                       type="success"
-                       @click="submitImageSmallUpload">上传到服务器</el-button>
-            <div slot="tip"
-                 class="el-upload__tip">只能上传jpg/png文件，且不超过2000kb</div>
+        <el-form-item
+          label="商品小图"
+          :label-width="formLabelWidth"
+          prop="productImageSmall"
+        >
+          <el-input
+            v-model="detailGood.productImageSmall"
+            :disabled="true"
+            autocomplete="off"
+          />
+          <product-img :img-urls="detailGood.productImageSmall" />
+          <el-upload
+            ref="imageSmallUpload"
+            class="upload-demo"
+            :action="fileUploadUrl"
+            multiple
+            :with-credentials="true"
+            :auto-upload="false"
+            :limit="3"
+            :on-success="imgSmlUploadSuc"
+            :on-exceed="handleExceed"
+            :before-upload="beforeImgUpload"
+            :file-list="fileImageSmallList"
+          >
+            <el-button
+              slot="trigger"
+              size="small"
+              type="primary"
+              @click="clearFileList"
+            >点击上传替换图片</el-button>
+            <el-button
+              style="margin-left: 10px;"
+              size="small"
+              type="success"
+              @click="submitImageSmallUpload"
+            >上传到服务器</el-button>
+            <div
+              slot="tip"
+              class="el-upload__tip"
+            >只能上传jpg/png文件，且不超过2000kb</div>
           </el-upload>
         </el-form-item>
-        <el-form-item label="商品细节图"
-                      :label-width="formLabelWidth"
-                      prop="productMsg">
-          <el-input v-model="detailGood.productMsg"
-                    :disabled="true"
-                    autocomplete="off">
-          </el-input>
-          <product-img :imgUrls='detailGood.productMsg' />
-          <el-upload class="upload-demo"
-                     ref="imageMsgUpload"
-                     :action="fileUploadUrl"
-                     multiple
-                     :with-credentials="true"
-                     :auto-upload="false"
-                     :limit="3"
-                     :on-success="imgMsgloadSuc"
-                     :on-exceed="handleExceed"
-                     :before-upload="beforeImgUpload"
-                     :file-list="fileImageMsgList">
-            <el-button size="small"
-                       slot="trigger"
-                       type="primary"
-                       @click="clearFileList">点击上传替换图片</el-button>
-            <el-button style="margin-left: 10px;"
-                       size="small"
-                       type="success"
-                       @click="submitImageMsgUpload">上传到服务器</el-button>
-            <div slot="tip"
-                 class="el-upload__tip">只能上传jpg/png文件，且不超过2000kb</div>
+        <el-form-item
+          label="商品细节图"
+          :label-width="formLabelWidth"
+          prop="productMsg"
+        >
+          <el-input
+            v-model="detailGood.productMsg"
+            :disabled="true"
+            autocomplete="off"
+          />
+          <product-img :img-urls="detailGood.productMsg" />
+          <el-upload
+            ref="imageMsgUpload"
+            class="upload-demo"
+            :action="fileUploadUrl"
+            multiple
+            :with-credentials="true"
+            :auto-upload="false"
+            :limit="3"
+            :on-success="imgMsgloadSuc"
+            :on-exceed="handleExceed"
+            :before-upload="beforeImgUpload"
+            :file-list="fileImageMsgList"
+          >
+            <el-button
+              slot="trigger"
+              size="small"
+              type="primary"
+              @click="clearFileList"
+            >点击上传替换图片</el-button>
+            <el-button
+              style="margin-left: 10px;"
+              size="small"
+              type="success"
+              @click="submitImageMsgUpload"
+            >上传到服务器</el-button>
+            <div
+              slot="tip"
+              class="el-upload__tip"
+            >只能上传jpg/png文件，且不超过2000kb</div>
           </el-upload>
         </el-form-item>
       </el-form>
-      <div slot="footer"
-           class="dialog-footer">
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="goodsDetailFormVisible = false">取消</el-button>
-        <el-button type="primary"
-                   @click="updateGood()">确认</el-button>
+        <el-button
+          type="primary"
+          @click="updateGood()"
+        >确认</el-button>
       </div>
     </el-dialog>
     <!-- 编辑 -->
@@ -295,7 +397,7 @@ export default {
   data () {
     return {
       emptyGood: {},
-      //商品大图
+      // 商品大图
       imgUploadUrlsTemp: [],
       imgUploadUrls: '',
       fileImageMsgList: [],
@@ -391,7 +493,7 @@ export default {
       // alert(val + '444')
     },
     currgory (newVal, oldVal) {
-      console.log("newVal==", newVal)
+      console.log('newVal==', newVal)
     }
   },
   created () {
@@ -401,16 +503,16 @@ export default {
       createTime: '',
       limitNum: 0,
       productId: 0,
-      productImageBig: "",
-      productImageSmall: "",
-      productMsg: "",
-      productName: "",
+      productImageBig: '',
+      productImageSmall: '',
+      productMsg: '',
+      productName: '',
       salePrice: 0,
       stock: 0,
-      subTitle: ""
+      subTitle: ''
     }
     this.imgUploadUrlsTemp = []
-    this.imgUploadUrls = ""
+    this.imgUploadUrls = ''
     this.fileImageMsgList = []
     this.fileImageSmallList = []
     this.fileImageBigList = []
@@ -419,22 +521,22 @@ export default {
   },
   methods: {
     clearFileList () {
-      this.imgUploadUrls = ""
+      this.imgUploadUrls = ''
       this.imgUploadUrlsTemp = []
       this.fileImageMsgList = []
       this.fileImageSmallList = []
       this.fileImageBigList = []
     },
     beforeImgUpload (file) {
-      const isJPGOrPng = (file.type === 'image/jpeg') || (file.type === 'image/png') || (file.type === 'image/jpg');
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isJPGOrPng = (file.type === 'image/jpeg') || (file.type === 'image/png') || (file.type === 'image/jpg')
+      const isLt2M = file.size / 1024 / 1024 < 2
       if (!isJPGOrPng) {
-        this.$message.error('上传图片只能是 JPG或PNG 格式!');
+        this.$message.error('上传图片只能是 JPG或PNG 格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 2MB!');
+        this.$message.error('上传图片大小不能超过 2MB!')
       }
-      return isJPGOrPng && isLt2M;
+      return isJPGOrPng && isLt2M
     },
     imgeBigUploadSuc (response, file, fileList) {
       if (response.code === 20000) {
@@ -470,7 +572,7 @@ export default {
       this.$refs.imageBigUpload.submit()
     },
     handleExceed (files, fileList) {
-      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
     fetchData (pageNum, pageSize) {
       this.goodList = []
@@ -498,7 +600,7 @@ export default {
     goodDetail (good) {
       // fix https://github.com/ElemeFE/element/issues/18669
       this.$nextTick(() => {
-        this.imgUploadUrls = ""
+        this.imgUploadUrls = ''
         this.fileImageMsgList = []
         this.fileImageSmallList = []
         this.fileImageBigList = []
@@ -518,13 +620,13 @@ export default {
           this.detailGood.createTime = ''
           this.detailGood.limitNum = 0
           this.detailGood.productId = 0
-          this.detailGood.productImageBig = ""
-          this.detailGood.productImageSmall = ""
-          this.detailGood.productMsg = ""
-          this.detailGood.productName = ""
+          this.detailGood.productImageBig = ''
+          this.detailGood.productImageSmall = ''
+          this.detailGood.productMsg = ''
+          this.detailGood.productName = ''
           this.detailGood.salePrice = 0
           this.detailGood.stock = 0
-          this.detailGood.subTitle = ""
+          this.detailGood.subTitle = ''
         }
       })
       this.goodsDetailFormVisible = true
@@ -601,18 +703,17 @@ export default {
       this.fetchData(this.currPage, data)
     },
     getCateName (node) {
-      let names = ""
-      if (typeof (node) === "string") {
+      let names = ''
+      if (typeof (node) === 'string') {
         JSON.parse(node).forEach(cat => {
           this.allcategorys.forEach(cate => {
             if (cat === cate.catId) {
-              names = names + "/" + cate.name
+              names = names + '/' + cate.name
             }
           })
         })
       }
       return names
-
     }
   }
 }

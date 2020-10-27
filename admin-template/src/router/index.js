@@ -124,7 +124,8 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: '/#/',
+        // path: 'http://localhost:9999/home',
+        path: 'http://106.54.70.153/',
         meta: { title: '前台', icon: 'link' }
       }
     ]
@@ -135,6 +136,7 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
+  base: 'admin-template',
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes

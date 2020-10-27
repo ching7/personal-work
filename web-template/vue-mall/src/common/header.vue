@@ -142,8 +142,10 @@
                              @click.native="initSearch">热门商品</router-link>
               </li>
               <li>
-                <router-link :to="{path:'/goods',query: { currCate: [], currProName: '' }}"
-                             @click.native="initSearch">管理员后台</router-link>
+                <!-- <a href="http://localhost:9528/#/dashboard"  target="_blank">管理员后台</a> -->
+                <a href="http://106.54.70.153/admin-template"  target="_blank">管理员后台</a>
+                <!-- <router-link :to="{path:'/goods',query: { currCate: [], currProName: '' }}"
+                             @click.native="initSearch">管理员后台</router-link> -->
               </li>
               <span>
                 分类查找：
